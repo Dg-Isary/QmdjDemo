@@ -1,0 +1,3022 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>奇门遁甲 · 时家转盘完整排盘教学与实操演练系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    // 整体字号放大（1rem = 16px）
+                    fontSize: {
+                        'xs': ['0.9375rem', { lineHeight: '1.45' }],  // 15px
+                        'sm': ['1.0625rem', { lineHeight: '1.6' }],   // 17px
+                        'base': ['1.1875rem', { lineHeight: '1.7' }], // 19px
+                        'lg': ['1.375rem', { lineHeight: '1.5' }],    // 22px
+                        'xl': ['1.625rem', { lineHeight: '1.4' }],    // 26px
+                        '2xl': ['2rem', { lineHeight: '1.3' }],       // 32px
+                        '3xl': ['2.5rem', { lineHeight: '1.2' }]      // 40px
+                    },
+                    colors: {
+                        xuan: {
+                            950: '#07090e',
+                            900: '#0c1018',
+                            800: '#141b29',
+                            700: '#1f293d',
+                        },
+                        gold: {
+                            300: '#f5e0a3',
+                            400: '#e5c158',
+                            500: '#d4af37',
+                            600: '#aa8620',
+                            700: '#7c5f10',
+                        },
+                        wuxing: {
+                            wood: '#34d399',   // 木绿
+                            fire: '#f87171',   // 火红
+                            earth: '#fbbf24',  // 土黄
+                            metal: '#f3f4f6',  // 金白
+                            water: '#60a5fa',  // 水蓝
+                        }
+                    },
+                    fontFamily: {
+                        serif: ['"Noto Serif SC"', 'STSong', 'SimSun', 'serif'],
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #07090e;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(212, 175, 55, 0.06) 0%, transparent 45%),
+                radial-gradient(circle at 85% 85%, rgba(96, 165, 250, 0.05) 0%, transparent 45%),
+                linear-gradient(to bottom, #07090e, #0c1018);
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .font-gu {
+            font-family: 'Noto Serif SC', serif;
+        }
+        /* 古典金边与底纹 */
+        .gold-border {
+            border: 1px solid rgba(212, 175, 55, 0.35);
+            box-shadow: 0 4px 25px -4px rgba(0, 0, 0, 0.7), inset 0 0 15px rgba(212, 175, 55, 0.05);
+        }
+        .gold-border-active {
+            border: 1.5px solid #d4af37;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.35), inset 0 0 15px rgba(212, 175, 55, 0.15);
+        }
+        /* 五行颜色类 */
+        .wx-木 { color: #34d399; }
+        .wx-火 { color: #f87171; }
+        .wx-土 { color: #fbbf24; }
+        .wx-金 { color: #f8fafc; text-shadow: 0 0 6px rgba(255,255,255,0.3); }
+        .wx-水 { color: #60a5fa; }
+
+        .bg-wx-木 { background-color: rgba(52, 211, 153, 0.12); border-color: rgba(52, 211, 153, 0.4); }
+        .bg-wx-火 { background-color: rgba(248, 113, 113, 0.12); border-color: rgba(248, 113, 113, 0.4); }
+        .bg-wx-土 { background-color: rgba(251, 191, 36, 0.12); border-color: rgba(251, 191, 36, 0.4); }
+        .bg-wx-金 { background-color: rgba(248, 250, 252, 0.12); border-color: rgba(248, 250, 252, 0.4); }
+        .bg-wx-水 { background-color: rgba(96, 165, 250, 0.12); border-color: rgba(96, 165, 250, 0.4); }
+
+        /* 宣纸暗调卡片感 */
+        .xuan-card {
+            background: linear-gradient(145deg, rgba(20, 27, 41, 0.92), rgba(12, 16, 24, 0.96));
+            backdrop-filter: blur(10px);
+        }
+        /* 脉冲高亮动画 */
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.6), inset 0 0 18px rgba(212, 175, 55, 0.35); border-color: #f5e0a3; }
+            50% { box-shadow: 0 0 22px 4px rgba(212, 175, 55, 0.5), inset 0 0 25px rgba(212, 175, 55, 0.5); border-color: #d4af37; }
+        }
+        .palace-highlight {
+            animation: pulseGlow 1.8s infinite;
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.75); opacity: 0; }
+            70% { transform: scale(1.08); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .step-new-item {
+            animation: popIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.6);
+        }
+        /* ===== 教学辅助样式（不参与排盘逻辑） ===== */
+        /* 盘面位置标注：神/星/门/天/地 */
+        .axis-tag {
+            font-size: 12px;
+            line-height: 1;
+            color: #64748b;
+            border: 1px solid rgba(100, 116, 139, 0.45);
+            border-radius: 3px;
+            padding: 1px 3px;
+            flex: none;
+            letter-spacing: 0;
+            user-select: none;
+        }
+        body.hide-axis .axis-tag { display: none; }
+
+        /* ===== 全动态演示（飞星 / 飞门 / 飞神 / 步进轨迹） ===== */
+        @keyframes fxFly {
+            0%   { transform: translate(var(--fx-dx, 0px), var(--fx-dy, 0px)) scale(var(--fx-s, 0.8)); opacity: 0; filter: blur(1.5px); }
+            14%  { opacity: 1; filter: blur(0.6px); }
+            100% { transform: translate(0, 0) scale(1); opacity: 1; filter: blur(0); }
+        }
+        @keyframes fxPop {
+            0%   { transform: scale(0.3); opacity: 0; }
+            62%  { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes fxDropIn {
+            0%   { transform: translateY(-14px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes fxRipple {
+            0%   { opacity: 0.95; transform: scale(0.55); }
+            100% { opacity: 0; transform: scale(1.08); }
+        }
+        /* 飞行光点（步进轨迹） */
+        .fx-dot {
+            position: absolute;
+            left: 0; top: 0;
+            width: 18px; height: 18px;
+            margin: -9px 0 0 -9px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #fff7dc 0%, #f5e0a3 45%, #d4af37 100%);
+            box-shadow: 0 0 22px 8px rgba(212, 175, 55, 0.55);
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
+            pointer-events: none;
+            z-index: 6;
+        }
+        /* 飞行气泡（携带文字） */
+        .fx-ghost {
+            position: absolute;
+            left: 0; top: 0;
+            padding: 3px 12px;
+            border-radius: 999px;
+            font-size: 17px;
+            font-weight: 700;
+            color: #07090e;
+            background: linear-gradient(135deg, #f5e0a3, #d4af37);
+            box-shadow: 0 0 24px rgba(212, 175, 55, 0.7);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 6;
+        }
+        /* 宫位脉冲光环 */
+        .fx-ripple {
+            position: absolute;
+            border-radius: 14px;
+            border: 2px solid rgba(212, 175, 55, 0.9);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.45), inset 0 0 24px rgba(212, 175, 55, 0.2);
+            pointer-events: none;
+            z-index: 4;
+            opacity: 0;
+            animation: fxRipple 1.15s ease-out forwards;
+        }
+        /* 开启动画时，关闭旧的整体弹入，避免与飞行动画叠加 */
+        body.anim-on #qimen-grid .step-new-item { animation: none !important; }
+
+        /* 术语悬浮提示（虚线词，鼠标停留看白话解释） */
+        .term-tip {
+            border-bottom: 1px dashed rgba(212, 175, 55, 0.65);
+            cursor: help;
+            text-decoration: none;
+            color: inherit;
+        }
+        .term-tip:hover { background: rgba(212, 175, 55, 0.12); }
+
+        /* 折叠面板 */
+        details > summary { list-style: none; cursor: pointer; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] > summary .chev { transform: rotate(90deg); }
+        .chev { display: inline-block; transition: transform 0.2s ease; }
+
+        /* 盘面示意小方块 */
+        .cell-map {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px;
+            font-size: 14px;
+        }
+        .cell-map > div {
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            border-radius: 4px;
+            padding: 4px 6px;
+            background: rgba(7, 9, 14, 0.6);
+        }
+
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #07090e; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #d4af37; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-gold-500 selection:text-xuan-950">
+
+    <!-- 顶部古典导航栏 -->
+    <header class="sticky top-0 z-40 bg-xuan-950/90 backdrop-blur-md border-b border-gold-500/30">
+        <div class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <!-- 品牌标题 -->
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-full border border-gold-400 flex items-center justify-center bg-xuan-800 shadow-inner relative">
+                    <span class="font-gu text-gold-400 font-bold text-lg">奇门</span>
+                    <div class="absolute inset-0 rounded-full border border-gold-500/20 animate-spin" style="animation-duration: 20s;"></div>
+                </div>
+                <div>
+                    <h1 class="font-gu text-lg sm:text-xl font-bold tracking-wider text-gold-300 flex items-center gap-2">
+                        奇门遁甲 · 排盘教学与推演系统
+                        <span class="hidden md:inline-block text-xs px-2 py-0.5 rounded bg-gold-500/15 text-gold-400 border border-gold-500/30 font-sans font-normal">时家转盘 · 拆补/置闰完备版</span>
+                    </h1>
+                    <p class="text-xs text-slate-400 hidden sm:block">九步全流程拆解 · 每步配「大白话 + 比喻 + 易错点」· 盘面标注与术语悬停解释</p>
+                </div>
+            </div>
+
+            <!-- 四大模式导航 -->
+            <nav class="flex items-center space-x-1 sm:space-x-2">
+                <button onclick="switchTab('simulator')" id="tab-btn-simulator" class="tab-btn px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center gap-1.5 bg-gold-500 text-xuan-950 font-semibold shadow-lg shadow-gold-500/20">
+                    <span>☯</span> <span>分步排盘演练器</span>
+                </button>
+                <button onclick="switchTab('tutorial')" id="tab-btn-tutorial" class="tab-btn px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center gap-1.5 text-slate-300 hover:text-gold-300 hover:bg-xuan-800">
+                    <span>📜</span> <span>九步全流程精讲</span>
+                </button>
+                <button onclick="switchTab('dict')" id="tab-btn-dict" class="tab-btn px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center gap-1.5 text-slate-300 hover:text-gold-300 hover:bg-xuan-800">
+                    <span>🧭</span> <span class="hidden sm:inline">速查表与</span><span>底层字典</span>
+                </button>
+                <button onclick="switchTab('quiz')" id="tab-btn-quiz" class="tab-btn px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center gap-1.5 text-slate-300 hover:text-gold-300 hover:bg-xuan-800">
+                    <span>🎯</span> <span>通关题库自测</span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主容器 -->
+    <main class="flex-1 max-w-[1440px] w-full mx-auto px-3 sm:px-6 lg:px-8 py-6">
+
+        <!-- ==================== 模块1：交互式分步排盘演练器 ==================== -->
+        <section id="view-simulator" class="space-y-6">
+            <!-- ===== 新手导读：30 秒看懂这张盘（纯说明，不影响排盘） ===== -->
+            <details id="starter-guide" class="xuan-card gold-border rounded-xl p-4 sm:p-5">
+                <summary class="flex flex-wrap items-center gap-2">
+                    <span class="chev text-gold-400">▶</span>
+                    <span class="font-gu font-bold text-gold-300 text-sm sm:text-base">👀 30 秒入门：这张盘是什么？我该看哪里？</span>
+                    <span class="text-[15px] text-slate-400">（点击展开 · 纯讲解，不会改变任何排盘结果）</span>
+                </summary>
+
+                <div class="mt-4 grid grid-cols-1 lg:grid-cols-3 gap-4 text-xs leading-relaxed">
+                    <!-- 1. 四层盘 -->
+                    <div class="p-3 rounded-lg bg-xuan-950/80 border border-slate-800 space-y-2">
+                        <div class="font-bold text-amber-300">① 一张盘 = 一个舞台 + 三组演员</div>
+                        <ul class="space-y-1 text-slate-300">
+                            <li>🏛️ <b class="text-slate-100">地盘</b>：九宫格 + 九个天干。<b>永远不动</b>，是整张盘的地基。</li>
+                            <li>☁️ <b class="wx-金">天盘</b>：九星 + 天盘天干。<b>随时干</b>转，代表"天时/大环境"。</li>
+                            <li>🚪 <b class="wx-木">人盘</b>：八门。<b>随时支</b>转，代表"人的行动方式"。</li>
+                            <li>✨ <b class="wx-土">神盘</b>：八神。<b>跟着值符</b>转，代表"现场氛围/隐性助力"。</li>
+                        </ul>
+                        <p class="text-slate-400 pt-1 border-t border-slate-800">
+                            比喻：地盘是舞台，天盘是天气，人盘是演员的动作，神盘是全场的气氛。四层叠在同一格里，才产生吉凶。
+                        </p>
+                    </div>
+
+                    <!-- 2. 一个格子怎么看 -->
+                    <div class="p-3 rounded-lg bg-xuan-950/80 border border-slate-800 space-y-2">
+                        <div class="font-bold text-emerald-300">② 一个格子里有六样东西（记住读的顺序）</div>
+                        <div class="cell-map">
+                            <div><span class="axis-tag">神</span> 八神（如 值符/白虎）</div>
+                            <div><span class="axis-tag">隐</span> 暗干 · <span class="axis-tag">空</span>空亡 · <span class="axis-tag">马</span>驿马</div>
+                            <div><span class="axis-tag">星</span> 九星（如 天蓬/天心）</div>
+                            <div><span class="axis-tag">天</span> 天盘天干（浮在上面）</div>
+                            <div><span class="axis-tag">门</span> 八门（如 休门/开门）</div>
+                            <div><span class="axis-tag">地</span> 地盘天干（压在下面）</div>
+                        </div>
+                        <p class="text-slate-400">
+                            读格口诀：<b class="text-gold-300">先看门和星定事，再看天地两干论生克，最后看神来定氛围</b>。底部还写着宫名、方位、五行与四害标签（击刑/入墓/门迫）。
+                        </p>
+                    </div>
+
+                    <!-- 3. 怎么用 + 学习路线 -->
+                    <div class="p-3 rounded-lg bg-xuan-950/80 border border-slate-800 space-y-2">
+                        <div class="font-bold text-blue-300">③ 三步上手（建议按顺序学）</div>
+                        <ol class="list-decimal list-inside space-y-1 text-slate-300">
+                            <li>在上方<b>选一个案例</b>（或自己改四柱），页面自动出盘。</li>
+                            <li>点<b>「下一步」</b>：右侧会逐步告诉你"这一步在算什么、为什么这么算、盘上该看哪里"，每一步都有<b>大白话 + 常见误区</b>。</li>
+                            <li>点<b>任意宫格</b>看深度剖析；学完去<b>「通关题库」</b>自测，答错会直接给你对应步骤的复习入口。</li>
+                        </ol>
+                        <p class="text-slate-400 pt-1 border-t border-slate-800">
+                            小技巧：带<span class="term-tip" title="术语提示示例：把鼠标停在这样的虚线上，就会出现白话解释">虚线下划线</span>的词都可以<b>悬停看解释</b>；键盘 <b>← →</b> 可翻步；<b class="text-sky-300">🎬 动画</b> 开关可关闭飞行特效，旁边可调速。
+                        </p>
+                    </div>
+                </div>
+            </details>
+
+            <!-- 顶部预设案例与自定义参数控制栏 -->
+            <div class="xuan-card gold-border rounded-xl p-4 sm:p-5">
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 border-b border-slate-800 pb-4">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="text-gold-400 text-sm font-semibold uppercase tracking-wider">★ 经典教学局例一键载入</span>
+                            <span class="text-xs text-slate-400">（涵盖顺排、逆排、中五寄宫、伏吟、反吟、克应密集等边界；<b class="text-slate-300">鼠标停在案例上可看该局说明</b>）</span>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mt-2.5" id="preset-buttons-container">
+                            <!-- 由JS动态生成预设案例按钮 -->
+                        </div>
+                    </div>
+
+                    <!-- 排盘细节规则设置 -->
+                    <div class="flex flex-wrap sm:flex-nowrap items-center gap-3 bg-xuan-950/70 p-2.5 rounded-lg border border-slate-800/80 shrink-0">
+                        <div>
+                            <label class="block text-[15px] text-slate-400 mb-1">定局法则</label>
+                            <select id="rule-method" onchange="recalculateAndRender()" class="bg-xuan-800 text-xs text-gold-300 border border-gold-500/30 rounded px-2 py-1.5 focus:outline-none">
+                                <option value="chaibu">拆补法 (主流推荐)</option>
+                                <option value="zhirun">置闰法 (超神接气)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[15px] text-slate-400 mb-1">中五宫寄宫</label>
+                            <select id="rule-jigong" onchange="recalculateAndRender()" class="bg-xuan-800 text-xs text-gold-300 border border-gold-500/30 rounded px-2 py-1.5 focus:outline-none">
+                                <option value="kun2">一律寄坤二宫 (通用)</option>
+                                <option value="yanggeng8">阳寄艮八 / 阴寄坤二</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[15px] text-slate-400 mb-1">暗干(隐干)排法</label>
+                            <select id="rule-angan" onchange="recalculateAndRender()" class="bg-xuan-800 text-xs text-gold-300 border border-gold-500/30 rounded px-2 py-1.5 focus:outline-none">
+                                <option value="zhishi">时干加值使门宫 (主流)</option>
+                                <option value="dipan">地盘奇仪随星映射</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 自定义四柱与节气用局编辑器 -->
+                <div class="pt-4 grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+                    <!-- 公历快速起盘或四柱微调 -->
+                    <div class="md:col-span-5 flex flex-wrap items-center gap-2">
+                        <span class="text-xs text-slate-400 font-medium">四柱干支设定：</span>
+                        <select id="sel-year-gz" onchange="onCustomPillarChange()" class="bg-xuan-900 border border-slate-700 text-xs rounded px-2 py-1.5 text-slate-200"></select>
+                        <select id="sel-month-gz" onchange="onCustomPillarChange()" class="bg-xuan-900 border border-slate-700 text-xs rounded px-2 py-1.5 text-slate-200"></select>
+                        <select id="sel-day-gz" onchange="onCustomPillarChange()" class="bg-xuan-900 border border-gold-500/50 text-xs rounded px-2 py-1.5 text-gold-300 font-semibold" title="日柱"></select>
+                        <select id="sel-hour-gz" onchange="onCustomPillarChange()" class="bg-xuan-900 border border-gold-500/50 text-xs rounded px-2 py-1.5 text-gold-300 font-semibold" title="时柱"></select>
+                    </div>
+
+                    <div class="md:col-span-4 flex flex-wrap items-center gap-2">
+                        <span class="text-xs text-slate-400 font-medium">所处节气：</span>
+                        <select id="sel-jieqi" onchange="onCustomPillarChange()" class="bg-xuan-900 border border-slate-700 text-xs rounded px-2 py-1.5 text-emerald-300 font-medium"></select>
+                        <span class="text-xs text-slate-400 font-medium ml-1">局数：</span>
+                        <select id="sel-manual-ju" onchange="recalculateAndRender()" class="bg-xuan-900 border border-slate-700 text-xs rounded px-2 py-1.5 text-amber-300">
+                            <option value="auto">按拆补自动推算</option>
+                            <option value="1">阳遁一局</option><option value="2">阳遁二局</option><option value="3">阳遁三局</option>
+                            <option value="4">阳遁四局</option><option value="5">阳遁五局</option><option value="6">阳遁六局</option>
+                            <option value="7">阳遁七局</option><option value="8">阳遁八局</option><option value="9">阳遁九局</option>
+                            <option value="-1">阴遁一局</option><option value="-2">阴遁二局</option><option value="-3">阴遁三局</option>
+                            <option value="-4">阴遁四局</option><option value="-5">阴遁五局</option><option value="-6">阴遁六局</option>
+                            <option value="-7">阴遁七局</option><option value="-8">阴遁八局</option><option value="-9">阴遁九局</option>
+                        </select>
+                    </div>
+
+                    <!-- 五行配色图例 -->
+                    <div class="md:col-span-3 flex items-center justify-end gap-2 text-xs">
+                        <span class="text-slate-400">五行色标:</span>
+                        <span class="px-1.5 py-0.5 rounded bg-wx-木 wx-木 border">木</span>
+                        <span class="px-1.5 py-0.5 rounded bg-wx-火 wx-火 border">火</span>
+                        <span class="px-1.5 py-0.5 rounded bg-wx-土 wx-土 border">土</span>
+                        <span class="px-1.5 py-0.5 rounded bg-wx-金 wx-金 border">金</span>
+                        <span class="px-1.5 py-0.5 rounded bg-wx-水 wx-水 border">水</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 九步进度条与分步控制器 -->
+            <div class="xuan-card gold-border rounded-xl p-4">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4">
+                    <!-- 步骤按钮组 -->
+                    <div class="flex items-center flex-wrap gap-1.5 w-full sm:w-auto justify-center sm:justify-start" id="step-indicators">
+                        <!-- JS动态生成 1~9 步圆钮 -->
+                    </div>
+
+                    <!-- 播放与步进按钮 -->
+                    <div class="flex flex-wrap items-center justify-center gap-2 shrink-0">
+                        <button onclick="prevStep()" id="btn-prev-step" class="px-3 py-1.5 rounded-lg bg-xuan-800 hover:bg-xuan-700 text-slate-200 border border-slate-700 text-xs font-medium transition flex items-center gap-1">
+                            <span>◀</span> 上一步
+                        </button>
+                        <button onclick="nextStep()" id="btn-next-step" class="px-3.5 py-1.5 rounded-lg bg-gold-500 hover:bg-gold-400 text-xuan-950 font-bold text-xs transition flex items-center gap-1 shadow-md shadow-gold-500/20">
+                            下一步 <span>▶</span>
+                        </button>
+                        <button onclick="toggleAutoPlay()" id="btn-autoplay" class="px-3 py-1.5 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 text-xs font-medium transition flex items-center gap-1">
+                            <span id="autoplay-icon">▶</span> <span id="autoplay-text">自动演示</span>
+                        </button>
+                        <button onclick="setStep(9)" class="px-3 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-xs font-medium transition">
+                            ⚡ 一步成盘
+                        </button>
+                        <button onclick="toggleAnim()" id="btn-anim" title="开/关飞星、飞门、飞神与步进轨迹动画"
+                            class="px-3 py-1.5 rounded-lg bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-500/40 text-xs font-medium transition">
+                            🎬 动画：开
+                        </button>
+                        <select id="anim-speed" onchange="onAnimSpeedChange()" title="动画速度"
+                            class="bg-xuan-800 text-[14px] text-gold-300 border border-gold-500/30 rounded px-2 py-1.5 focus:outline-none">
+                            <option value="1.5">慢速</option>
+                            <option value="1" selected>标准</option>
+                            <option value="0.62">快速</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 当前步骤进度条 -->
+                <div class="w-full bg-xuan-950 h-1.5 rounded-full overflow-hidden">
+                    <div id="step-progress-bar" class="bg-gradient-to-r from-gold-600 via-gold-400 to-amber-200 h-full transition-all duration-300" style="width: 100%;"></div>
+                </div>
+                <p class="text-[15px] text-slate-500 mt-2 text-center sm:text-left">
+                    操作提示：点「下一步」逐步推演（键盘 <b class="text-slate-400">← →</b> 也可翻步），每一步都会<b class="text-sky-400/80">播放飞星 / 飞门 / 飞神动画</b>；右侧同步给出<b class="text-emerald-400/80">大白话</b>、<b class="text-sky-400/80">比喻</b>与<b class="text-red-400/80">易错点</b>。可用「🎬 动画」开关与速度下拉调节。
+                </p>
+            </div>
+
+            <!-- 主工作区：左侧九宫格盘面 + 右侧分步推导精解 -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                
+                <!-- 左侧：奇门九宫格盘面 (7列) -->
+                <div class="lg:col-span-7 space-y-4">
+                    <!-- 盘面顶部核心纲领信息条 -->
+                    <div id="board-header-summary" class="xuan-card gold-border rounded-xl p-3.5 grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                        <!-- JS动态渲染：四柱、遁局、旬首/空亡、值符/值使 -->
+                    </div>
+
+                    <!-- 外层方位提示与九宫格主体 -->
+                    <div class="relative xuan-card gold-border rounded-2xl p-3 sm:p-5">
+                        <!-- 传统上南下北左东右西标注 -->
+                        <div class="text-center text-xs text-red-400/90 font-gu mb-2 tracking-widest flex items-center justify-center gap-2">
+                            <span>▲ 正南（离九宫 · 火）</span>
+                            <span class="text-[15px] text-slate-400 font-sans">(传统奇门盘方位：上南 · 下北 · 左东 · 右西)</span>
+                        </div>
+
+                        <div class="flex items-center">
+                            <div class="hidden sm:flex flex-col items-center justify-center text-xs text-emerald-400/90 font-gu pr-2 tracking-widest [writing-mode:vertical-lr]">
+                                ◀ 正东（震三宫 · 木）
+                            </div>
+
+                            <!-- 3x3 洛书九宫格容器（外层 relative 用于动画图层） -->
+                            <div class="relative w-full max-w-[720px] mx-auto" id="grid-wrap">
+                                <div id="qimen-grid" class="w-full grid grid-cols-3 gap-2 sm:gap-3 sm:aspect-square">
+                                    <!-- JS动态填充 4, 9, 2 / 3, 5, 7 / 8, 1, 6 九个宫位 -->
+                                </div>
+                                <!-- 动态演示图层：飞星/飞门/飞神/步进光点/脉冲光环 -->
+                                <div id="qimen-fx" class="pointer-events-none absolute inset-0 z-30"></div>
+                            </div>
+
+                            <div class="hidden sm:flex flex-col items-center justify-center text-xs text-slate-200/90 font-gu pl-2 tracking-widest [writing-mode:vertical-lr]">
+                                正西（兑七宫 · 金） ▶
+                            </div>
+                        </div>
+
+                        <div class="text-center text-xs text-blue-400/90 font-gu mt-2 tracking-widest">
+                            ▼ 正北（坎一宫 · 水）
+                        </div>
+                    </div>
+
+                    <!-- 盘面图例与全局格局提示栏 -->
+                    <div class="xuan-card gold-border rounded-xl p-3.5 text-xs space-y-2">
+                        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 pb-2">
+                            <span class="text-gold-400 font-semibold flex items-center gap-1">
+                                💡 <span>点击上方任意九宫格，可打开【宫位深度剖析】（查看十干克应、门迫、击刑、入墓与长生详解）</span>
+                            </span>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <button onclick="toggleAxisLabels()" id="btn-axis-toggle" title="在每格内标出「神/星/门/天/地」的位置，新手建议开启"
+                                    class="px-2 py-0.5 rounded border text-[15px] transition bg-gold-500/20 border-gold-500/50 text-gold-300">
+                                    🔖 盘面标注：开
+                                </button>
+                                <button onclick="toggleTermTips()" id="btn-term-toggle" title="鼠标悬停带虚线的术语可看白话解释"
+                                    class="px-2 py-0.5 rounded border text-[15px] transition bg-gold-500/20 border-gold-500/50 text-gold-300">
+                                    💬 术语提示：开
+                                </button>
+                                <span class="w-px h-4 bg-slate-700 mx-0.5"></span>
+                                <span class="px-1.5 py-0.5 rounded bg-red-500/20 text-red-300 border border-red-500/40">击刑</span>
+                                <span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">入墓</span>
+                                <span class="px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/40">门迫</span>
+                                <span class="px-1.5 py-0.5 rounded bg-slate-600/40 text-slate-300 border border-slate-500/40">空亡</span>
+                                <span class="px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">马星</span>
+                            </div>
+                        </div>
+                        <div id="global-patterns-bar" class="flex flex-wrap items-center gap-2 pt-1">
+                            <!-- JS填充全局特殊格局：伏吟、反吟、五不遇时、天显时格等 -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右侧：当前步骤推导过程与宫位深度剖析面板 (5列) -->
+                <div class="lg:col-span-5 space-y-4">
+                    <!-- 分步推导教学卡片 -->
+                    <div class="xuan-card gold-border rounded-xl p-5 relative overflow-hidden">
+                        <div class="flex items-center justify-between border-b border-gold-500/20 pb-3 mb-4">
+                            <div>
+                                <span id="step-badge" class="text-xs px-2 py-0.5 rounded bg-gold-500 text-xuan-950 font-bold">第 9 步 / 共 9 步</span>
+                                <h2 id="step-title" class="font-gu text-lg sm:text-xl font-bold text-gold-300 mt-1">第九步：标注四害与特殊格局</h2>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-[15px] text-slate-400 block">核心口诀</span>
+                                <span id="step-mantra" class="text-xs text-amber-300 font-gu font-semibold">空亡马星入墓击刑，奇仪克应定吉凶</span>
+                            </div>
+                        </div>
+
+                        <!-- 动态推导计算详情容器 -->
+                        <div id="step-derivation-content" class="space-y-3 text-sm leading-relaxed text-slate-200 max-h-[620px] overflow-y-auto pr-1">
+                            <!-- JS根据当前 step (1-9) 实时生成针对本局的详细推导过程 -->
+                        </div>
+                    </div>
+
+                    <!-- 选中宫位深度剖析卡片 -->
+                    <div id="palace-inspector" class="xuan-card gold-border rounded-xl p-5">
+                        <!-- JS动态渲染当前点击选中宫位的详细解析 -->
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==================== 模块2：九步全流程精讲 ==================== -->
+        <section id="view-tutorial" class="hidden space-y-6">
+            <div class="xuan-card gold-border rounded-xl p-6">
+                <div class="max-w-3xl">
+                    <h2 class="font-gu text-2xl font-bold text-gold-300 mb-2">奇门遁甲（时家转盘）九步排盘法 · 硬核全流程精讲</h2>
+                    <p class="text-sm text-slate-300 leading-relaxed">
+                        古人云：“学会奇门遁，来人不用问。”奇门遁甲排盘看似繁复，实则是由严密的数学天文周期（洛书九宫、六十甲子、二十四节气）层层咬合而成的四层转盘模型（地盘、天盘、人盘、神盘）。以下为您逐一拆解全部九个步骤的底层逻辑、口诀与边界处理规则：
+                    </p>
+                    <div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                        <div class="p-2.5 rounded-lg bg-xuan-950/80 border border-slate-800">
+                            <b class="text-gold-300">① 先看精讲</b>
+                            <p class="text-slate-400 mt-0.5">本页每步都有「口诀 + 一句话理解 + 常见误区」，先建立整体印象。</p>
+                        </div>
+                        <div class="p-2.5 rounded-lg bg-xuan-950/80 border border-slate-800">
+                            <b class="text-emerald-300">② 再动手推</b>
+                            <p class="text-slate-400 mt-0.5">点右侧按钮跳到演练器，逐步点「下一步」，看盘面怎么一步步长出来。</p>
+                        </div>
+                        <div class="p-2.5 rounded-lg bg-xuan-950/80 border border-slate-800">
+                            <b class="text-blue-300">③ 最后自测</b>
+                            <p class="text-slate-400 mt-0.5">去「通关题库」做题，答错会直接给出对应步骤的复习入口。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 九大步骤手风琴/详单列表 -->
+            <div id="tutorial-steps-container" class="space-y-4">
+                <!-- 由JS渲染详尽的9步图文卡片，并支持点击直接跳转到演练器对应步骤 -->
+            </div>
+        </section>
+
+        <!-- ==================== 模块3：核心速查表与底层字典 ==================== -->
+        <section id="view-dict" class="hidden space-y-6">
+            <!-- 二十四节气七十二局完整速查表 -->
+            <div class="xuan-card gold-border rounded-xl p-5">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 border-b border-slate-800 pb-3">
+                    <div>
+                        <h3 class="font-gu text-xl font-bold text-gold-300">一、二十四节气三元七十二局完整速查表（冬至阳遁 · 夏至阴遁）</h3>
+                        <p class="text-xs text-slate-400 mt-1">口诀：冬至惊蛰一七四，小寒二八五同推，大寒春分三九六，立春八五二相随，雨水九六三无失，清明立夏四一七，谷雨小满五二八，芒种六三九是真；夏至白露九三六，小暑八二五重逢，大暑秋分七一四，立秋二五八流通，处暑一四七相应，霜降小雪五八二，寒露立冬六九三，大雪四七一宫同。</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- 阳遁12节气 -->
+                    <div>
+                        <h4 class="text-sm font-bold text-amber-300 mb-2 flex items-center gap-1.5">
+                            <span>☀️ 阳遁十二节气（冬至 → 芒种，顺布六仪逆布三奇）</span>
+                        </h4>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-xs text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-xuan-950 text-slate-400 border-b border-slate-700">
+                                        <th class="p-2">所属宫卦</th>
+                                        <th class="p-2">节气名称</th>
+                                        <th class="p-2 text-amber-300">上元(子午卯酉)</th>
+                                        <th class="p-2 text-emerald-300">中元(寅申巳亥)</th>
+                                        <th class="p-2 text-blue-300">下元(辰戌丑未)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-yangdun-jieqi" class="divide-y divide-slate-800/80"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- 阴遁12节气 -->
+                    <div>
+                        <h4 class="text-sm font-bold text-blue-300 mb-2 flex items-center gap-1.5">
+                            <span>🌙 阴遁十二节气（夏至 → 大雪，逆布六仪顺布三奇）</span>
+                        </h4>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-xs text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-xuan-950 text-slate-400 border-b border-slate-700">
+                                        <th class="p-2">所属宫卦</th>
+                                        <th class="p-2">节气名称</th>
+                                        <th class="p-2 text-amber-300">上元(子午卯酉)</th>
+                                        <th class="p-2 text-emerald-300">中元(寅申巳亥)</th>
+                                        <th class="p-2 text-blue-300">下元(辰戌丑未)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-yindun-jieqi" class="divide-y divide-slate-800/80"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 六十甲子旬首、符头与空亡全表 -->
+            <div class="xuan-card gold-border rounded-xl p-5">
+                <h3 class="font-gu text-xl font-bold text-gold-300 mb-1">二、六十甲子六甲旬首、六仪遁干、拆补三元符头与旬空速查全表</h3>
+                <p class="text-xs text-slate-400 mb-4">每一旬10个干支共用一个旬首（六甲隐于六仪之下）与两个空亡地支；每5天遇到“甲”或“己”日即为换元符头。</p>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-xs text-left border-collapse">
+                        <thead>
+                            <tr class="bg-xuan-950 text-slate-300 border-b border-slate-700">
+                                <th class="p-2.5">旬首（六甲遁干）</th>
+                                <th class="p-2.5">上半旬（甲~戊 · 上/中/下元符头）</th>
+                                <th class="p-2.5">下半旬（己~癸 · 上/中/下元符头）</th>
+                                <th class="p-2.5">旬空（空亡孤宫）</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-jiazi-xun" class="divide-y divide-slate-800"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 九宫、九星、八门、八神属性与四害速查 -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="xuan-card gold-border rounded-xl p-5">
+                    <h3 class="font-gu text-lg font-bold text-gold-300 mb-3">三、洛书九宫 · 原始九星 · 原始八门属性全表</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-xs text-left border-collapse">
+                            <thead>
+                                <tr class="bg-xuan-950 text-slate-400 border-b border-slate-700">
+                                    <th class="p-2">宫位</th>
+                                    <th class="p-2">方位</th>
+                                    <th class="p-2">五行</th>
+                                    <th class="p-2">原始九星</th>
+                                    <th class="p-2">原始八门</th>
+                                    <th class="p-2">包含地支</th>
+                                </tr>
+                            </thead>
+                            <tbody id="table-palace-meta" class="divide-y divide-slate-800"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="xuan-card gold-border rounded-xl p-5">
+                    <h3 class="font-gu text-lg font-bold text-gold-300 mb-3">四、奇门四害（六仪击刑、奇仪入墓、门迫、马星）铁律速查</h3>
+                    <div class="space-y-3 text-xs text-slate-300">
+                        <div class="p-3 rounded-lg bg-xuan-950/80 border border-red-500/30">
+                            <div class="font-bold text-red-400 mb-1">1. 六仪击刑（能量损耗最烈、拧巴难受）</div>
+                            <p>天盘六仪落入与其所遁旬首地支相刑之宫：</p>
+                            <ul class="grid grid-cols-2 gap-1 mt-1.5 text-slate-200">
+                                <li>• <b>戊</b>（甲子戊）落 <b>震三宫(卯)</b>：子卯相刑</li>
+                                <li>• <b>己</b>（甲戌己）落 <b>坤二宫(未)</b>：戌未相刑</li>
+                                <li>• <b>庚</b>（甲申庚）落 <b>艮八宫(寅)</b>：寅申相刑</li>
+                                <li>• <b>辛</b>（甲午辛）落 <b>离九宫(午)</b>：午午自刑</li>
+                                <li>• <b>壬</b>（甲辰壬）落 <b>巽四宫(辰)</b>：辰辰自刑</li>
+                                <li>• <b>癸</b>（甲寅癸）落 <b>巽四宫(巳)</b>：寅巳相刑</li>
+                            </ul>
+                        </div>
+                        <div class="p-3 rounded-lg bg-xuan-950/80 border border-amber-500/30">
+                            <div class="font-bold text-amber-400 mb-1">2. 十干入墓（能量被囚困，有力使不出）</div>
+                            <ul class="grid grid-cols-2 gap-1 text-slate-200">
+                                <li>• <b>甲/癸</b>（木/水）墓在 <b>坤二宫(未)</b></li>
+                                <li>• <b>乙/丙/戊</b>（木/火/土）墓在 <b>乾六宫(戌)</b></li>
+                                <li>• <b>丁/己/庚</b>（火/土/金）墓在 <b>艮八宫(丑)</b></li>
+                                <li>• <b>辛/壬</b>（金/水）墓在 <b>巽四宫(辰)</b></li>
+                            </ul>
+                        </div>
+                        <div class="p-3 rounded-lg bg-xuan-950/80 border border-purple-500/30">
+                            <div class="font-bold text-purple-400 mb-1">3. 八门门迫（门克宫为门迫，事倍功半）</div>
+                            <p>口诀：“吉门被迫吉不就，凶门被迫祸重重”。即<b>八门五行克制所落宫位五行</b>：</p>
+                            <p class="mt-1 text-slate-200">• 伤/杜(木)落坤二、艮八(土) | 景门(火)落乾六、兑七(金) | 生/死(土)落坎一(水) | 开/惊(金)落震三、巽四(木) | 休门(水)落离九(火)。</p>
+                        </div>
+                        <div class="p-3 rounded-lg bg-xuan-950/80 border border-cyan-500/30">
+                            <div class="font-bold text-cyan-400 mb-1">4. 驿马星（主变动、出行、提速、冲空冲墓）</div>
+                            <p class="text-slate-200">依时支三合局头冲位定马星（永远在四维角宫）：<br>
+                            • <b>申子辰</b>时 → 马在寅（<b>艮八宫</b>） | • <b>寅午戌</b>时 → 马在申（<b>坤二宫</b>）<br>
+                            • <b>巳酉丑</b>时 → 马在亥（<b>乾六宫</b>） | • <b>亥卯未</b>时 → 马在巳（<b>巽四宫</b>）</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== 模块4：通关题库自测 ==================== -->
+        <section id="view-quiz" class="hidden space-y-6">
+            <div class="xuan-card gold-border rounded-xl p-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4 mb-6">
+                    <div>
+                        <h2 class="font-gu text-2xl font-bold text-gold-300">奇门遁甲排盘核心细节 · 通关自测题库</h2>
+                        <p class="text-xs text-slate-400 mt-1">共 8 道实战推算题，全面检验您对拆补定元、旬首推算、天地盘奇仪、值使门步进、八神旋转及四害判定的掌握程度。<span class="text-amber-300/90">不会做可以点每题右上角「💡 提示」看解题思路；答完后还能一键跳回对应步骤复习。</span></p>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="px-4 py-2 rounded-lg bg-xuan-950 border border-gold-500/30 text-sm">
+                            当前得分：<span id="quiz-score" class="text-gold-400 font-bold text-lg">0</span> / 8
+                        </div>
+                        <button onclick="resetQuiz()" class="px-3 py-2 rounded-lg bg-xuan-800 hover:bg-xuan-700 text-xs text-slate-200 border border-slate-700 transition">
+                            🔄 重新作答
+                        </button>
+                    </div>
+                </div>
+
+                <div id="quiz-questions-container" class="space-y-5">
+                    <!-- JS动态渲染8道自测题 -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="border-t border-slate-800/80 bg-xuan-950/90 py-5 mt-12">
+        <div class="max-w-[1440px] mx-auto px-4 text-center text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-2">
+            <div>奇门遁甲（时家转盘）排盘教学与实操演练系统 · 严格遵循《奇门遁甲统宗》《烟波钓叟赋》古法数理逻辑构建</div>
+            <div class="text-slate-400">支持九步动态推演 · 拆补/置闰对照 · 宫位十干克应与四害实时检测</div>
+        </div>
+    </footer>
+
+    <!-- ==================== 核心奇门遁甲排盘引擎与交互脚本 ==================== -->
+    <script>
+        /***********************************************************************
+         * 一、底层常量字典：天干、地支、六十甲子、二十四节气、九宫、九星、八门、八神
+         ***********************************************************************/
+        const TIANGAN = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'];
+        const DIZHI = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
+        
+        // 三奇六仪严格队列（戊0, 己1, 庚2, 辛3, 壬4, 癸5, 丁6, 丙7, 乙8）
+        const QIYI_QUEUE = ['戊', '己', '庚', '辛', '壬', '癸', '丁', '丙', '乙'];
+
+        // 天干五行与阴阳
+        const GAN_META = {
+            '甲': { wx: '木', yy: '阳' }, '乙': { wx: '木', yy: '阴' },
+            '丙': { wx: '火', yy: '阳' }, '丁': { wx: '火', yy: '阴' },
+            '戊': { wx: '土', yy: '阳' }, '己': { wx: '土', yy: '阴' },
+            '庚': { wx: '金', yy: '阳' }, '辛': { wx: '金', yy: '阴' },
+            '壬': { wx: '水', yy: '阳' }, '癸': { wx: '水', yy: '阴' }
+        };
+
+        // 六十甲子生成
+        const JIAZI_60 = [];
+        for (let i = 0; i < 60; i++) {
+            JIAZI_60.push(TIANGAN[i % 10] + DIZHI[i % 12]);
+        }
+
+        // 六甲旬首定义
+        const XUN_META = {
+            '甲子': { dunGan: '戊', kong: ['戌', '亥'], kongPalaces: [6], name: '甲子戊' },
+            '甲戌': { dunGan: '己', kong: ['申', '酉'], kongPalaces: [2, 7], name: '甲戌己' },
+            '甲申': { dunGan: '庚', kong: ['午', '未'], kongPalaces: [9, 2], name: '甲申庚' },
+            '甲午': { dunGan: '辛', kong: ['辰', '巳'], kongPalaces: [4], name: '甲午辛' },
+            '甲辰': { dunGan: '壬', kong: ['寅', '卯'], kongPalaces: [8, 3], name: '甲辰壬' },
+            '甲寅': { dunGan: '癸', kong: ['子', '丑'], kongPalaces: [1, 8], name: '甲寅癸' }
+        };
+
+        // 洛书九宫基础字典（含原始星、原始门、后天卦、方位、五行、藏支）
+        const PALACE_META = {
+            1: { num: 1, gua: '坎', name: '坎一宫', dir: '正北', wx: '水', star: '天蓬', door: '休门', zhi: ['子'], color: '水' },
+            2: { num: 2, gua: '坤', name: '坤二宫', dir: '西南', wx: '土', star: '天芮', door: '死门', zhi: ['未', '申'], color: '土' },
+            3: { num: 3, gua: '震', name: '震三宫', dir: '正东', wx: '木', star: '天冲', door: '伤门', zhi: ['卯'], color: '木' },
+            4: { num: 4, gua: '巽', name: '巽四宫', dir: '东南', wx: '木', star: '天辅', door: '杜门', zhi: ['辰', '巳'], color: '木' },
+            5: { num: 5, gua: '中', name: '中五宫', dir: '中央', wx: '土', star: '天禽', door: '无(寄宫)', zhi: [], color: '土' },
+            6: { num: 6, gua: '乾', name: '乾六宫', dir: '西北', wx: '金', star: '天心', door: '开门', zhi: ['戌', '亥'], color: '金' },
+            7: { num: 7, gua: '兑', name: '兑七宫', dir: '正西', wx: '金', star: '天柱', door: '惊门', zhi: ['酉'], color: '金' },
+            8: { num: 8, gua: '艮', name: '艮八宫', dir: '东北', wx: '土', star: '天任', door: '生门', zhi: ['丑', '寅'], color: '土' },
+            9: { num: 9, gua: '离', name: '离九宫', dir: '正南', wx: '火', star: '天英', door: '景门', zhi: ['午'], color: '火' }
+        };
+
+        // 外圈八宫顺时针旋转轨迹（坎1 → 艮8 → 震3 → 巽4 → 离9 → 坤2 → 兑7 → 乾6）
+        const CLOCKWISE_RING = [1, 8, 3, 4, 9, 2, 7, 6];
+        // 九宫格3x3视觉渲染顺序（左4中9右2 / 左3中5右7 / 左8中1右6）
+        const VISUAL_GRID_ORDER = [4, 9, 2, 3, 5, 7, 8, 1, 6];
+
+        // 九星属性与顺时针序列
+        const STARS_CLOCKWISE = ['天蓬', '天任', '天冲', '天辅', '天英', '天芮', '天柱', '天心'];
+        const STAR_META = {
+            '天蓬': { wx: '水', origPalace: 1, auspicious: '凶', alias: '贪狼星', desc: '主智慧、胆略、破财、远行、风险' },
+            '天任': { wx: '土', origPalace: 8, auspicious: '吉', alias: '左辅星', desc: '主忠厚、勤勉、贵人、田产、稳健' },
+            '天冲': { wx: '木', origPalace: 3, auspicious: '次吉', alias: '禄存星', desc: '主雷厉风行、武职、突击、冲动' },
+            '天辅': { wx: '木', origPalace: 4, auspicious: '大吉', alias: '文曲星', desc: '主文化、教育、考试、辅佐、儒雅' },
+            '天英': { wx: '火', origPalace: 9, auspicious: '中平', alias: '右弼星', desc: '主文采、名声、礼仪、急躁、血光' },
+            '天芮': { wx: '土', origPalace: 2, auspicious: '凶', alias: '巨门星', desc: '主疾病、学生、交友、问题症结、孕产' },
+            '天禽': { wx: '土', origPalace: 5, auspicious: '大吉', alias: '廉贞星', desc: '居中宫统摄四方，尊贵中正，随天芮同行' },
+            '天柱': { wx: '金', origPalace: 7, auspicious: '凶', alias: '破军星', desc: '主口舌、演说、律师、破坏、中流砥柱' },
+            '天心': { wx: '金', origPalace: 6, auspicious: '大吉', alias: '武曲星', desc: '主领导、医药、谋略、管理、决断' }
+        };
+
+        // 八门属性与顺时针序列
+        const DOORS_CLOCKWISE = ['休门', '生门', '伤门', '杜门', '景门', '死门', '惊门', '开门'];
+        const DOOR_META = {
+            '休门': { wx: '水', origPalace: 1, auspicious: '吉门', desc: '主休养生息、贵人、公职、婚姻和合' },
+            '生门': { wx: '土', origPalace: 8, auspicious: '吉门', desc: '主生机、财运、利润、房产、求财大吉' },
+            '伤门': { wx: '木', origPalace: 3, auspicious: '凶门', desc: '主伤灾、讨债、竞技、车马、捕猎' },
+            '杜门': { wx: '木', origPalace: 4, auspicious: '平门', desc: '主保密、技术、躲藏、阻塞、军警' },
+            '景门': { wx: '火', origPalace: 9, auspicious: '平门', desc: '主文书、合同、广告、宴饮、考试名声' },
+            '死门': { wx: '土', origPalace: 2, auspicious: '凶门', desc: '主死气、地皮、执拗、吊唁、断绝' },
+            '惊门': { wx: '金', origPalace: 7, auspicious: '凶门', desc: '主惊恐、官司诉讼、口舌是非、演说' },
+            '开门': { wx: '金', origPalace: 6, auspicious: '吉门', desc: '主开创、事业、店铺开张、工作官运' }
+        };
+
+        // 八神序列与属性
+        const SHEN_ORDER = ['值符', '腾蛇', '太阴', '六合', '白虎', '玄武', '九地', '九天'];
+        const SHEN_META = {
+            '值符': { wx: '土', desc: '八神之首，千灾万祸化为尘，代表最高贵人、核心领导' },
+            '腾蛇': { wx: '火', desc: '主虚惊怪异、反复纠缠、失眠多梦、虚假变幻' },
+            '太阴': { wx: '金', desc: '主阴私策划、暗中贵人、细腻周密、女性助力' },
+            '六合': { wx: '木', desc: '主婚姻交易、中介合作、谈判签约、人缘和平' },
+            '白虎': { wx: '金', desc: '主凶猛威严、道路伤灾、压力病痛、军警技术' },
+            '玄武': { wx: '水', desc: '主暗昧不明、失盗欺瞒、投机玄学、口蜜腹剑' },
+            '九地': { wx: '土', desc: '主潜藏稳固、长久保守、缓慢低矮、厚德载物' },
+            '九天': { wx: '金', desc: '主远行高飞、张扬主动、刚强宏大、志向高远' }
+        };
+
+        // 二十四节气用局全表（冬至后阳遁，夏至后阴遁）
+        const JIEQI_DATA = [
+            // 阳遁 12 节气
+            { name: '冬至', type: '阳遁', gua: '坎一宫', ju: [1, 7, 4] },
+            { name: '小寒', type: '阳遁', gua: '坎一宫', ju: [2, 8, 5] },
+            { name: '大寒', type: '阳遁', gua: '坎一宫', ju: [3, 9, 6] },
+            { name: '立春', type: '阳遁', gua: '艮八宫', ju: [8, 5, 2] },
+            { name: '雨水', type: '阳遁', gua: '艮八宫', ju: [9, 6, 3] },
+            { name: '惊蛰', type: '阳遁', gua: '艮八宫', ju: [1, 7, 4] },
+            { name: '春分', type: '阳遁', gua: '震三宫', ju: [3, 9, 6] },
+            { name: '清明', type: '阳遁', gua: '震三宫', ju: [4, 1, 7] },
+            { name: '谷雨', type: '阳遁', gua: '震三宫', ju: [5, 2, 8] },
+            { name: '立夏', type: '阳遁', gua: '巽四宫', ju: [4, 1, 7] },
+            { name: '小满', type: '阳遁', gua: '巽四宫', ju: [5, 2, 8] },
+            { name: '芒种', type: '阳遁', gua: '巽四宫', ju: [6, 3, 9] },
+            // 阴遁 12 节气
+            { name: '夏至', type: '阴遁', gua: '离九宫', ju: [9, 3, 6] },
+            { name: '小暑', type: '阴遁', gua: '离九宫', ju: [8, 2, 5] },
+            { name: '大暑', type: '阴遁', gua: '离九宫', ju: [7, 1, 4] },
+            { name: '立秋', type: '阴遁', gua: '坤二宫', ju: [2, 5, 8] },
+            { name: '处暑', type: '阴遁', gua: '坤二宫', ju: [1, 4, 7] },
+            { name: '白露', type: '阴遁', gua: '坤二宫', ju: [9, 3, 6] },
+            { name: '秋分', type: '阴遁', gua: '兑七宫', ju: [7, 1, 4] },
+            { name: '寒露', type: '阴遁', gua: '兑七宫', ju: [6, 9, 3] },
+            { name: '霜降', type: '阴遁', gua: '兑七宫', ju: [5, 8, 2] },
+            { name: '立冬', type: '阴遁', gua: '乾六宫', ju: [6, 9, 3] },
+            { name: '小雪', type: '阴遁', gua: '乾六宫', ju: [5, 8, 2] },
+            { name: '大雪', type: '阴遁', gua: '乾六宫', ju: [4, 7, 1] }
+        ];
+
+        // 十干十二长生在九宫的状态映射
+        const CHANGSHENG_12 = ['长生', '沐浴', '冠带', '临官', '帝旺', '衰', '病', '死', '墓', '绝', '胎', '养'];
+        // 阳顺阴逆（火土同宫、水土长生在申或辰戌丑未墓库）
+        const GAN_CHANGSHENG_START = {
+            '甲': { startZhi: '亥', dir: 1 },
+            '乙': { startZhi: '午', dir: -1 },
+            '丙': { startZhi: '寅', dir: 1 },
+            '丁': { startZhi: '酉', dir: -1 },
+            '戊': { startZhi: '寅', dir: 1 },
+            '己': { startZhi: '酉', dir: -1 },
+            '庚': { startZhi: '巳', dir: 1 },
+            '辛': { startZhi: '子', dir: -1 },
+            '壬': { startZhi: '申', dir: 1 },
+            '癸': { startZhi: '卯', dir: -1 }
+        };
+
+        // 预设经典教学局例（覆盖阳遁、阴遁、中五寄宫、伏吟、反吟、克应密集等典型案例）
+        // 说明：以下标题与说明均按本系统实际推算结果撰写，便于"按钮文字 ↔ 盘面结果"一一对照。
+        const PRESET_CASES = [
+            {
+                id: 'case1',
+                tag: '阳遁标准顺排局',
+                title: '案例一：阳遁八局 · 丙戌日 辛卯时',
+                desc: '小寒中元（符头甲申，寅申巳亥为中元）得阳遁八局，甲申庚旬首。演示阳遁顺布六仪、逆布三奇，值符天蓬随时干辛落坤二宫、值使休门步至艮八宫的全过程。',
+                yearGZ: '乙巳', monthGZ: '己丑', dayGZ: '丙戌', hourGZ: '辛卯',
+                jieqi: '小寒', manualJu: 'auto'
+            },
+            {
+                id: 'case2',
+                tag: '阴遁标准逆排局',
+                title: '案例二：阴遁七局 · 壬辰日 丙午时',
+                desc: '处暑下元（符头己丑，辰戌丑未为下元）得阴遁七局，甲辰壬旬首。演示阴遁逆布九宫（9→8→7…）与八神逆时针旋转的对照效果。',
+                yearGZ: '甲辰', monthGZ: '壬申', dayGZ: '壬辰', hourGZ: '丙午',
+                jieqi: '处暑', manualJu: 'auto'
+            },
+            {
+                id: 'case3',
+                tag: '六甲时·星门伏吟',
+                title: '案例三：阳遁五局 · 丁巳日 甲辰时（旬首时伏吟）',
+                desc: '时干为甲（甲辰壬时），甲隐于壬下、与旬首同宫，值符天英与值使景门都留在本宫不动，形成九星伏吟 + 八门伏吟。',
+                yearGZ: '丙午', monthGZ: '癸巳', dayGZ: '丁巳', hourGZ: '甲辰',
+                jieqi: '小满', manualJu: '5'
+            },
+            {
+                id: 'case4',
+                tag: '星门全伏吟局',
+                title: '案例四：阳遁一局 · 己卯日 甲子时（六甲旬首时）',
+                desc: '同样是六甲时伏吟，但局数为一局：值符天蓬、值使休门皆在本宫。可与案例三对照，体会“伏吟只与旬首时有关，与局数无关”。',
+                yearGZ: '甲辰', monthGZ: '丙寅', dayGZ: '己卯', hourGZ: '甲子',
+                jieqi: '冬至', manualJu: '1'
+            },
+            {
+                id: 'case5',
+                tag: '十干克应密集局',
+                title: '案例五：阳遁一局 · 戊申日 戊午时（克应密集）',
+                desc: '甲寅癸旬首，值符天心与值使开门同落坎一宫。盘内同时出现青龙返首、荧入太白、白虎猖狂、朱雀投江四组十干克应，适合练习“同盘多格”的综合判断。',
+                yearGZ: '甲辰', monthGZ: '丁卯', dayGZ: '戊申', hourGZ: '戊午',
+                jieqi: '冬至', manualJu: '1'
+            },
+            {
+                id: 'case6',
+                tag: '中五宫天禽寄宫',
+                title: '案例六：阳遁一局 · 丁巳日 甲辰时（中宫值符）',
+                desc: '阳遁一局时“壬”恰好落中五宫，而甲辰时的旬首正是甲辰壬！于是天禽星为值符、随寄坤二宫；中五宫无门，借坤二宫的死门为值使——这是最容易排错的边界情况。',
+                yearGZ: '丙午', monthGZ: '癸巳', dayGZ: '丁巳', hourGZ: '甲辰',
+                jieqi: '小满', manualJu: '1'
+            },
+            {
+                id: 'case7',
+                tag: '星门全反吟局',
+                title: '案例七：阳遁一局 · 戊辰日 辛酉时（对冲反吟）',
+                desc: '甲寅癸旬首，值符天心随时干辛落巽四宫，与老家乾六宫正好对冲；八门同理全部飞到对冲之宫，形成星门全反吟（主反复、急速变动）。',
+                yearGZ: '甲辰', monthGZ: '丙寅', dayGZ: '戊辰', hourGZ: '辛酉',
+                jieqi: '冬至', manualJu: '1'
+            }
+        ];
+
+        // 常见十干克应精选字典（用于宫位深度剖析）
+        const KE_YING_DICT = {
+            '戊+丙': { name: '青龙返首 (大吉)', desc: '甲子戊加丙奇，如正月初一见瑞雪，求财、求官、谒贵、出行百事大吉；若逢入墓击刑则吉气减半。' },
+            '丙+戊': { name: '飞鸟跌穴 (大吉)', desc: '丙奇加甲子戊，如飞鸟归巢，不劳而获，谋事洞澈，投资、立券、修造皆大吉。' },
+            '丁+戊': { name: '青龙转光 (大吉)', desc: '丁奇加甲子戊，官人升迁，常人威昌，利求名求官、文书大吉。' },
+            '戊+丁': { name: '青龙耀明 (吉)', desc: '谒贵求名吉利，若值墓迫则招惹是非。' },
+            '乙+丙': { name: '奇仪顺遂 (吉)', desc: '乙奇加丙奇，吉星迁官进职，凶星夫妻反目离别。' },
+            '丙+丁': { name: '月奇朱雀 (吉)', desc: '贵人文书吉利，常人平静安乐，得三奇相助。' },
+            '丁+丙': { name: '星随月转 (吉)', desc: '贵人越级高升，常人乐中生悲，需防傲慢生祸。' },
+            '乙+辛': { name: '青龙逃走 (凶)', desc: '乙木受辛金冲克，奴仆拐带，六畜皆伤，测婚女逃男，测事人财离散。' },
+            '辛+乙': { name: '白虎猖狂 (大凶)', desc: '辛金主动克伐乙木，家败人亡，远行多殃，测合作主客相伤，测婚男方提出散伙。' },
+            '丁+癸': { name: '朱雀投江 (大凶)', desc: '丁火被癸水冲灭，文书口舌是非，音信沉溺，官司词讼不利。' },
+            '癸+丁': { name: '腾蛇夭矫 (大凶)', desc: '癸水克丁火，文书官司火焚，虚惊怪异，百事不顺。' },
+            '丙+庚': { name: '荧入太白 (凶/贼必去)', desc: '火入金乡，门户破败，盗贼耗失，但主动出击、去病斥贼反利。' },
+            '庚+丙': { name: '太白入荧 (大凶/贼必来)', desc: '白虎入荧惑，占贼必来，为客进利，为主破财。' },
+            '庚+戊': { name: '天乙伏宫 (大凶)', desc: '甲申庚克甲子戊，破财伤人，换地求财，极忌合作投资。' },
+            '戊+庚': { name: '值符飞宫 (大凶)', desc: '吉事不吉，凶事更凶，主换地方、变动、破财。' },
+            '庚+癸': { name: '大格 (大凶)', desc: '寅申相冲，行人不至，官司止息，生产母子俱伤。' },
+            '庚+壬': { name: '上格/小格 (凶)', desc: '远行迷失道路，男女音信渺茫，多变动移徙。' },
+            '庚+己': { name: '刑格 (大凶)', desc: '官司受刑，因财致祸，凡事费力不讨好。' },
+            '辛+戊': { name: '困龙被伤 (凶)', desc: '官司破财，屈抑守分尚可，妄动必招祸殃。' },
+            '戊+辛': { name: '青龙折足 (凶)', desc: '吉门生助尚可谋为，若逢凶门主招灾、失财、足疾。' },
+            '壬+癸': { name: '幼女奸淫 (凶)', desc: '天罗地网交织，家丑外扬，门吉星凶反福为祸。' },
+            '癸+壬': { name: '复见腾蛇 (凶)', desc: '嫁娶重婚，后嫁无子，不保年华，事多反复牵连。' }
+        };
+
+        /***********************************************************************
+         * 二、全局状态管理
+         ***********************************************************************/
+        let currentTab = 'simulator';
+        let currentStep = 9;           // 当前演练步骤 1 ~ 9
+        let selectedPalace = 9;        // 当前选中剖析的宫位 (1 ~ 9)
+        let currentCaseId = 'case1';   // 当前激活的案例ID
+        let autoPlayTimer = null;      // 自动播放定时器
+        let currentChart = null;       // 当前排盘完整计算结果对象
+
+        /***********************************************************************
+         * 三、核心奇门遁甲全流程排盘计算引擎
+         ***********************************************************************/
+        
+        // 1. 根据干支寻找所属六甲旬首及旬空
+        function getXunShouInfo(ganZhi) {
+            const ganIdx = TIANGAN.indexOf(ganZhi[0]);
+            const zhiIdx = DIZHI.indexOf(ganZhi[1]);
+            // 地支序号减去天干序号（若小于0则+12），即为甲所在的旬首地支序号
+            const xunZhiIdx = (zhiIdx - ganIdx + 12) % 12;
+            const xunName = '甲' + DIZHI[xunZhiIdx];
+            const meta = XUN_META[xunName];
+            return {
+                xunName,              // 如 '甲申'
+                fullTitle: meta.name, // 如 '甲申庚'
+                dunGan: meta.dunGan,  // 如 '庚'
+                xunZhi: DIZHI[xunZhiIdx], // 如 '申'
+                xunZhiIdx,
+                ganOffset: ganIdx,    // 距离旬首甲的步数 (0~9)
+                kongZhi: meta.kong,   // 空亡地支数组
+                kongPalaces: meta.kongPalaces
+            };
+        }
+
+        // 2. 拆补法：根据日干支寻找符头（甲或己日）及上中下三元
+        function getChaiBuYuan(dayGZ) {
+            const idx = JIAZI_60.indexOf(dayGZ);
+            // 每5天一个符头（序号能被5整除的是甲或己）
+            const futouIdx = idx - (idx % 5);
+            const futouGZ = JIAZI_60[futouIdx];
+            const futouZhi = futouGZ[1];
+            let yuan = '';
+            let yuanIdx = 0;
+            if (['子', '午', '卯', '酉'].includes(futouZhi)) {
+                yuan = '上元'; yuanIdx = 0;
+            } else if (['寅', '申', '巳', '亥'].includes(futouZhi)) {
+                yuan = '中元'; yuanIdx = 1;
+            } else {
+                yuan = '下元'; yuanIdx = 2;
+            }
+            return {
+                futouGZ,
+                futouZhi,
+                yuan,
+                yuanIdx,
+                daysSinceFutou: idx % 5
+            };
+        }
+
+        // 3. 计算天干在某宫位的十二长生状态
+        function getGanChangShengInPalace(gan, palaceNum) {
+            if (!gan || palaceNum === 5) return [];
+            const palZhiList = PALACE_META[palaceNum].zhi;
+            const cfg = GAN_CHANGSHENG_START[gan];
+            if (!cfg) return [];
+            const startIdx = DIZHI.indexOf(cfg.startZhi);
+            return palZhiList.map(z => {
+                const zIdx = DIZHI.indexOf(z);
+                const offset = cfg.dir === 1 ? (zIdx - startIdx + 12) % 12 : (startIdx - zIdx + 12) % 12;
+                return { zhi: z, state: CHANGSHENG_12[offset] };
+            });
+        }
+
+        // 4. 判定六仪击刑
+        function checkJiXing(tianGan, palaceNum) {
+            const rules = {
+                '戊': { palace: 3, desc: '甲子戊落震三宫(子卯相刑)' },
+                '己': { palace: 2, desc: '甲戌己落坤二宫(戌未相刑)' },
+                '庚': { palace: 8, desc: '甲申庚落艮八宫(寅申相刑)' },
+                '辛': { palace: 9, desc: '甲午辛落离九宫(午午自刑)' },
+                '壬': { palace: 4, desc: '甲辰壬落巽四宫(辰辰自刑)' },
+                '癸': { palace: 4, desc: '甲寅癸落巽四宫(寅巳相刑)' }
+            };
+            if (rules[tianGan] && rules[tianGan].palace === palaceNum) {
+                return rules[tianGan].desc;
+            }
+            return null;
+        }
+
+        // 5. 判定十干入墓
+        function checkRuMu(gan, palaceNum) {
+            const muRules = {
+                '甲': 2, '癸': 2, // 未墓在坤二
+                '乙': 6, '丙': 6, '戊': 6, // 戌墓在乾六
+                '丁': 8, '己': 8, '庚': 8, // 丑墓在艮八
+                '辛': 4, '壬': 4  // 辰墓在巽四
+            };
+            return muRules[gan] === palaceNum;
+        }
+
+        // 6. 判定门迫（门克宫）与宫迫（宫克门）
+        function checkMenPo(doorName, palaceNum) {
+            if (!doorName || palaceNum === 5) return null;
+            const doorWx = DOOR_META[doorName]?.wx;
+            const palWx = PALACE_META[palaceNum]?.wx;
+            const keMap = { '木': '土', '土': '水', '水': '火', '火': '金', '金': '木' };
+            if (keMap[doorWx] === palWx) return { type: '门迫', desc: `${doorName}(${doorWx})克${PALACE_META[palaceNum].gua}宫(${palWx})` };
+            if (keMap[palWx] === doorWx) return { type: '受制', desc: `${PALACE_META[palaceNum].gua}宫(${palWx})克${doorName}(${doorWx})` };
+            return null;
+        }
+
+        // 7. 推算驿马星所在宫位（依时支）
+        function getMaXingInfo(hourZhi) {
+            if (['申', '子', '辰'].includes(hourZhi)) return { zhi: '寅', palace: 8, group: '申子辰马在寅(艮八宫)' };
+            if (['寅', '午', '戌'].includes(hourZhi)) return { zhi: '申', palace: 2, group: '寅午戌马在申(坤二宫)' };
+            if (['巳', '酉', '丑'].includes(hourZhi)) return { zhi: '亥', palace: 6, group: '巳酉丑马在亥(乾六宫)' };
+            return { zhi: '巳', palace: 4, group: '亥卯未马在巳(巽四宫)' };
+        }
+
+        // 8. 完整奇门遁甲排盘核心主函数
+        function calculateQimenChart(params) {
+            const { yearGZ, monthGZ, dayGZ, hourGZ, jieqiName, manualJu, method, jiGongRule, anGanRule } = params;
+
+            // --- 第一步：四柱干支拆解 ---
+            const dayGan = dayGZ[0], dayZhi = dayGZ[1];
+            const hourGan = hourGZ[0], hourZhi = hourGZ[1];
+
+            // --- 第二步：定阴阳遁与局数 ---
+            const jqObj = JIEQI_DATA.find(j => j.name === jieqiName) || JIEQI_DATA[0];
+            const chaibuInfo = getChaiBuYuan(dayGZ);
+            let isYang = jqObj.type === '阳遁';
+            let juNum = jqObj.ju[chaibuInfo.yuanIdx];
+            let juSourceDesc = `按【拆补法】日柱 ${dayGZ} 往前找符头为【${chaibuInfo.futouGZ}】，符头地支【${chaibuInfo.futouZhi}】属【${chaibuInfo.yuan}】，查${jqObj.name}节气三元表（${jqObj.ju.join('、')}）得【${jqObj.type}${juNum}局】。`;
+
+            if (manualJu !== 'auto') {
+                const parsed = parseInt(manualJu, 10);
+                isYang = parsed > 0;
+                juNum = Math.abs(parsed);
+                juSourceDesc = `当前使用手动指定局数：【${isYang ? '阳遁' : '阴遁'}${juNum}局】（若按拆补法自动推算则为：${jqObj.name}${chaibuInfo.yuan}${jqObj.type}${jqObj.ju[chaibuInfo.yuanIdx]}局）。`;
+            }
+
+            // 中五宫寄宫目标宫位（默认寄坤二宫；若选阳寄艮八阴寄坤二，则阳遁寄8，阴遁寄2）
+            const jiTargetPalace = (jiGongRule === 'yanggeng8' && isYang) ? 8 : 2;
+
+            // --- 第三步：排地盘三奇六仪 ---
+            // 戊从 juNum 宫起，阳遁顺飞九宫(1->2->3...->9)，阴遁逆飞九宫(9->8->7...->1)
+            const earthStemByPalace = {}; // palaceNum -> stem
+            const palaceByEarthStem = {}; // stem -> palaceNum
+            const earthTrace = [];        // 记录每一步落宫顺序供教学展示
+
+            for (let i = 0; i < 9; i++) {
+                const stem = QIYI_QUEUE[i];
+                let p;
+                if (isYang) {
+                    p = ((juNum - 1 + i) % 9) + 1;
+                } else {
+                    p = ((juNum - 1 - i) % 9 + 9) % 9 + 1;
+                }
+                earthStemByPalace[p] = stem;
+                palaceByEarthStem[stem] = p;
+                earthTrace.push({ order: i + 1, stem, palace: p, palaceName: PALACE_META[p].name });
+            }
+            const midPalaceEarthStem = earthStemByPalace[5]; // 中五宫的地盘奇仪
+
+            // --- 第四步：寻时辰旬首，定值符与值使门 ---
+            const hourXun = getXunShouInfo(hourGZ);
+            const dayXun = getXunShouInfo(dayGZ);
+            const xunShouRawPalace = palaceByEarthStem[hourXun.dunGan]; // 旬首遁干在地盘的落宫(可能为5)
+            const zhiFuStar = PALACE_META[xunShouRawPalace].star;       // 原始九星即为值符
+            // 若旬首落中五宫，中五宫无门，值使门寄于 jiTargetPalace 对应的原始八门（坤二死门或艮八生门）
+            const zhiShiSourcePalace = xunShouRawPalace === 5 ? jiTargetPalace : xunShouRawPalace;
+            const zhiShiDoor = PALACE_META[zhiShiSourcePalace].door;
+
+            // --- 第五步：转动天盘（排九星与天盘三奇六仪） ---
+            // 口诀：值符随时干。若时干为甲（六甲旬首时辰），则甲隐于旬首六仪之下，即寻找 hourXun.dunGan
+            const effectiveHourGan = hourGan === '甲' ? hourXun.dunGan : hourGan;
+            const hourGanRawPalace = palaceByEarthStem[effectiveHourGan];
+            // 天盘旋转只能在8个外围宫位进行，若落中5宫则寄到 jiTargetPalace
+            const zhiFuTargetRingPalace = hourGanRawPalace === 5 ? jiTargetPalace : hourGanRawPalace;
+
+            // 值符星在外圈8星中的起始索引（若值符是天禽星，则随寄宫星天芮/天任一起转）
+            const baseRotatingStar = zhiFuStar === '天禽' ? PALACE_META[jiTargetPalace].star : zhiFuStar;
+            const startStarIdx = STARS_CLOCKWISE.indexOf(baseRotatingStar);
+            const targetRingIdx = CLOCKWISE_RING.indexOf(zhiFuTargetRingPalace);
+
+            const heavenStarByPalace = {};     // palace -> 主九星
+            const hasTianQinByPalace = {};     // palace -> 是否携带天禽星
+            const heavenStemByPalace = {};     // palace -> 天盘主干
+            const heavenSubStemByPalace = {};  // palace -> 携带的中五宫寄干
+
+            for (let offset = 0; offset < 8; offset++) {
+                const ringPalace = CLOCKWISE_RING[(targetRingIdx + offset) % 8];
+                const starName = STARS_CLOCKWISE[(startStarIdx + offset) % 8];
+                const starOrigPalace = STAR_META[starName].origPalace;
+
+                heavenStarByPalace[ringPalace] = starName;
+                heavenStemByPalace[ringPalace] = earthStemByPalace[starOrigPalace];
+
+                // 如果该星是寄宫宿主星（如天芮在坤2或天任在艮8），则天禽星及中五宫地盘奇仪随行至此宫
+                if (starOrigPalace === jiTargetPalace) {
+                    hasTianQinByPalace[ringPalace] = true;
+                    heavenSubStemByPalace[ringPalace] = midPalaceEarthStem;
+                } else {
+                    hasTianQinByPalace[ringPalace] = false;
+                    heavenSubStemByPalace[ringPalace] = null;
+                }
+            }
+            // 中五宫天盘留空（寄出）
+            heavenStarByPalace[5] = '天禽(寄)';
+            heavenStemByPalace[5] = '';
+
+            // --- 第六步：转动人盘（排八门 · 值使随时宫） ---
+            // 从旬首所在原始宫位 (xunShouRawPalace) 起旬首地支，阳遁顺数九宫数，阴遁逆数九宫数，数到当前时支
+            const stepsFromXun = hourXun.ganOffset; // 时柱距离旬首甲的步数 (0~9)
+            const zhiShiWalkTrace = [];             // 记录每一步地支对应的九宫轨迹
+            for (let s = 0; s <= stepsFromXun; s++) {
+                const curZhi = DIZHI[(hourXun.xunZhiIdx + s) % 12];
+                const curGan = TIANGAN[s];
+                let p;
+                if (isYang) {
+                    p = ((xunShouRawPalace - 1 + s) % 9) + 1;
+                } else {
+                    p = ((xunShouRawPalace - 1 - s) % 9 + 9) % 9 + 1;
+                }
+                zhiShiWalkTrace.push({ step: s, gz: curGan + curZhi, zhi: curZhi, palace: p });
+            }
+            const zhiShiRawTargetPalace = zhiShiWalkTrace[zhiShiWalkTrace.length - 1].palace;
+            const zhiShiFinalRingPalace = zhiShiRawTargetPalace === 5 ? jiTargetPalace : zhiShiRawTargetPalace;
+
+            const doorByPalace = {};
+            const startDoorIdx = DOORS_CLOCKWISE.indexOf(zhiShiDoor);
+            const doorRingTargetIdx = CLOCKWISE_RING.indexOf(zhiShiFinalRingPalace);
+
+            for (let offset = 0; offset < 8; offset++) {
+                const ringPalace = CLOCKWISE_RING[(doorRingTargetIdx + offset) % 8];
+                const doorName = DOORS_CLOCKWISE[(startDoorIdx + offset) % 8];
+                doorByPalace[ringPalace] = doorName;
+            }
+            doorByPalace[5] = '';
+
+            // --- 第七步：转动神盘（排八神 · 小值符随大值符） ---
+            // 从天盘值符落宫 (zhiFuTargetRingPalace) 起“值符”，阳遁顺时针，阴遁逆时针排列外围八宫
+            const shenByPalace = {};
+            for (let offset = 0; offset < 8; offset++) {
+                const ringIdx = isYang
+                    ? (targetRingIdx + offset) % 8
+                    : (targetRingIdx - offset + 8) % 8;
+                const ringPalace = CLOCKWISE_RING[ringIdx];
+                shenByPalace[ringPalace] = SHEN_ORDER[offset];
+            }
+            shenByPalace[5] = '';
+
+            // --- 第八步：排暗干（隐干）与长生十二宫状态 ---
+            // 主流排法1：时干（若甲则用旬首六仪）入值使门落宫，然后按阳顺阴逆沿九宫飞布（若时干与值使门宫地盘干相同，则入中五宫起飞）
+            // 排法2：每个八门原始宫位的地盘干随八门一起转动
+            const anGanByPalace = {};
+            if (anGanRule === 'zhishi') {
+                let startAnPalace = zhiShiRawTargetPalace;
+                if (earthStemByPalace[startAnPalace] === effectiveHourGan) {
+                    startAnPalace = 5; // 伏吟时入中五再飞
+                }
+                const startQueueIdx = QIYI_QUEUE.indexOf(effectiveHourGan);
+                for (let i = 0; i < 9; i++) {
+                    const stem = QIYI_QUEUE[(startQueueIdx + i) % 9];
+                    const p = isYang
+                        ? ((startAnPalace - 1 + i) % 9) + 1
+                        : ((startAnPalace - 1 - i) % 9 + 9) % 9 + 1;
+                    anGanByPalace[p] = stem;
+                }
+            } else {
+                for (let p of CLOCKWISE_RING) {
+                    const dName = doorByPalace[p];
+                    const origP = DOOR_META[dName].origPalace;
+                    anGanByPalace[p] = earthStemByPalace[origP];
+                }
+                anGanByPalace[5] = earthStemByPalace[5];
+            }
+
+            // --- 第九步：四害检测（空亡、马星、六仪击刑、十干入墓、门迫）与全局格局识别 ---
+            const maXing = getMaXingInfo(hourZhi);
+            const palacesDetail = {};
+
+            for (let p = 1; p <= 9; p++) {
+                const tGan = heavenStemByPalace[p];
+                const tSubGan = heavenSubStemByPalace[p];
+                const dGan = earthStemByPalace[p];
+                const dSubGan = p === jiTargetPalace ? midPalaceEarthStem : null;
+                const door = doorByPalace[p];
+                const star = heavenStarByPalace[p];
+                const shen = shenByPalace[p];
+
+                const isKong = hourXun.kongPalaces.includes(p);
+                const isDayKong = dayXun.kongPalaces.includes(p);
+                const isMa = maXing.palace === p;
+                const jiXingDesc = p !== 5 ? checkJiXing(tGan, p) : null;
+                const subJiXingDesc = (p !== 5 && tSubGan) ? checkJiXing(tSubGan, p) : null;
+                const isTianRuMu = p !== 5 ? checkRuMu(tGan, p) : false;
+                const isSubRuMu = (p !== 5 && tSubGan) ? checkRuMu(tSubGan, p) : false;
+                const isDiRuMu = p !== 5 ? checkRuMu(dGan, p) : false;
+                const menPoInfo = checkMenPo(door, p);
+
+                const tianChangSheng = getGanChangShengInPalace(tGan, p);
+                const diChangSheng = getGanChangShengInPalace(dGan, p);
+
+                palacesDetail[p] = {
+                    palaceNum: p,
+                    meta: PALACE_META[p],
+                    earthStem: dGan,
+                    earthSubStem: dSubGan,
+                    heavenStem: tGan,
+                    heavenSubStem: tSubGan,
+                    star,
+                    hasTianQin: !!hasTianQinByPalace[p],
+                    door,
+                    shen,
+                    anGan: anGanByPalace[p],
+                    isKong,
+                    isDayKong,
+                    isMa,
+                    jiXingDesc: jiXingDesc || subJiXingDesc,
+                    isTianRuMu: isTianRuMu || isSubRuMu,
+                    isDiRuMu,
+                    menPoInfo,
+                    tianChangSheng,
+                    diChangSheng
+                };
+            }
+
+            // 识别全局特殊格局
+            const globalPatterns = [];
+            // 1. 星伏吟 / 星反吟
+            if (heavenStarByPalace[1] === '天蓬') globalPatterns.push({ type: 'warn', name: '九星伏吟', desc: '九星全在本宫不动，主事情迟缓、宜静不宜动' });
+            if (heavenStarByPalace[1] === '天英') globalPatterns.push({ type: 'warn', name: '九星反吟', desc: '九星落入对冲之宫，主事情反复、突发性强' });
+            // 2. 门伏吟 / 门反吟
+            if (doorByPalace[1] === '休门') globalPatterns.push({ type: 'warn', name: '八门伏吟', desc: '八门皆居本宫，主内部纠结、时间漫长' });
+            if (doorByPalace[1] === '景门') globalPatterns.push({ type: 'warn', name: '八门反吟', desc: '八门落对冲宫位，主奔波劳碌、成败反复' });
+            // 3. 五不遇时（时干克日干，且阴阳相同）
+            const keMap = { '木': '土', '土': '水', '水': '火', '火': '金', '金': '木' };
+            if (keMap[GAN_META[hourGan].wx] === GAN_META[dayGan].wx && GAN_META[hourGan].yy === GAN_META[dayGan].yy) {
+                globalPatterns.push({ type: 'bad', name: '五不遇时', desc: `时干(${hourGan})同性克日干(${dayGan})，百事不利，损明伤日月` });
+            }
+            // 4. 天显时格（时干为甲或六甲大吉之时）
+            if (hourGan === '甲') {
+                globalPatterns.push({ type: 'good', name: '六甲旬首时', desc: `时干为甲（隐于${hourXun.dunGan}下），值符落旬首本宫` });
+            }
+            // 5. 扫描盘面吉凶奇格
+            for (let p of CLOCKWISE_RING) {
+                const pair = `${heavenStemByPalace[p]}+${earthStemByPalace[p]}`;
+                if (KE_YING_DICT[pair]) {
+                    const isGood = KE_YING_DICT[pair].name.includes('吉');
+                    globalPatterns.push({
+                        type: isGood ? 'good' : 'bad',
+                        name: `${PALACE_META[p].gua}宫·${KE_YING_DICT[pair].name.split(' ')[0]}`,
+                        desc: `${pair}落${PALACE_META[p].name}`
+                    });
+                }
+            }
+
+            return {
+                params,
+                yearGZ, monthGZ, dayGZ, hourGZ,
+                dayGan, dayZhi, hourGan, hourZhi,
+                effectiveHourGan,
+                jieqiName: jqObj.name,
+                jieqiObj: jqObj,
+                chaibuInfo,
+                isYang,
+                juNum,
+                juTitle: `${isYang ? '阳遁' : '阴遁'}${['零','一','二','三','四','五','六','七','八','九'][juNum]}局`,
+                juSourceDesc,
+                jiTargetPalace,
+                earthStemByPalace,
+                palaceByEarthStem,
+                midPalaceEarthStem,
+                earthTrace,
+                hourXun,
+                dayXun,
+                xunShouRawPalace,
+                zhiFuStar,
+                zhiShiSourcePalace,
+                zhiShiDoor,
+                hourGanRawPalace,
+                zhiFuTargetRingPalace,
+                zhiShiWalkTrace,
+                zhiShiRawTargetPalace,
+                zhiShiFinalRingPalace,
+                maXing,
+                palaces: palacesDetail,
+                globalPatterns
+            };
+        }
+
+        /***********************************************************************
+         * 四、UI 渲染函数（九宫格盘面、分步推导精解、宫位剖析器）
+         ***********************************************************************/
+
+        // 初始化下拉框与预设按钮
+        function initControls() {
+            // 预设按钮渲染
+            const presetContainer = document.getElementById('preset-buttons-container');
+            presetContainer.innerHTML = PRESET_CASES.map(c => `
+                <button onclick="loadPresetCase('${c.id}')" id="preset-btn-${c.id}" title="${c.desc}"
+                    class="preset-btn px-3 py-1.5 rounded-lg text-xs border transition flex items-center gap-1.5 ${c.id === currentCaseId ? 'bg-gold-500/20 border-gold-400 text-gold-300 font-semibold' : 'bg-xuan-900 border-slate-700 text-slate-300 hover:border-gold-500/50'}">
+                    <span class="px-1.5 py-0.2 rounded bg-xuan-950 text-[14px] text-amber-400 border border-amber-500/30">${c.tag}</span>
+                    <span>${c.title.split('·')[1].trim()}</span>
+                </button>
+            `).join('');
+
+            // 四柱干支下拉选项
+            const gzOptions = JIAZI_60.map(gz => `<option value="${gz}">${gz}</option>`).join('');
+            ['sel-year-gz', 'sel-month-gz', 'sel-day-gz', 'sel-hour-gz'].forEach(id => {
+                document.getElementById(id).innerHTML = gzOptions;
+            });
+
+            // 24节气下拉选项
+            const jqOptions = JIEQI_DATA.map(j => `<option value="${j.name}">${j.name} (${j.type}${j.ju.join('/')})</option>`).join('');
+            document.getElementById('sel-jieqi').innerHTML = jqOptions;
+
+            // 载入默认案例1
+            loadPresetCase('case1');
+        }
+
+        // 载入指定经典案例
+        function loadPresetCase(caseId) {
+            currentCaseId = caseId;
+            const c = PRESET_CASES.find(item => item.id === caseId);
+            if (!c) return;
+
+            document.getElementById('sel-year-gz').value = c.yearGZ;
+            document.getElementById('sel-month-gz').value = c.monthGZ;
+            document.getElementById('sel-day-gz').value = c.dayGZ;
+            document.getElementById('sel-hour-gz').value = c.hourGZ;
+            document.getElementById('sel-jieqi').value = c.jieqi;
+            document.getElementById('sel-manual-ju').value = c.manualJu;
+
+            // 更新按钮高亮
+            document.querySelectorAll('.preset-btn').forEach(btn => {
+                btn.className = 'preset-btn px-3 py-1.5 rounded-lg text-xs border transition flex items-center gap-1.5 bg-xuan-900 border-slate-700 text-slate-300 hover:border-gold-500/50';
+            });
+            const activeBtn = document.getElementById(`preset-btn-${caseId}`);
+            if (activeBtn) {
+                activeBtn.className = 'preset-btn px-3 py-1.5 rounded-lg text-xs border transition flex items-center gap-1.5 bg-gold-500/20 border-gold-400 text-gold-300 font-semibold shadow-sm';
+            }
+
+            recalculateAndRender();
+        }
+
+        function onCustomPillarChange() {
+            currentCaseId = '';
+            document.querySelectorAll('.preset-btn').forEach(btn => {
+                btn.className = 'preset-btn px-3 py-1.5 rounded-lg text-xs border transition flex items-center gap-1.5 bg-xuan-900 border-slate-700 text-slate-300 hover:border-gold-500/50';
+            });
+            recalculateAndRender();
+        }
+
+        // 重新计算盘面并刷新所有视图
+        function recalculateAndRender() {
+            const params = {
+                yearGZ: document.getElementById('sel-year-gz').value,
+                monthGZ: document.getElementById('sel-month-gz').value,
+                dayGZ: document.getElementById('sel-day-gz').value,
+                hourGZ: document.getElementById('sel-hour-gz').value,
+                jieqiName: document.getElementById('sel-jieqi').value,
+                manualJu: document.getElementById('sel-manual-ju').value,
+                method: document.getElementById('rule-method').value,
+                jiGongRule: document.getElementById('rule-jigong').value,
+                anGanRule: document.getElementById('rule-angan').value
+            };
+
+            currentChart = calculateQimenChart(params);
+            // 默认选中天盘值符所在宫位，方便观察
+            if (!selectedPalace || selectedPalace === 5) {
+                selectedPalace = currentChart.zhiFuTargetRingPalace;
+            }
+            renderAllSimulatorViews();
+        }
+
+        // 渲染演练器全部组件
+        function renderAllSimulatorViews() {
+            renderStepIndicators();
+            renderBoardHeader();
+            renderQimenGrid();
+            renderGlobalPatternsBar();
+            renderStepDerivation();
+            renderPalaceInspector(selectedPalace);
+            // 渲染完成后再挂载术语提示（纯展示，不影响内容）
+            applyGlossaryTips(document.getElementById('step-derivation-content'));
+            applyGlossaryTips(document.getElementById('palace-inspector'));
+            // 全动态演示：按当前步骤播放飞星/飞门/飞神动画
+            maybeAnimate();
+        }
+
+        // 渲染1~9步指示器
+        const STEP_TITLES = [
+            { step: 1, short: '1.排四柱', title: '第一步：排四柱八字（定日干、时干支）', mantra: '年以立春月以节，五虎五鼠定干支' },
+            { step: 2, short: '2.定阴阳局', title: '第二步：定阴阳遁与局数（节气三元法）', mantra: '冬至阳遁夏至阴，甲己符头定三元' },
+            { step: 3, short: '3.排地盘奇仪', title: '第三步：画九宫格与排地盘三奇六仪', mantra: '戊己庚辛壬癸丁丙乙，阳顺阴逆飞九宫' },
+            { step: 4, short: '4.寻旬首符使', title: '第四步：寻时辰旬首，定值符与值使门', mantra: '六甲隐于六仪下，旬首落宫定符使' },
+            { step: 5, short: '5.转天盘九星', title: '第五步：转动天盘（排九星与天盘奇仪）', mantra: '值符随时干，九星携奇仪顺时针同转' },
+            { step: 6, short: '6.转人盘八门', title: '第六步：转动人盘（排八门 · 值使随时宫）', mantra: '值使随时支，阳顺阴逆踏九宫数定位' },
+            { step: 7, short: '7.转神盘八神', title: '第七步：转动神盘（排八神 · 随大值符）', mantra: '小值符随大值符，阳顺阴逆环八宫' },
+            { step: 8, short: '8.排暗干长生', title: '第八步：排暗干（隐干）与十干十二长生', mantra: '时干加值使门宫，十干长生墓绝明' },
+            { step: 9, short: '9.标四害成盘', title: '第九步：标注奇门四害与特殊格局（成盘）', mantra: '空亡马星入墓击刑门迫，奇仪克应断吉凶' }
+        ];
+
+        /***********************************************************************
+         * 教学辅助层：每一步的「大白话 / 生活比喻 / 看哪里 / 易错点」
+         * 说明：本对象只用于讲解展示，不参与任何排盘计算。
+         ***********************************************************************/
+        const STEP_GUIDE = {
+            1: {
+                plain: '先把问事的"时间"翻译成奇门能用的语言：年、月、日、时各一组干支，共八个字。这一步不算盘，只是准备原料。',
+                analogy: '像做菜先备料：四柱就是这张盘的原料清单，后面的九步都从这八个字长出来。',
+                look: '看顶部信息条最左边那组四柱：<b class="text-gold-300">金色是日柱</b>（代表求测人），<b class="text-amber-300">琥珀色是时柱</b>（代表所问之事）。',
+                pitfall: '年柱不是农历正月初一换，而是<b>立春交节</b>换；月柱按十二"节"分界，不按中气。'
+            },
+            2: {
+                plain: '做三个判断：①看节气定阳遁还是阴遁；②从日柱往前找最近的"甲/己"日（符头）；③看符头地支定上/中/下元。三样凑齐，就得到"几局"。',
+                analogy: '像查火车：节气 = 坐哪条线，三元 = 哪个班次，局数 = 座位号。三样定了，车就开。',
+                look: '第二步会在九宫格上<b>点亮"戊"的起点宫</b>——几局，戊就落在第几宫，这是整个地盘的起跑线。',
+                pitfall: '符头是<b>往前（过去）找</b>最近的甲日或己日，不是往后；定元看的是<b>符头的地支</b>，不是日柱自己的地支。'
+            },
+            3: {
+                plain: '按固定顺序"戊己庚辛壬癸丁丙乙"，从局数那一宫出发，阳遁顺着 1→9 排，阴遁倒着 9→1 排。这一层排完就永远不动了。',
+                analogy: '地盘 = 舞台地板。后面所有星、门、神都在这个地板上旋转，地板本身不动。',
+                look: '每格<b>右下角（地）</b>那个字就是地盘干；中五宫也分到一个，它稍后会随天禽星一起"寄"出去。',
+                pitfall: '三奇的顺序是<b>丁→丙→乙</b>（倒着接在癸后面），不是"乙丙丁"；顺序一错，全盘皆错。'
+            },
+            4: {
+                plain: '用时柱找它属于哪一旬（六甲旬首），旬首藏在哪个六仪下面，那个六仪在地盘的宫位就是"值班宫"。该宫原来的星 = 值符，原来的门 = 值使。',
+                analogy: '像排值班表：这一班谁是班长（值符，管天时），谁负责干活（值使，管行动）。',
+                look: '高亮宫会直接打出"<b>原始值符</b>"和"<b>原始值使</b>"两个标签——它们只是"老家"，下一步才搬家。',
+                pitfall: '找的是<b>时柱</b>的旬首，不是日柱；旬首若落中五宫，值符取天禽，值使要借寄宫（坤二死门 / 艮八生门）的门。'
+            },
+            5: {
+                plain: '时干在地盘哪个宫，就把值符星搬到那个宫；其余八星按固定顺序顺时针跟着排。每颗星把自己老家的地盘干一起带过去，这个被带走的干就叫"天盘干"。',
+                analogy: '九星是九个演员，值符是主角。主角站到"时干"的位置，其他人按固定队形围一圈，每人手里还端着自己老家的那碗菜（地盘干）。',
+                look: '高亮宫就是值符的新家；格子里<b>右上（天）</b>的字变成了天盘干，和右下（地）的地盘干形成"十干克应"。',
+                pitfall: '时干为<b>甲</b>时要用旬首六仪代替（甲隐于六仪下）；另外九星<b>永远顺时针</b>，只有神盘分阴阳顺逆。'
+            },
+            6: {
+                plain: '从旬首宫出发，一个时辰走一宫，阳遁顺数、阴遁逆数，一直数到当前时支，落点就是值使门的位置，其余七门顺时针排满一圈。',
+                analogy: '像玩跳房子：从旬首那格起步，时辰往前走一格，你就跳一格，跳到"现在的时辰"为止，落哪格就站哪格。',
+                look: '第六步每格底部会显示"<b>数至:某干支</b>"，一步步数过去，最后停下的那格就是值使门落宫（并高亮）。',
+                pitfall: '数的是<b>九宫数字的顺序</b>（1→2→3…），不是地支顺序；阴遁要倒着数；数到中五宫时要寄到坤二/艮八。'
+            },
+            7: {
+                plain: '八神之首"值符"永远跟着天盘值符星走：值符星落在哪，神盘的"值符"就落在哪，然后按固定序列阳遁顺时针、阴遁逆时针排一圈。',
+                analogy: '像给八个房间贴标签，标签的起点跟着主角走；阳遁贴着顺时针贴，阴遁贴着逆时针贴。',
+                look: '看每格<b>左上（神）</b>的字：值符宫和第五步高亮的宫是同一个，其余七神依次环排。',
+                pitfall: '只有<b>神盘</b>分阳顺阴逆，天盘九星、人盘八门都是顺时针；三者方向别搞混。'
+            },
+            8: {
+                plain: '暗干是"藏起来的暗线"：把时干放进值使门所在宫，再按三奇六仪顺序阳顺阴逆飞布九宫。十二长生则是判断某个干在这个宫里"有劲没劲"。',
+                analogy: '暗干像水面下的暗流，看不见但推着事走；长生像体力条——长生是刚起床，帝旺是巅峰，墓是被关起来使不上劲。',
+                look: '每格右上角出现"<b>隐X</b>"就是暗干；天地盘干旁边的小字（长生/帝旺/墓/绝）就是旺衰状态。',
+                pitfall: '暗干的起点是<b>值使门宫</b>，不是值符宫；若该宫地盘干恰好等于时干，要先入中五宫再起飞（本系统已自动处理）。'
+            },
+            9: {
+                plain: '四层排完，最后贴上"体检标签"：空亡、驿马、六仪击刑、十干入墓、八门门迫，再看整盘有没有伏吟、反吟、五不遇时等大格局。',
+                analogy: '像体检报告：先扫一遍红灯项（四害），再综合看各项指标（门星神干）下结论。',
+                look: '每格底部出现红色"击刑"、琥珀"入墓"、紫色"门迫"；右上角出现"空""马"角标；下方汇总条列出全盘格局。',
+                pitfall: '空亡不是"没有"，是"暂时虚"，逢冲、逢实会应；门迫是<b>门克宫</b>，宫克门叫"受制"，两者别混。'
+            }
+        };
+
+        // 五行生克速判（仅用于教学讲解）
+        const WX_SHENG = { '木': '火', '火': '土', '土': '金', '金': '水', '水': '木' };
+        const WX_KE = { '木': '土', '土': '水', '水': '火', '火': '金', '金': '木' };
+        function describeWxRelation(humanWx, matterWx) {
+            if (humanWx === matterWx) return { text: `比和（同为${humanWx}）`, tip: '人与事同气，关系紧密、节奏一致。' };
+            if (WX_SHENG[matterWx] === humanWx) return { text: `事生人（${matterWx}生${humanWx}）`, tip: '事来就人，多为顺、有助力。' };
+            if (WX_SHENG[humanWx] === matterWx) return { text: `人生事（${humanWx}生${matterWx}）`, tip: '你主动付出，事可成但较耗力。' };
+            if (WX_KE[matterWx] === humanWx) return { text: `事克人（${matterWx}克${humanWx}）`, tip: '外部压力偏大，阻力明显，宜守不宜急进。' };
+            return { text: `人克事（${humanWx}克${matterWx}）`, tip: '你能掌控局面，主动权在手。' };
+        }
+
+        // 渲染某一步的教学说明块（part='head' 只出大白话，part='tail' 出比喻/看哪里/易错点）
+        function renderStepGuide(stepNum, part) {
+            const g = STEP_GUIDE[stepNum];
+            if (!g) return '';
+            const head = `
+                <div class="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 mb-2">
+                    <div class="text-[15px] font-bold text-emerald-300 mb-1">🗣️ 这一步在干什么（大白话）</div>
+                    <p class="text-xs text-slate-200 leading-relaxed">${g.plain}</p>
+                </div>
+            `;
+            const tail = `
+                <div class="mt-2 space-y-2">
+                    <div class="p-3 rounded-lg bg-sky-500/10 border border-sky-500/30">
+                        <div class="text-[15px] font-bold text-sky-300 mb-1">🎯 打个比方</div>
+                        <p class="text-xs text-slate-200 leading-relaxed">${g.analogy}</p>
+                    </div>
+                    <div class="p-3 rounded-lg bg-xuan-950 border border-gold-500/30">
+                        <div class="text-[15px] font-bold text-gold-300 mb-1">🔍 此刻请看盘面</div>
+                        <p class="text-xs text-slate-200 leading-relaxed">${g.look}</p>
+                    </div>
+                    <div class="p-3 rounded-lg bg-red-500/10 border border-red-500/30">
+                        <div class="text-[15px] font-bold text-red-300 mb-1">⚠️ 最容易错的地方</div>
+                        <p class="text-xs text-slate-200 leading-relaxed">${g.pitfall}</p>
+                    </div>
+                </div>
+            `;
+            return part === 'head' ? head : tail;
+        }
+
+        function renderStepIndicators() {
+            const container = document.getElementById('step-indicators');
+            container.innerHTML = STEP_TITLES.map(s => {
+                const isActive = s.step === currentStep;
+                const isPassed = s.step < currentStep;
+                return `
+                    <button onclick="setStep(${s.step})"
+                        class="px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
+                            isActive
+                                ? 'bg-gold-500 text-xuan-950 font-bold shadow-md shadow-gold-500/30 scale-105'
+                                : isPassed
+                                    ? 'bg-xuan-800 text-gold-300 border border-gold-500/30 hover:bg-xuan-700'
+                                    : 'bg-xuan-950 text-slate-500 border border-slate-800 hover:text-slate-300'
+                        }">
+                        ${s.short}
+                    </button>
+                `;
+            }).join('');
+
+            const pct = Math.round((currentStep / 9) * 100);
+            document.getElementById('step-progress-bar').style.width = `${pct}%`;
+        }
+
+        // 渲染盘面顶部核心纲领条
+        function renderBoardHeader() {
+            const c = currentChart;
+            const el = document.getElementById('board-header-summary');
+            el.innerHTML = `
+                <div class="bg-xuan-950/70 rounded-lg p-2 border border-slate-800/80">
+                    <div class="text-[15px] text-slate-400">四柱八字（<span class="text-gold-400">日=求测人</span> · <span class="text-amber-300">时=所测之事</span>）</div>
+                    <div class="font-gu text-sm sm:text-base font-bold mt-0.5 tracking-wide">
+                        <span class="text-slate-300">${c.yearGZ}</span>
+                        <span class="text-slate-300 ml-1">${c.monthGZ}</span>
+                        <span class="text-gold-400 ml-1 underline decoration-gold-500/50" title="日柱">${c.dayGZ}</span>
+                        <span class="text-amber-300 ml-1 underline decoration-amber-500/50" title="时柱">${c.hourGZ}</span>
+                    </div>
+                </div>
+                <div class="bg-xuan-950/70 rounded-lg p-2 border border-slate-800/80">
+                    <div class="text-[15px] text-slate-400">节气三元与用局</div>
+                    <div class="font-gu text-sm sm:text-base font-bold mt-0.5 ${c.isYang ? 'text-amber-300' : 'text-blue-300'}">
+                        ${ currentStep >= 2 ? `${c.jieqiName}${c.chaibuInfo.yuan} · ${c.juTitle}` : '<span class="text-slate-500">待第2步推算...</span>' }
+                    </div>
+                </div>
+                <div class="bg-xuan-950/70 rounded-lg p-2 border border-slate-800/80">
+                    <div class="text-[15px] text-slate-400">时辰旬首 / 空亡 / 驿马</div>
+                    <div class="font-gu text-sm sm:text-base font-bold mt-0.5 text-emerald-300">
+                        ${ currentStep >= 4 ? `${c.hourXun.fullTitle} <span class="text-xs text-slate-400 font-sans">(${c.hourXun.kongZhi.join('')}空 · 马在${c.maXing.zhi})</span>` : '<span class="text-slate-500">待第4步推算...</span>' }
+                    </div>
+                </div>
+                <div class="bg-xuan-950/70 rounded-lg p-2 border border-slate-800/80">
+                    <div class="text-[15px] text-slate-400">值符星 / 值使门</div>
+                    <div class="font-gu text-sm sm:text-base font-bold mt-0.5 text-gold-300">
+                        ${ currentStep >= 4 ? `值符【${c.zhiFuStar}】 · 值使【${c.zhiShiDoor}】` : '<span class="text-slate-500">待第4步推算...</span>' }
+                    </div>
+                </div>
+            `;
+        }
+
+        // 渲染3x3九宫格盘面（严格根据 currentStep 控制显示层级与当前步骤高亮）
+        function renderQimenGrid() {
+            const c = currentChart;
+            const grid = document.getElementById('qimen-grid');
+
+            // 判断当前步骤哪些宫位应该脉冲高亮
+            const stepHighlightPalaces = new Set();
+            if (currentStep === 2) stepHighlightPalaces.add(c.juNum); // 局数起戊之宫
+            if (currentStep === 3) stepHighlightPalaces.add(c.juNum);
+            if (currentStep === 4) {
+                stepHighlightPalaces.add(c.xunShouRawPalace);
+                if (c.xunShouRawPalace === 5) stepHighlightPalaces.add(c.jiTargetPalace);
+            }
+            if (currentStep === 5) stepHighlightPalaces.add(c.zhiFuTargetRingPalace);
+            if (currentStep === 6) stepHighlightPalaces.add(c.zhiShiFinalRingPalace);
+            if (currentStep === 7) stepHighlightPalaces.add(c.zhiFuTargetRingPalace);
+
+            // 第6步时，检查该宫是否在值使门步进轨迹中
+            const walkStepMap = {};
+            if (currentStep === 6) {
+                c.zhiShiWalkTrace.forEach(w => {
+                    walkStepMap[w.palace] = w;
+                });
+            }
+
+            // 每次重绘：清空动画图层并作废尚未执行的动画定时器
+            animToken++;
+            const fxLayerEl = document.getElementById('qimen-fx');
+            if (fxLayerEl) fxLayerEl.innerHTML = '';
+
+            grid.innerHTML = VISUAL_GRID_ORDER.map(pNum => {
+                const p = c.palaces[pNum];
+                const isSelected = selectedPalace === pNum;
+                const isHighlighted = stepHighlightPalaces.has(pNum);
+
+                // 中五宫特殊渲染
+                if (pNum === 5) {
+                    return `
+                        <div onclick="selectPalace(5)" data-palace="5"
+                            class="relative rounded-xl p-2 sm:p-3 flex flex-col justify-between cursor-pointer transition-all bg-xuan-900/90 ${isSelected ? 'gold-border-active' : 'gold-border hover:border-gold-400/60'} ${isHighlighted ? 'palace-highlight' : ''}">
+                            <div class="flex items-center justify-between text-[15px] text-slate-400 border-b border-slate-800/80 pb-1">
+                                <span class="font-gu font-bold wx-土">中五宫 (土)</span>
+                                <span class="text-[14px] px-1.5 rounded bg-amber-500/15 text-amber-300 border border-amber-500/30">寄${PALACE_META[c.jiTargetPalace].gua}${c.jiTargetPalace}宫</span>
+                            </div>
+
+                            <div class="my-auto text-center space-y-1 py-2">
+                                <div class="text-xs text-slate-400 font-gu">原始星：天禽星</div>
+                                ${currentStep >= 3 ? `
+                                    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-xuan-950 border border-gold-500/40 ${currentStep === 3 ? 'step-new-item' : ''}">
+                                        <span class="text-[15px] text-slate-400">地盘奇仪:</span>
+                                        <span data-role="estem" class="font-gu text-xl sm:text-2xl font-black wx-${GAN_META[p.earthStem].wx}">${p.earthStem}</span>
+                                    </div>
+                                ` : ''}
+                                ${currentStep === 6 && walkStepMap[5] ? `
+                                    <div class="text-[15px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 step-new-item">
+                                        步进:${walkStepMap[5].gz}
+                                    </div>
+                                ` : ''}
+                            </div>
+
+                            <div class="text-[14px] text-slate-400 text-center border-t border-slate-800/80 pt-1">
+                                ${currentStep >= 8 ? `暗干: <b data-role="angan" class="wx-${GAN_META[p.anGan].wx}">${p.anGan}</b>` : '皇极中宫 · 统摄八方'}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // 外圈八宫渲染
+                const dGanWx = GAN_META[p.earthStem]?.wx || '土';
+                const tGanWx = GAN_META[p.heavenStem]?.wx || '土';
+                const starWx = STAR_META[p.star]?.wx || '土';
+                const doorWx = DOOR_META[p.door]?.wx || '土';
+                const shenWx = SHEN_META[p.shen]?.wx || '土';
+
+                return `
+                    <div onclick="selectPalace(${pNum})" data-palace="${pNum}"
+                        class="relative rounded-xl p-2 sm:p-3 flex flex-col justify-between cursor-pointer transition-all bg-xuan-900/80 ${isSelected ? 'gold-border-active' : 'gold-border hover:border-gold-400/60'} ${isHighlighted ? 'palace-highlight' : ''}">
+                        
+                        <!-- 顶栏：左八神 + 中四害角标 + 右暗干/马星/空亡 -->
+                        <div class="flex items-center justify-between min-h-[22px] border-b border-slate-800/70 pb-1">
+                            <div class="flex items-center gap-1">
+                                <span class="axis-tag" title="神盘 · 八神">神</span>
+                                ${currentStep >= 7 ? `
+                                    <span data-role="god" class="font-gu text-sm sm:text-lg font-bold wx-${shenWx} ${currentStep === 7 ? 'step-new-item px-1 rounded bg-gold-500/20' : ''}">
+                                        ${p.shen}
+                                    </span>
+                                ` : `<span class="text-[15px] text-slate-600 font-gu">神盘待排</span>`}
+                            </div>
+
+                            <!-- 右上：暗干 + 空亡 + 马星 -->
+                            <div class="flex items-center gap-1 text-[14px]">
+                                ${currentStep >= 8 ? `
+                                    <span data-role="angan" class="px-1 rounded bg-xuan-950 border border-slate-700 text-slate-300 ${currentStep === 8 ? 'step-new-item' : ''}" title="暗干(隐干)">
+                                        隐<b class="wx-${GAN_META[p.anGan].wx}">${p.anGan}</b>
+                                    </span>
+                                ` : ''}
+                                ${currentStep >= 9 && p.isKong ? `<span class="px-1 rounded bg-slate-700/80 text-slate-200 border border-slate-500 font-bold" title="时旬空亡">空</span>` : ''}
+                                ${currentStep >= 9 && p.isMa ? `<span class="px-1 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 font-bold" title="驿马星">马</span>` : ''}
+                            </div>
+                        </div>
+
+                        <!-- 中上栏：左九星 + 右天盘三奇六仪 -->
+                        <div class="flex items-center justify-between my-1">
+                            <div class="flex items-center gap-1">
+                                <span class="axis-tag" title="天盘 · 九星">星</span>
+                                ${currentStep >= 5 ? `
+                                    <div class="flex items-center gap-1 ${currentStep === 5 ? 'step-new-item' : ''}">
+                                        <span data-role="star" class="font-gu text-sm sm:text-lg font-bold wx-${starWx}">${p.star}</span>
+                                        ${p.hasTianQin ? `<span class="text-[14px] px-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40" title="天禽星随行">禽</span>` : ''}
+                                        ${(p.star === c.zhiFuStar || (c.zhiFuStar === '天禽' && p.hasTianQin)) ? `<span class="text-[14px] px-1 rounded bg-gold-500 text-xuan-950 font-bold">符</span>` : ''}
+                                    </div>
+                                ` : currentStep === 4 && (pNum === c.xunShouRawPalace || (c.xunShouRawPalace === 5 && pNum === c.jiTargetPalace)) ? `
+                                    <span data-role="zfu" class="text-xs px-1.5 py-0.5 rounded bg-gold-500 text-xuan-950 font-bold step-new-item">原始值符:${c.zhiFuStar}</span>
+                                ` : `<span class="text-[15px] text-slate-600">原始:${p.meta.star}</span>`}
+                            </div>
+
+                            <!-- 天盘奇仪 + 长生 + 击刑入墓 -->
+                            <div class="flex items-center gap-1">
+                                <span class="axis-tag" title="天盘奇仪（浮在地盘之上）">天</span>
+                                ${currentStep >= 5 ? `
+                                    <div class="flex items-baseline gap-0.5 ${currentStep === 5 ? 'step-new-item px-1.5 rounded bg-gold-500/20' : ''}">
+                                        ${p.heavenSubStem ? `<span class="font-gu text-xs sm:text-sm font-bold wx-${GAN_META[p.heavenSubStem].wx}" title="中五宫随行天盘奇仪">${p.heavenSubStem}</span>` : ''}
+                                        <span data-role="hstem" class="font-gu text-lg sm:text-2xl font-black wx-${tGanWx}" title="天盘奇仪">${p.heavenStem}</span>
+                                        ${currentStep >= 8 && p.tianChangSheng.length ? `<span class="text-[13px] text-slate-400 hidden sm:inline">${p.tianChangSheng[0].state}</span>` : ''}
+                                    </div>
+                                ` : `<span class="text-xs text-slate-700 font-gu">天盘</span>`}
+                            </div>
+                        </div>
+
+                        <!-- 中下栏：左人盘八门 + 右地盘三奇六仪 -->
+                        <div class="flex items-center justify-between my-1">
+                            <div class="flex items-center gap-1">
+                                <span class="axis-tag" title="人盘 · 八门">门</span>
+                                ${currentStep >= 6 ? `
+                                    <div class="flex items-center gap-1 ${currentStep === 6 ? 'step-new-item' : ''}">
+                                        <span data-role="door" class="font-gu text-sm sm:text-lg font-bold wx-${doorWx}">${p.door}</span>
+                                        ${p.door === c.zhiShiDoor ? `<span class="text-[14px] px-1 rounded bg-emerald-400 text-xuan-950 font-bold">使</span>` : ''}
+                                    </div>
+                                ` : currentStep === 4 && pNum === c.zhiShiSourcePalace ? `
+                                    <span data-role="zshi" class="text-xs px-1.5 py-0.5 rounded bg-emerald-400 text-xuan-950 font-bold step-new-item">原始值使:${c.zhiShiDoor}</span>
+                                ` : `<span class="text-[15px] text-slate-600">原始:${p.meta.door}</span>`}
+                            </div>
+
+                            <!-- 地盘奇仪 -->
+                            <div class="flex items-center gap-1">
+                                <span class="axis-tag" title="地盘奇仪（固定不动，是地基）">地</span>
+                                ${currentStep >= 3 ? `
+                                    <div class="flex items-baseline gap-0.5 ${currentStep === 3 ? 'step-new-item px-1.5 rounded bg-gold-500/20' : ''}">
+                                        ${p.earthSubStem ? `<span class="font-gu text-xs sm:text-sm font-bold wx-${GAN_META[p.earthSubStem].wx}" title="中五宫寄地盘奇仪">${p.earthSubStem}</span>` : ''}
+                                        <span data-role="estem" class="font-gu text-lg sm:text-2xl font-black wx-${dGanWx}" title="地盘奇仪">${p.earthStem}</span>
+                                        ${currentStep >= 8 && p.diChangSheng.length ? `<span class="text-[13px] text-slate-400 hidden sm:inline">${p.diChangSheng[0].state}</span>` : ''}
+                                    </div>
+                                ` : `<span class="text-xs text-slate-700 font-gu">地盘</span>`}
+                            </div>
+                        </div>
+
+                        <!-- 底栏：宫卦名 + 第6步步进轨迹 / 第9步四害标签 -->
+                        <div class="flex items-center justify-between pt-1 border-t border-slate-800/70 text-[14px]">
+                            <span class="font-gu text-slate-400 wx-${p.meta.wx}">
+                                ${p.meta.gua}${pNum} <span class="hidden sm:inline text-slate-500">(${p.meta.zhi.join('')})</span>
+                            </span>
+
+                            <div class="flex items-center gap-1">
+                                ${currentStep === 6 && walkStepMap[pNum] ? `
+                                    <span class="px-1.5 py-0.2 rounded bg-emerald-500 text-xuan-950 font-bold step-new-item">
+                                        数至:${walkStepMap[pNum].gz}
+                                    </span>
+                                ` : ''}
+                                ${currentStep >= 9 && p.jiXingDesc ? `<span data-role="harm" class="px-1 rounded bg-red-500/25 text-red-300 border border-red-500/40 font-semibold" title="${p.jiXingDesc}">击刑</span>` : ''}
+                                ${currentStep >= 9 && p.isTianRuMu ? `<span data-role="harm" class="px-1 rounded bg-amber-500/25 text-amber-300 border border-amber-500/40 font-semibold" title="天盘干入墓">入墓</span>` : ''}
+                                ${currentStep >= 9 && p.menPoInfo?.type === '门迫' ? `<span data-role="harm" class="px-1 rounded bg-purple-500/25 text-purple-300 border border-purple-500/40 font-semibold" title="${p.menPoInfo.desc}">门迫</span>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // 渲染全局特殊格局提示条
+        function renderGlobalPatternsBar() {
+            const c = currentChart;
+            const bar = document.getElementById('global-patterns-bar');
+            if (currentStep < 9) {
+                const guide = STEP_GUIDE[currentStep];
+                bar.innerHTML = `
+                    <span class="px-2 py-0.5 rounded bg-gold-500/15 text-gold-300 border border-gold-500/30 font-semibold">第 ${currentStep} 步进行中</span>
+                    <span class="text-slate-300">${guide ? guide.look : ''}</span>
+                    <span class="text-slate-500 text-[15px]">（推进到第 9 步会自动汇总全盘奇格与四害警示）</span>
+                `;
+                return;
+            }
+            if (!c.globalPatterns.length) {
+                bar.innerHTML = `<span class="text-slate-400">本局盘面平稳，无伏吟/反吟/五不遇时等极端全局格局。</span>`;
+                return;
+            }
+            bar.innerHTML = `<span class="text-slate-400 font-medium">本局关键格局识别：</span>` + c.globalPatterns.map(pat => {
+                const colorCls = pat.type === 'good'
+                    ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/40'
+                    : pat.type === 'bad'
+                        ? 'bg-red-500/15 text-red-300 border-red-500/40'
+                        : 'bg-amber-500/15 text-amber-300 border-amber-500/40';
+                return `<span class="px-2 py-0.5 rounded border ${colorCls}" title="${pat.desc}"><b>${pat.name}</b> (${pat.desc})</span>`;
+            }).join('');
+        }
+
+        // 渲染右侧分步推导教学过程（随 currentStep 1~9 动态计算讲解）
+        function renderStepDerivation() {
+            const c = currentChart;
+            const meta = STEP_TITLES[currentStep - 1];
+            document.getElementById('step-badge').textContent = `第 ${currentStep} 步 / 共 9 步`;
+            document.getElementById('step-title').textContent = meta.title;
+            document.getElementById('step-mantra').textContent = meta.mantra;
+
+            const container = document.getElementById('step-derivation-content');
+            let html = '';
+
+            if (currentStep === 1) {
+                html = `
+                    <div class="p-3.5 rounded-lg bg-xuan-950 border border-gold-500/30 space-y-2">
+                        <div class="text-xs text-gold-400 font-bold">【本局四柱干支定位】</div>
+                        <div class="grid grid-cols-4 gap-2 text-center py-2">
+                            <div class="p-2 rounded bg-xuan-900 border border-slate-800">
+                                <div class="text-[15px] text-slate-400">年柱</div>
+                                <div class="font-gu text-lg font-bold text-slate-200">${c.yearGZ}</div>
+                            </div>
+                            <div class="p-2 rounded bg-xuan-900 border border-slate-800">
+                                <div class="text-[15px] text-slate-400">月柱</div>
+                                <div class="font-gu text-lg font-bold text-slate-200">${c.monthGZ}</div>
+                            </div>
+                            <div class="p-2 rounded bg-xuan-900 border border-gold-500/50">
+                                <div class="text-[15px] text-gold-400">日柱 (定符头)</div>
+                                <div class="font-gu text-lg font-bold text-gold-300">${c.dayGZ}</div>
+                            </div>
+                            <div class="p-2 rounded bg-xuan-900 border border-amber-500/50">
+                                <div class="text-[15px] text-amber-400">时柱 (起盘核心)</div>
+                                <div class="font-gu text-lg font-bold text-amber-300">${c.hourGZ}</div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-300">
+                            • <b>日柱【${c.dayGZ}】</b>：用于第二步寻找“甲/己”符头，以确定本局属于节气的上元、中元还是下元；同时日干【<b>${c.dayGan}</b>】代表求测人（日干落宫）。<br>
+                            • <b>时柱【${c.hourGZ}】</b>：时家奇门的核心！时干【<b>${c.hourGan}</b>】决定天盘值符落宫（值符随时干），时支【<b>${c.hourZhi}</b>】决定人盘值使门落宫（值使随时宫）。
+                        </p>
+                    </div>
+                    <div class="text-xs text-slate-400 space-y-1">
+                        <div class="font-semibold text-slate-200">📌 排四柱底层铁律：</div>
+                        <p>1. <b>年柱以立春交节时刻为界</b>，非农历正月初一；月柱以十二节令（立春、惊蛰、清明等）交节时刻为界。</p>
+                        <p>2. <b>五鼠遁元定日时</b>：甲己还加甲，乙庚丙作初，丙辛从戊起，丁壬庚子居，戊癸何方发，壬子是真途。</p>
+                    </div>
+                `;
+            } else if (currentStep === 2) {
+                html = `
+                    <div class="p-3.5 rounded-lg bg-xuan-950 border border-gold-500/30 space-y-2.5">
+                        <div class="text-xs text-gold-400 font-bold">【本局拆补定局推导过程】</div>
+                        <ol class="list-decimal list-inside space-y-1.5 text-xs text-slate-200">
+                            <li><b>定阴阳遁</b>：当前节气为【<b class="text-emerald-300">${c.jieqiName}</b>】，处于${c.isYang ? '冬至后、夏至前，一阳来复，故用【<b class="text-amber-300">阳遁</b>】' : '夏至后、冬至前，一阴始生，故用【<b class="text-blue-300">阴遁</b>】'}。</li>
+                            <li><b>查节气三元局数</b>：【${c.jieqiName}】居${c.jieqiObj.gua}，三元局数固定为：上元 <b>${c.jieqiObj.ju[0]}</b> 局、中元 <b>${c.jieqiObj.ju[1]}</b> 局、下元 <b>${c.jieqiObj.ju[2]}</b> 局。</li>
+                            <li><b>找日柱符头定三元</b>：从日柱【<b>${c.dayGZ}</b>】沿六十甲子往前倒推遇到的第一个“甲”或“己”日，即为符头【<b class="text-gold-300">${c.chaibuInfo.futouGZ}</b>】（距今 ${c.chaibuInfo.daysSinceFutou} 天）。</li>
+                            <li><b>看符头地支</b>：口诀“<b>子午卯酉为上元，寅申巳亥为中元，辰戌丑未为下元</b>”。符头地支为【<b>${c.chaibuInfo.futouZhi}</b>】，故定为【<b class="text-emerald-300">${c.chaibuInfo.yuan}</b>】。</li>
+                        </ol>
+                        <div class="p-2.5 rounded bg-gold-500/15 border border-gold-500/40 text-xs text-gold-300 font-semibold">
+                            ✔ 最终结论：${c.juSourceDesc}
+                        </div>
+                    </div>
+                    <div class="text-xs text-slate-400">
+                        <b>💡 拆补法 vs 置闰法区别：</b>拆补法严格以二十四节气交节时刻换节气，節内遇到甲/己符头即换元，无须跨节置闰；置闰法则在芒种或大雪节气当符头超神超过9天时整顿置闰。
+                    </div>
+                `;
+            } else if (currentStep === 3) {
+                html = `
+                    <div class="p-3.5 rounded-lg bg-xuan-950 border border-gold-500/30 space-y-2.5">
+                        <div class="text-xs text-gold-400 font-bold">【地盘三奇六仪排布推导】</div>
+                        <p class="text-xs text-slate-300">
+                            1. <b>固定队列</b>：无论阳遁阴遁，永远按照【<b class="text-amber-300">戊 → 己 → 庚 → 辛 → 壬 → 癸 → 丁 → 丙 → 乙</b>】（六仪在前、三奇丁丙乙在后）的严格顺序排入九宫。<br>
+                            2. <b>几局戊落几宫</b>：本局为【<b>${c.juTitle}</b>】，因此领头的【<b>戊</b>】直接落入【<b class="text-gold-300">${PALACE_META[c.juNum].name}</b>】。<br>
+                            3. <b>${c.isYang ? '阳遁顺飞九宫数字 (1→2→3→4→5→6→7→8→9)' : '阴遁逆飞九宫数字 (9→8→7→6→5→4→3→2→1)'}</b>：
+                        </p>
+                        <div class="grid grid-cols-3 gap-1.5 text-xs pt-1">
+                            ${c.earthTrace.map(item => `
+                                <div class="px-2 py-1 rounded bg-xuan-900 border border-slate-800 flex items-center justify-between">
+                                    <span class="text-slate-400">${item.order}. <b class="wx-${GAN_META[item.stem].wx}">${item.stem}</b></span>
+                                    <span class="text-gold-300 font-gu">→ ${item.palaceName}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="text-xs text-amber-300/90 pt-1">
+                            ★ <b>中五宫寄宫处理</b>：中五宫地盘落【<b>${c.midPalaceEarthStem}</b>】，因中五宫无八门且不独立参转，故随天禽星寄于【<b>${PALACE_META[c.jiTargetPalace].name}</b>】（见坤二/艮八宫右下角双地盘干）。
+                        </div>
+                    </div>
+                `;
+            } else if (currentStep === 4) {
+                html = `
+                    <div class="p-3.5 rounded-lg bg-xuan-950 border border-gold-500/30 space-y-2.5">
+                        <div class="text-xs text-gold-400 font-bold">【寻时辰旬首 · 定值符与值使门】</div>
+                        <ol class="list-decimal list-inside space-y-1.5 text-xs text-slate-200">
+                            <li><b>推算时辰旬首</b>：当前时柱为【<b class="text-amber-300">${c.hourGZ}</b>】。天干【${c.hourGan}】序号为 ${TIANGAN.indexOf(c.hourGan)+1}，地支【${c.hourZhi}】序号为 ${DIZHI.indexOf(c.hourZhi)+1}。地支倒退 ${c.hourXun.ganOffset} 步即为旬首【<b class="text-emerald-300">${c.hourXun.fullTitle}</b>】，本旬空亡为【<b>${c.hourXun.kongZhi.join('、')}</b>】。</li>
+                            <li><b>找旬首在地盘的落宫</b>：查第三步排好的地盘，旬首遁干【<b class="text-gold-300">${c.hourXun.dunGan}</b>】落在【<b class="text-gold-300">${PALACE_META[c.xunShouRawPalace].name}</b>】。</li>
+                            <li><b>定【值符】（九星领袖）</b>：旬首落入【${PALACE_META[c.xunShouRawPalace].name}】，该宫原始本位九星为【<b class="text-amber-300">${c.zhiFuStar}</b>】，故本局<b>值符为【${c.zhiFuStar}】</b>。</li>
+                            <li><b>定【值使门】（八门领袖）</b>：${c.xunShouRawPalace === 5 ? `因旬首落入中五宫，中五宫无门，寄于【${PALACE_META[c.jiTargetPalace].name}】，取其原始八门【<b class="text-emerald-300">${c.zhiShiDoor}</b>】为值使门！` : `该宫原始本位八门为【<b class="text-emerald-300">${c.zhiShiDoor}</b>】，故本局<b>值使为【${c.zhiShiDoor}】</b>。`}</li>
+                        </ol>
+                    </div>
+                `;
+            } else if (currentStep === 5) {
+                html = `
+                    <div class="p-3.5 rounded-lg bg-xuan-950 border border-gold-500/30 space-y-2.5">
+                        <div class="text-xs text-gold-400 font-bold">【转动天盘：值符随时干 · 九星携奇仪顺转】</div>
+                        <ol class="list-decimal list-inside space-y-1.5 text-xs text-slate-200">
+                            <li><b>口诀“值符随时干”</b>：当前时干为【<b class="text-amber-300">${c.hourGan}</b>】${c.hourGan === '甲' ? `（时干为甲，隐于旬首六仪【<b>${c.effectiveHourGan}</b>】之下，故找地盘【${c.effectiveHourGan}】）` : ''}。</li>
+                            <li><b>找时干地盘落宫</b>：查地盘，【<b>${c.effectiveHourGan}</b>】落在【<b>${PALACE_META[c.hourGanRawPalace].name}</b>】${c.hourGanRawPalace === 5 ? `（落中五宫，寄往【${PALACE_META[c.zhiFuTargetRingPalace].name}】）` : ''}。</li>
+                            <li><b>移转值符星并携带奇仪</b>：将值符【<b class="text-gold-300">${c.zhiFuStar}</b>】连同其老家地盘干【<b>${c.hourXun.dunGan}</b>】一起移到【<b class="text-gold-300">${PALACE_META[c.zhiFuTargetRingPalace].name}</b>】。</li>
+                            <li><b>其余九星顺时针依次排布</b>：无论阳遁阴遁，九星永远按外圈顺时针固定序列（<b>蓬→任→冲→辅→英→芮(禽)→柱→心</b>）依次填入八宫，每一颗星都把<b>自己老家宫位的地盘干</b>带到新宫位，成为<b>天盘三奇六仪</b>！</li>
+                        </ol>
+                    </div>
+                `;
+            } else if (currentStep === 6) {
+                html = `
+                    <div class="p-3.5 rounded-lg bg-xuan-950 border border-gold-500/30 space-y-2.5">
+                        <div class="text-xs text-gold-400 font-bold">【转动人盘：值使随时宫（踏九宫数步进法）】</div>
+                        <p class="text-xs text-slate-300">
+                            口诀：“<b>值使随时宫</b>”。注意！八门找落宫<b>不是</b>直接看地盘干，而是从<b>旬首所在宫位</b>起旬首地支，沿着<b>洛书九宫数字（${c.isYang ? '阳遁顺数 1→2→3...' : '阴遁逆数 9→8→7...'}）</b>一步步数到当前时支【<b>${c.hourZhi}</b>】：
+                        </p>
+                        <div class="flex flex-wrap gap-1.5 py-1">
+                            ${c.zhiShiWalkTrace.map((w, idx) => `
+                                <div class="px-2 py-1 rounded text-xs border ${idx === c.zhiShiWalkTrace.length - 1 ? 'bg-emerald-500/20 border-emerald-400 text-emerald-300 font-bold' : 'bg-xuan-900 border-slate-800 text-slate-300'}">
+                                    ${w.gz} → <b>${w.palace}宫</b>
+                                </div>
+                            `).join('<span class="text-slate-600 self-center">→</span>')}
+                        </div>
+                        <p class="text-xs text-slate-200">
+                            • 数到时柱【<b>${c.hourGZ}</b>】时，正好落在【<b>${PALACE_META[c.zhiShiRawTargetPalace].name}</b>】${c.zhiShiRawTargetPalace === 5 ? `（落中五宫，寄往【<b>${PALACE_META[c.zhiShiFinalRingPalace].name}</b>】）` : ''}！<br>
+                            • 因此将值使门【<b class="text-emerald-300">${c.zhiShiDoor}</b>】放入【<b class="text-emerald-300">${PALACE_META[c.zhiShiFinalRingPalace].name}</b>】，随后其余七门按顺时针固定顺序（<b>休→生→伤→杜→景→死→惊→开</b>）环绕排满外圈八宫。
+                        </p>
+                    </div>
+                `;
+            } else if (currentStep === 7) {
+                html = `
+                    <div class="p-3.5 rounded-lg bg-xuan-950 border border-gold-500/30 space-y-2.5">
+                        <div class="text-xs text-gold-400 font-bold">【转动神盘：小值符随大值符 · 阳顺阴逆】</div>
+                        <ol class="list-decimal list-inside space-y-1.5 text-xs text-slate-200">
+                            <li><b>定位起点</b>：口诀“小值符（八神之首）追随大值符（天盘值符九星）”。第五步中天盘值符落在【<b class="text-gold-300">${PALACE_META[c.zhiFuTargetRingPalace].name}</b>】，因此八神之首【<b>值符</b>】也起于【<b>${PALACE_META[c.zhiFuTargetRingPalace].name}</b>】。</li>
+                            <li><b>确定旋转方向</b>：转盘八神遵循“<b>阳遁顺时针、阴遁逆时针</b>”原则。本局为【<b>${c.isYang ? '阳遁' : '阴遁'}</b>】，故从${PALACE_META[c.zhiFuTargetRingPalace].gua}宫起按<b>${c.isYang ? '顺时针' : '逆时针'}</b>方向排布。</li>
+                            <li><b>八神固定序列</b>：依次填入【<b>值符 → 腾蛇 → 太阴 → 六合 → 白虎 → 玄武 → 九地 → 九天</b>】。</li>
+                        </ol>
+                    </div>
+                `;
+            } else if (currentStep === 8) {
+                html = `
+                    <div class="p-3.5 rounded-lg bg-xuan-950 border border-gold-500/30 space-y-2.5">
+                        <div class="text-xs text-gold-400 font-bold">【排暗干（隐干）与天地盘十二长生状态】</div>
+                        <p class="text-xs text-slate-200">
+                            1. <b>暗干（隐干）排法</b>：代表隐藏在表象之下的伏线与玄机。主流法则为“<b>时干加于值使门落宫</b>”，即把时干【<b>${c.effectiveHourGan}</b>】放入值使门所在的【<b>${PALACE_META[c.zhiShiRawTargetPalace].name}</b>】（若与该宫地盘干相同则入中五宫），然后按<b>${c.isYang ? '阳顺' : '阴逆'}</b>飞布九宫。<br>
+                            2. <b>十干十二长生</b>：根据每个宫位所藏地支（坎子、艮丑寅、震卯、巽辰巳、离午、坤未申、兑酉、乾戌亥），自动推算天地盘奇仪在各宫的能量旺衰（长生、帝旺、临官禄位、死、墓、绝）。
+                        </p>
+                    </div>
+                `;
+            } else {
+                // 读盘用神定位：日干宫 = 求测人，时干宫 = 所测之事（甲以旬首六仪代看，中五宫寄出）
+                const dayLookGan = c.dayGan === '甲' ? c.dayXun.dunGan : c.dayGan;
+                const dayPalaceRaw = c.palaceByEarthStem[dayLookGan];
+                const dayPalaceNum = dayPalaceRaw === 5 ? c.jiTargetPalace : dayPalaceRaw;
+                const hourPalaceNum = c.hourGanRawPalace === 5 ? c.jiTargetPalace : c.hourGanRawPalace;
+                const dp = c.palaces[dayPalaceNum];
+                const hp = c.palaces[hourPalaceNum];
+                const wxRel = describeWxRelation(dp.meta.wx, hp.meta.wx);
+
+                html = `
+                    <div class="p-3.5 rounded-lg bg-xuan-950 border border-gold-500/30 space-y-2.5">
+                        <div class="text-xs text-gold-400 font-bold">【第九步：奇门四害检测与全盘大成】</div>
+                        <p class="text-xs text-slate-300">识盘断局前必须先看“奇门四害”（空亡、马星、击刑、入墓、门迫），本局自动扫描结果如下：</p>
+                        <ul class="space-y-1.5 text-xs text-slate-200">
+                            <li>• <span class="px-1.5 py-0.5 rounded bg-slate-700 text-slate-200">旬空(空亡)</span>：时柱【${c.hourGZ}】属${c.hourXun.fullTitle}旬，<b>${c.hourXun.kongZhi.join('、')}空</b>，对应【<b class="text-gold-300">${c.hourXun.kongPalaces.map(p=>PALACE_META[p].name).join('、')}</b>】逢空亡。</li>
+                            <li>• <span class="px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300">驿马星</span>：时支为【${c.hourZhi}】，${c.maXing.group}，故马星在【<b class="text-cyan-300">${PALACE_META[c.maXing.palace].name}</b>】。</li>
+                            <li>• <span class="px-1.5 py-0.5 rounded bg-red-500/20 text-red-300">六仪击刑</span>：${
+                                Object.values(c.palaces).filter(p => p.jiXingDesc).map(p => `${p.meta.name}(${p.jiXingDesc})`).join('；') || '本局无六仪击刑'
+                            }。</li>
+                            <li>• <span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300">天盘入墓</span>：${
+                                Object.values(c.palaces).filter(p => p.isTianRuMu).map(p => `${p.meta.name}(天盘${p.heavenStem}${p.heavenSubStem ? '/'+p.heavenSubStem : ''}入墓)`).join('；') || '本局无天盘奇仪入墓'
+                            }。</li>
+                            <li>• <span class="px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300">八门门迫</span>：${
+                                Object.values(c.palaces).filter(p => p.menPoInfo?.type === '门迫').map(p => `${p.meta.name}(${p.menPoInfo.desc})`).join('；') || '本局无八门门迫'
+                            }。</li>
+                        </ul>
+                    </div>
+
+                    <!-- 读盘入门：把"谁"和"什么事"落到具体宫位 -->
+                    <div class="p-3.5 rounded-lg bg-xuan-950 border border-emerald-500/30 space-y-2">
+                        <div class="text-xs font-bold text-emerald-300">【读盘第一步：先认清"谁"和"什么事"落在哪一宫】</div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                            <div class="p-2 rounded bg-xuan-900 border border-gold-500/40">
+                                <div class="text-[15px] text-gold-400 mb-0.5">求测人 = 日干【${c.dayGan}】${c.dayGan === '甲' ? `（甲隐于${c.dayXun.dunGan}，按${c.dayXun.dunGan}看）` : ''}</div>
+                                <div class="font-gu font-bold text-slate-100">${dp.meta.name} · ${dp.meta.dir} · ${dp.meta.wx}</div>
+                                <div class="text-[15px] text-slate-400 mt-0.5">${dp.shen} / ${dp.star} / ${dp.door} / 天${dp.heavenStem} 地${dp.earthStem}</div>
+                            </div>
+                            <div class="p-2 rounded bg-xuan-900 border border-amber-500/40">
+                                <div class="text-[15px] text-amber-400 mb-0.5">所测之事 = 时干【${c.hourGan}】${c.hourGan === '甲' ? `（甲隐于${c.hourXun.dunGan}，按${c.hourXun.dunGan}看）` : ''}</div>
+                                <div class="font-gu font-bold text-slate-100">${hp.meta.name} · ${hp.meta.dir} · ${hp.meta.wx}</div>
+                                <div class="text-[15px] text-slate-400 mt-0.5">${hp.shen} / ${hp.star} / ${hp.door} / 天${hp.heavenStem} 地${hp.earthStem}</div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            <b class="text-emerald-300">两宫关系：</b>${wxRel.text} —— ${wxRel.tip}<br>
+                            <span class="text-slate-400 text-[15px]">（入门速览：先看这两个宫的五行生克定大体顺逆，再结合门星神旺衰与四害细断。日干宫逢空、逢击刑，人多虚或受阻；时干宫逢马星，事多动。）</span>
+                        </p>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = renderStepGuide(currentStep, 'head') + html + renderStepGuide(currentStep, 'tail');
+            if (animEnabled) container.style.animation = 'fxDropIn ' + animMs(300) + 'ms ease both';
+        }
+
+        // 点击九宫格某宫，更新右侧【宫位深度剖析器】
+        function selectPalace(pNum) {
+            selectedPalace = pNum;
+            renderQimenGrid();
+            renderPalaceInspector(pNum);
+            if (animEnabled) {
+                const el = document.getElementById('palace-inspector');
+                if (el) el.style.animation = 'fxDropIn ' + animMs(280) + 'ms ease both';
+            }
+        }
+
+        function renderPalaceInspector(pNum) {
+            const c = currentChart;
+            const p = c.palaces[pNum];
+            const el = document.getElementById('palace-inspector');
+
+            if (pNum === 5) {
+                el.innerHTML = `
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-3">
+                        <div>
+                            <span class="text-xs px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">中央皇极</span>
+                            <h3 class="font-gu text-lg font-bold text-gold-300 mt-1">中五宫（天禽星 · 寄${PALACE_META[c.jiTargetPalace].name}）</h3>
+                        </div>
+                        <div class="text-right text-xs text-slate-400">五行属土 · 无独立八门八神</div>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        转盘奇门遁甲中，中五宫象太极枢纽，只排地盘奇仪【<b class="text-gold-300">${p.earthStem}</b>】与暗干【<b>${p.anGan}</b>】。其原始九星【<b>天禽星</b>】与地盘奇仪【<b>${p.earthStem}</b>】一律随寄宫宿主（${PALACE_META[c.jiTargetPalace].name}的${PALACE_META[c.jiTargetPalace].star}）一同旋转参与生克断局。请点击周围八宫查看完整克应剖析。
+                    </p>
+                `;
+                return;
+            }
+
+            const pairKey = `${p.heavenStem}+${p.earthStem}`;
+            const keYing = KE_YING_DICT[pairKey] || {
+                name: `${p.heavenStem}加${p.earthStem}（十干克应）`,
+                desc: `天盘【${p.heavenStem}(${GAN_META[p.heavenStem].wx})】加临地盘【${p.earthStem}(${GAN_META[p.earthStem].wx})】，结合宫内${p.door}、${p.star}、${p.shen}之生克旺衰综合论断。`
+            };
+
+            el.innerHTML = `
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3 mb-3">
+                    <div class="flex items-center gap-2">
+                        <span class="w-8 h-8 rounded-lg bg-gold-500/20 border border-gold-400 flex items-center justify-center font-gu font-bold text-gold-300">
+                            ${p.meta.gua}${pNum}
+                        </span>
+                        <div>
+                            <h3 class="font-gu text-base sm:text-lg font-bold text-gold-300 flex items-center gap-2">
+                                ${p.meta.name}深度剖析
+                                <span class="text-xs font-sans font-normal px-2 py-0.5 rounded bg-wx-${p.meta.wx} wx-${p.meta.wx} border">方位:${p.meta.dir} · 五行:${p.meta.wx}</span>
+                            </h3>
+                            <p class="text-[15px] text-slate-400">藏支：${p.meta.zhi.join('、')} | 原始本宫：${p.meta.star} · ${p.meta.door}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 读格指引 -->
+                <p class="text-[15px] text-slate-400 mb-2 leading-relaxed border-l-2 border-gold-500/40 pl-2">
+                    读格顺序：<b class="wx-土">神</b>（氛围/助力）→ <b class="wx-金">星</b>（天时/大环境）→ <b class="wx-木">门</b>（人事/做法）→ <b class="text-gold-300">天盘干 + 地盘干</b>（十干克应）→ 底部<b>四害</b>标签。下面按这个顺序逐项拆开。
+                </p>
+
+                <!-- 宫位四盘要素卡片 -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs mb-3">
+                    <div class="p-2 rounded bg-xuan-950 border border-slate-800">
+                        <span class="text-[14px] text-slate-400 block">神盘八神</span>
+                        <span class="font-gu font-bold text-sm wx-${SHEN_META[p.shen].wx}">${p.shen}</span>
+                        <span class="text-[14px] text-slate-500 block truncate" title="${SHEN_META[p.shen].desc}">${SHEN_META[p.shen].desc}</span>
+                    </div>
+                    <div class="p-2 rounded bg-xuan-950 border border-slate-800">
+                        <span class="text-[14px] text-slate-400 block">天盘九星</span>
+                        <span class="font-gu font-bold text-sm wx-${STAR_META[p.star].wx}">${p.star}${p.hasTianQin ? '+禽' : ''}</span>
+                        <span class="text-[14px] text-slate-500 block">${STAR_META[p.star].auspicious} · ${STAR_META[p.star].wx}</span>
+                    </div>
+                    <div class="p-2 rounded bg-xuan-950 border border-slate-800">
+                        <span class="text-[14px] text-slate-400 block">人盘八门</span>
+                        <span class="font-gu font-bold text-sm wx-${DOOR_META[p.door].wx}">${p.door}</span>
+                        <span class="text-[14px] text-slate-500 block">${DOOR_META[p.door].auspicious} · ${DOOR_META[p.door].wx}</span>
+                    </div>
+                    <div class="p-2 rounded bg-xuan-950 border border-slate-800">
+                        <span class="text-[14px] text-slate-400 block">天地奇仪 / 暗干</span>
+                        <span class="font-gu font-bold text-sm text-gold-300">${p.heavenStem}${p.heavenSubStem ? '('+p.heavenSubStem+')' : ''} + ${p.earthStem}</span>
+                        <span class="text-[14px] text-slate-400 block">暗干: <b>${p.anGan}</b></span>
+                    </div>
+                </div>
+
+                <!-- 十干克应解析 -->
+                <div class="p-3 rounded-lg bg-xuan-950/90 border border-gold-500/30 text-xs space-y-1.5 mb-3">
+                    <div class="flex items-center justify-between">
+                        <span class="font-bold text-amber-300">【十干克应】${pairKey}：${keYing.name}</span>
+                        <span class="text-[15px] text-slate-400">
+                            天盘长生：${p.tianChangSheng.map(x=>`${x.zhi}(${x.state})`).join(' ')}
+                        </span>
+                    </div>
+                    <p class="text-slate-300 leading-relaxed">${keYing.desc}</p>
+                </div>
+
+                <!-- 四害与生克状态汇总 -->
+                <div class="flex flex-wrap gap-1.5 text-xs">
+                    ${p.jiXingDesc ? `<span class="px-2 py-1 rounded bg-red-500/20 text-red-300 border border-red-500/40">⚠️ 六仪击刑：${p.jiXingDesc}</span>` : ''}
+                    ${p.isTianRuMu ? `<span class="px-2 py-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">⚠️ 奇仪入墓：天盘干入${p.meta.gua}宫墓库</span>` : ''}
+                    ${p.menPoInfo ? `<span class="px-2 py-1 rounded bg-purple-500/20 text-purple-300 border border-purple-500/40">⚠️ ${p.menPoInfo.type}：${p.menPoInfo.desc}</span>` : `<span class="px-2 py-1 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">✔ 门宫相生/比和</span>`}
+                    ${p.isKong ? `<span class="px-2 py-1 rounded bg-slate-700 text-slate-200 border border-slate-500">⭕ 时旬空亡（玄机暗藏，空逢冲则实）</span>` : ''}
+                    ${p.isMa ? `<span class="px-2 py-1 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">🐎 驿马星动（${c.maXing.group}）</span>` : ''}
+                </div>
+            `;
+        }
+
+        /***********************************************************************
+         * 四·动、全动态演示引擎（飞星 / 飞门 / 飞神 / 步进轨迹 / 脉冲光环）
+         * 说明：只操作 DOM 动画，不改动任何排盘计算结果。
+         ***********************************************************************/
+        let animEnabled = true;   // 动画开关
+        let animSpeed = 1;        // 1 = 标准；>1 更慢；<1 更快
+        let animToken = 0;        // 每次渲染递增，用于丢弃过期的定时器
+        let lastAnimKey = '';     // 避免重复播放同一动画
+
+        function animMs(v) { return Math.max(60, Math.round(v * animSpeed)); }
+
+        function qCell(palaceNum) {
+            return document.querySelector('#qimen-grid [data-palace="' + palaceNum + '"]');
+        }
+        function qRole(palaceNum, role) {
+            const cell = qCell(palaceNum);
+            return cell ? cell.querySelector('[data-role="' + role + '"]') : null;
+        }
+
+        // 计算某宫中心相对动画图层的坐标
+        function cellBox(palaceNum) {
+            const layer = document.getElementById('qimen-fx');
+            const cell = qCell(palaceNum);
+            if (!layer || !cell) return null;
+            const lr = layer.getBoundingClientRect();
+            const cr = cell.getBoundingClientRect();
+            return {
+                x: cr.left - lr.left + cr.width / 2,
+                y: cr.top - lr.top + cr.height / 2,
+                left: cr.left - lr.left,
+                top: cr.top - lr.top,
+                w: cr.width,
+                h: cr.height
+            };
+        }
+
+        // 让某个元素从 fromPalace 飞到它现在所在的 toPalace
+        function flyIn(el, fromPalace, toPalace, dur) {
+            if (!el) return;
+            // 抬高层级，避免飞行途中被相邻宫格的底色遮住
+            el.style.position = 'relative';
+            el.style.zIndex = '20';
+            el.style.willChange = 'transform, opacity';
+            const from = qCell(fromPalace);
+            const to = qCell(toPalace);
+            if (!from || !to || fromPalace === toPalace) {
+                el.style.animation = 'fxPop ' + animMs(dur) + 'ms cubic-bezier(.2,.9,.3,1.2) both';
+                return;
+            }
+            const fr = from.getBoundingClientRect();
+            const tr = to.getBoundingClientRect();
+            const dx = (fr.left + fr.width / 2) - (tr.left + tr.width / 2);
+            const dy = (fr.top + fr.height / 2) - (tr.top + tr.height / 2);
+            el.style.setProperty('--fx-dx', dx.toFixed(1) + 'px');
+            el.style.setProperty('--fx-dy', dy.toFixed(1) + 'px');
+            el.style.setProperty('--fx-s', '0.75');
+            el.style.animation = 'fxFly ' + animMs(dur) + 'ms cubic-bezier(.22,.68,.3,1) both';
+        }
+
+        // 宫位脉冲光环
+        function ripple(palaceNum, delay) {
+            const layer = document.getElementById('qimen-fx');
+            const box = cellBox(palaceNum);
+            if (!layer || !box) return;
+            const d = document.createElement('div');
+            d.className = 'fx-ripple';
+            d.style.left = box.left + 'px';
+            d.style.top = box.top + 'px';
+            d.style.width = box.w + 'px';
+            d.style.height = box.h + 'px';
+            d.style.animationDelay = (delay || 0) + 'ms';
+            layer.appendChild(d);
+            setTimeout(() => d.remove(), 1500 + (delay || 0));
+        }
+
+        // 步进光点：沿宫位序列依次跳动
+        function walkDot(palaceList, stepMs, delay) {
+            const layer = document.getElementById('qimen-fx');
+            if (!layer || !palaceList.length) return;
+            const first = cellBox(palaceList[0]);
+            if (!first) return;
+            const dot = document.createElement('div');
+            dot.className = 'fx-dot';
+            dot.style.transform = 'translate(' + first.x + 'px, ' + first.y + 'px)';
+            layer.appendChild(dot);
+
+            palaceList.forEach((p, i) => {
+                if (i === 0) return;
+                const box = cellBox(p);
+                if (!box) return;
+                setTimeout(() => {
+                    dot.style.transform = 'translate(' + box.x + 'px, ' + box.y + 'px)';
+                }, (delay || 0) + i * stepMs);
+            });
+            const total = (delay || 0) + palaceList.length * stepMs + 300;
+            setTimeout(() => { dot.style.opacity = '0'; }, total);
+            setTimeout(() => dot.remove(), total + 400);
+        }
+
+        // 飞行气泡（携带文字，如"数至:丙寅"）
+        function flyGhost(fromPalace, toPalace, text, delay, dur) {
+            const layer = document.getElementById('qimen-fx');
+            const a = cellBox(fromPalace);
+            const b = cellBox(toPalace);
+            if (!layer || !a || !b) return;
+            const g = document.createElement('div');
+            g.className = 'fx-ghost font-gu';
+            g.textContent = text;
+            g.style.transform = 'translate(' + a.x + 'px, ' + a.y + 'px) translate(-50%, -50%) scale(.8)';
+            g.style.opacity = '0';
+            layer.appendChild(g);
+            setTimeout(() => {
+                g.style.transition = 'transform ' + animMs(dur) + 'ms cubic-bezier(.3,.7,.3,1), opacity 200ms';
+                g.style.opacity = '1';
+                g.style.transform = 'translate(' + b.x + 'px, ' + b.y + 'px) translate(-50%, -50%) scale(1)';
+            }, delay || 0);
+            setTimeout(() => {
+                g.style.opacity = '0';
+                setTimeout(() => g.remove(), 260);
+            }, (delay || 0) + animMs(dur));
+        }
+
+        // 按当前步骤播放对应动画
+        function runStepAnimation(step) {
+            if (!animEnabled) return;
+            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            const c = currentChart;
+            if (!c) return;
+
+            const token = ++animToken;
+            const at = (ms, fn) => setTimeout(() => { if (token === animToken) fn(); }, ms);
+
+            if (step === 1) {
+                // 四柱信息条逐格落下
+                document.querySelectorAll('#board-header-summary > div').forEach((el, i) => {
+                    el.style.animation = 'fxDropIn ' + animMs(380) + 'ms ease ' + animMs(i * 90) + 'ms both';
+                });
+            } else if (step === 2) {
+                // 定位"戊"的起点宫：闪两次光环
+                ripple(c.juNum, 0);
+                at(animMs(420), () => ripple(c.juNum, 0));
+                at(animMs(120), () => flyGhost(c.juNum, c.juNum, '起戊 · ' + c.juTitle, 0, 900));
+            } else if (step === 3) {
+                // 地盘：光点沿阳顺/阴逆路径逐宫落下，天干依次弹出
+                walkDot(c.earthTrace.map(t => t.palace), animMs(140), 0);
+                c.earthTrace.forEach((t, i) => {
+                    at(animMs(i * 140), () => {
+                        const el = qRole(t.palace, 'estem');
+                        if (el) el.style.animation = 'fxPop ' + animMs(340) + 'ms cubic-bezier(.2,.9,.3,1.2) both';
+                        ripple(t.palace, 0);
+                    });
+                });
+            } else if (step === 4) {
+                // 旬首宫脉冲，然后弹出"原始值符/原始值使"
+                ripple(c.xunShouRawPalace, 0);
+                if (c.xunShouRawPalace === 5) at(animMs(300), () => ripple(c.jiTargetPalace, 0));
+                at(animMs(430), () => {
+                    const zf = qRole(c.xunShouRawPalace, 'zfu');
+                    const zs = qRole(c.zhiShiSourcePalace, 'zshi');
+                    if (zf) zf.style.animation = 'fxPop ' + animMs(420) + 'ms cubic-bezier(.2,.9,.3,1.2) both';
+                    if (zs) zs.style.animation = 'fxPop ' + animMs(420) + 'ms cubic-bezier(.2,.9,.3,1.2) both';
+                });
+            } else if (step === 5) {
+                // 天盘：九星从老家宫飞到新宫，随后天盘干跟随落下
+                CLOCKWISE_RING.forEach((p, i) => {
+                    const star = c.palaces[p].star;
+                    const origin = (STAR_META[star] && STAR_META[star].origPalace) || 5;
+                    at(animMs(i * 75), () => {
+                        flyIn(qRole(p, 'star'), origin, p, 640);
+                        ripple(p, animMs(430));
+                    });
+                    at(animMs(i * 75 + 430), () => flyIn(qRole(p, 'hstem'), origin, p, 380));
+                });
+            } else if (step === 6) {
+                // 人盘：光点沿"数宫"轨迹走一遍，然后八门从老家宫飞出
+                const trace = c.zhiShiWalkTrace.map(w => w.palace);
+                walkDot(trace, animMs(130), 0);
+                // 每个落点冒一个小气泡，标出"数至:某干支"
+                c.zhiShiWalkTrace.forEach((w, i) => {
+                    if (i === 0) return;
+                    at(animMs(i * 130), () => flyGhost(trace[i - 1], w.palace, w.gz, 0, 240));
+                });
+                const base = animMs(trace.length * 130 + 260);
+                CLOCKWISE_RING.forEach((p, i) => {
+                    const door = c.palaces[p].door;
+                    const origin = (DOOR_META[door] && DOOR_META[door].origPalace) || p;
+                    at(base + animMs(i * 60), () => flyIn(qRole(p, 'door'), origin, p, 560));
+                });
+            } else if (step === 7) {
+                // 神盘：从"值符宫"起，按阳顺阴逆依次飞出
+                const start = c.zhiFuTargetRingPalace;
+                const startIdx = CLOCKWISE_RING.indexOf(start);
+                const order = [];
+                for (let k = 0; k < 8; k++) {
+                    const idx = c.isYang
+                        ? (startIdx + k) % 8
+                        : ((startIdx - k) % 8 + 8) % 8;
+                    order.push(CLOCKWISE_RING[idx]);
+                }
+                order.forEach((p, i) => {
+                    at(animMs(i * 95), () => {
+                        flyIn(qRole(p, 'god'), start, p, 520);
+                        ripple(p, animMs(320));
+                    });
+                });
+            } else if (step === 8) {
+                // 暗干：依次浮现
+                CLOCKWISE_RING.forEach((p, i) => {
+                    at(animMs(i * 60), () => {
+                        const el = qRole(p, 'angan');
+                        if (el) el.style.animation = 'fxPop ' + animMs(360) + 'ms cubic-bezier(.2,.9,.3,1.2) both';
+                    });
+                });
+            } else if (step === 9) {
+                // 四害标签逐个弹出，最后汇总条落下
+                document.querySelectorAll('#qimen-grid [data-role="harm"]').forEach((el, i) => {
+                    el.style.animation = 'fxPop ' + animMs(380) + 'ms cubic-bezier(.2,.9,.3,1.2) ' + animMs(i * 65) + 'ms both';
+                });
+                at(animMs(760), () => {
+                    const bar = document.getElementById('global-patterns-bar');
+                    if (bar) bar.style.animation = 'fxDropIn ' + animMs(420) + 'ms ease both';
+                });
+            }
+        }
+
+        // 只在"换了步骤"或"换了盘"时播放，避免切换开关时重复动画
+        function maybeAnimate() {
+            if (!animEnabled || !currentChart) return;
+            const key = currentChart.dayGZ + currentChart.hourGZ + currentChart.juTitle + '#' + currentStep;
+            if (key === lastAnimKey) return;
+            lastAnimKey = key;
+            runStepAnimation(currentStep);
+        }
+
+        function toggleAnim() {
+            animEnabled = !animEnabled;
+            document.body.classList.toggle('anim-on', animEnabled);
+            const btn = document.getElementById('btn-anim');
+            if (btn) {
+                const onCls = 'px-3 py-1.5 rounded-lg bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-500/40 text-xs font-medium transition';
+                const offCls = 'px-3 py-1.5 rounded-lg bg-xuan-900 hover:bg-xuan-800 text-slate-500 border border-slate-700 text-xs font-medium transition';
+                btn.className = animEnabled ? onCls : offCls;
+                btn.textContent = animEnabled ? '🎬 动画：开' : '🎬 动画：关';
+            }
+            if (animEnabled) lastAnimKey = '';
+            renderQimenGrid();
+            if (animEnabled) maybeAnimate();
+        }
+
+        function onAnimSpeedChange() {
+            const sel = document.getElementById('anim-speed');
+            animSpeed = parseFloat(sel.value) || 1;
+            lastAnimKey = '';
+            maybeAnimate();
+        }
+
+        /***********************************************************************
+         * 四·补、术语悬浮词典与显示开关（纯前端讲解层，不影响排盘）
+         ***********************************************************************/
+        const GLOSSARY = {
+            '值符': '八神之首，也是九星领袖的称呼：天盘"值符星"（大值符）与神盘"值符"（小值符）。代表最高贵人、核心领导，也指这件事的"领头羊"。',
+            '值使': '八门领袖，管"这件事怎么落地、走哪条路"，是行动与执行层面的关键。',
+            '旬首': '六十甲子每10个干支为一旬，每旬开头的"甲X"就是旬首（甲子/甲戌/甲申/甲午/甲辰/甲寅）。甲藏进六仪，所以写成"甲申庚"这种形式。',
+            '空亡': '某一旬里"轮空"的两个地支，代表该宫能量虚而不实。不是"没有"，而是"暂时不落地"，逢冲、填实才会应。',
+            '驿马': '代表变动、出行、搬迁、提速。按三合局取：申子辰马在寅、寅午戌马在申、巳酉丑马在亥、亥卯未马在巳，永远落在四个角宫。',
+            '击刑': '天盘六仪落进与自己相刑的宫，能量内耗、别扭难受，是四害里最伤的一类标记。',
+            '入墓': '天干落进自己的墓库宫，像被关进仓库——有力使不出，事情被压住、拖着。',
+            '门迫': '八门的五行克制所落宫位的五行，叫"门迫"：吉门被迫吉不就，凶门被迫祸更重。反过来"宫克门"叫受制。',
+            '伏吟': '星、门都待在本宫不动，整盘"原地打转"，主事情迟滞、宜静不宜动。',
+            '反吟': '星、门全飞到对冲的宫位，主事情反复、来得快去得也快。',
+            '三奇': '乙、丙、丁三个天干，合称三奇（日奇、月奇、星奇），是盘中最吉的三股力量。',
+            '六仪': '戊、己、庚、辛、壬、癸六个天干，是"六甲"的藏身之处，合称六仪。',
+            '地盘': '九宫格里的固定天干层，永远不动，是整张盘的地基。',
+            '天盘': '九星与被星带上来的天干层，随时干旋转，代表天时与大环境。',
+            '人盘': '八门这一层，随时支旋转，代表人的行为方式与做事路径。',
+            '神盘': '八神这一层，跟着值符旋转，代表氛围、助力与隐性因素。',
+            '拆补法': '现代最常用的定局法：交节即换节气，节气内遇甲/己符头即换元，缺则"拆"、少则"补"，不跨节置闰。',
+            '置闰法': '传统历法派：要求上元首日必须是甲子、己卯、甲午、己酉四仲符头；超神超过9天时，在芒种或大雪重复一个节气（置闰）。',
+            '符头': '日柱往前（过去）数遇到的第一个"甲"日或"己"日。看它的地支定三元：子午卯酉上元、寅申巳亥中元、辰戌丑未下元。',
+            '上元': '每个节气15天分三元，每元5天；上元、中元、下元各对应一个局数。',
+            '暗干': '又称隐干，藏在门下的"暗线"，代表不摆在明面上的因素。本系统主流排法：时干加值使门宫后飞布九宫。',
+            '长生': '十二长生（长生→沐浴→…→墓→绝）衡量天干在某宫的能量强弱：长生是起步，帝旺是巅峰，墓是被困。',
+            '克应': '天盘干加临地盘干形成的固定组合（如"戊+丙 青龙返首"），是判断吉凶最直接的一组"成语"。',
+            '寄宫': '中五宫没有八门八神、也不独立旋转，它的天禽星与地盘干要"寄"到坤二宫（或艮八宫）一起转。',
+            '五不遇时': '时干以同性克制日干，古人视为大忌："百事不利，损明伤日月"。',
+            '天禽': '中五宫的本位星，随寄宫宿主星（天芮或天任）同行，是九星中最尊贵的一颗。'
+        };
+
+        let showAxisLabels = true;   // 盘面"神/星/门/天/地"位置标注
+        let showTermTips = true;     // 术语悬停解释
+
+        // 给指定容器内的术语加"虚线下划线 + 悬停解释"（每个术语在同一容器只标第一次）
+        function applyGlossaryTips(root) {
+            if (!root || !showTermTips) return;
+            const terms = Object.keys(GLOSSARY).sort((a, b) => b.length - a.length);
+            const usedTerms = new Set();
+            const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+                acceptNode(node) {
+                    if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+                    const parent = node.parentElement;
+                    if (!parent) return NodeFilter.FILTER_REJECT;
+                    if (parent.closest('script,style,button,abbr,.term-tip,.axis-tag,.no-tip')) return NodeFilter.FILTER_REJECT;
+                    return NodeFilter.FILTER_ACCEPT;
+                }
+            });
+            const textNodes = [];
+            while (walker.nextNode()) textNodes.push(walker.currentNode);
+
+            textNodes.forEach(node => {
+                const text = node.nodeValue;
+                let best = null;
+                for (const t of terms) {
+                    if (usedTerms.has(t)) continue;
+                    const i = text.indexOf(t);
+                    if (i < 0) continue;
+                    if (!best || i < best.i || (i === best.i && t.length > best.t.length)) best = { t, i };
+                }
+                if (!best) return;
+
+                const frag = document.createDocumentFragment();
+                if (best.i > 0) frag.appendChild(document.createTextNode(text.slice(0, best.i)));
+                const abbr = document.createElement('abbr');
+                abbr.className = 'term-tip';
+                abbr.title = GLOSSARY[best.t];
+                abbr.textContent = best.t;
+                frag.appendChild(abbr);
+                if (best.i + best.t.length < text.length) frag.appendChild(document.createTextNode(text.slice(best.i + best.t.length)));
+                node.parentNode.replaceChild(frag, node);
+                usedTerms.add(best.t);
+            });
+        }
+
+        function refreshToggleButtons() {
+            const onCls = 'px-2 py-0.5 rounded border text-[15px] transition bg-gold-500/20 border-gold-500/50 text-gold-300';
+            const offCls = 'px-2 py-0.5 rounded border text-[15px] transition bg-xuan-900 border-slate-700 text-slate-500';
+            const a = document.getElementById('btn-axis-toggle');
+            const t = document.getElementById('btn-term-toggle');
+            if (a) {
+                a.className = showAxisLabels ? onCls : offCls;
+                a.innerHTML = `🔖 盘面标注：${showAxisLabels ? '开' : '关'}`;
+            }
+            if (t) {
+                t.className = showTermTips ? onCls : offCls;
+                t.innerHTML = `💬 术语提示：${showTermTips ? '开' : '关'}`;
+            }
+        }
+
+        function toggleAxisLabels() {
+            showAxisLabels = !showAxisLabels;
+            document.body.classList.toggle('hide-axis', !showAxisLabels);
+            refreshToggleButtons();
+        }
+
+        function toggleTermTips() {
+            showTermTips = !showTermTips;
+            refreshToggleButtons();
+            renderAllSimulatorViews();
+            renderTutorialSection();
+            renderDictionaryTables();
+        }
+
+        /***********************************************************************
+         * 五、步进控制与自动演示
+         ***********************************************************************/
+        function setStep(stepNum) {
+            currentStep = Math.max(1, Math.min(9, stepNum));
+            renderAllSimulatorViews();
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                renderAllSimulatorViews();
+            }
+        }
+
+        function nextStep() {
+            if (currentStep < 9) {
+                currentStep++;
+                renderAllSimulatorViews();
+            }
+        }
+
+        function toggleAutoPlay() {
+            const btnIcon = document.getElementById('autoplay-icon');
+            const btnText = document.getElementById('autoplay-text');
+            if (autoPlayTimer) {
+                clearInterval(autoPlayTimer);
+                autoPlayTimer = null;
+                btnIcon.textContent = '▶';
+                btnText.textContent = '自动演示';
+            } else {
+                if (currentStep === 9) currentStep = 1;
+                renderAllSimulatorViews();
+                btnIcon.textContent = '⏸';
+                btnText.textContent = '暂停演示';
+                // 播放节奏跟随动画速度，保证一步动画播完再进入下一步
+                const interval = Math.max(1400, Math.round(3000 * animSpeed));
+                autoPlayTimer = setInterval(() => {
+                    if (currentStep < 9) {
+                        currentStep++;
+                        renderAllSimulatorViews();
+                    } else {
+                        toggleAutoPlay();
+                    }
+                }, interval);
+            }
+        }
+
+        /***********************************************************************
+         * 六、模块2：九步全流程精讲 & 模块3：速查字典 & 模块4：题库自测渲染
+         ***********************************************************************/
+        // 精讲模块的「一句话理解 / 常见误区」（教学层数据，不参与排盘）
+        const TUTORIAL_EXTRA = {
+            1: { plain: '四柱只是把"时间"换成八个字：日柱看"人"，时柱看"事"。', pitfall: '误以为年柱按春节换、月柱按农历月换——实际按立春交节与十二节令。' },
+            2: { plain: '节气定阴阳遁，符头定上中下元，两者一乘就得到"几局"。', pitfall: '符头要往前（过去）找；拆补法与置闰法在同一时刻可能差一个局，属正常。' },
+            3: { plain: '九个字固定顺序，从"几局"那一宫出发，阳顺阴逆排一圈，排完不再动。', pitfall: '三奇顺序是"丁→丙→乙"；阴遁是"宫位数字倒着走"，不是方位上倒着转。' },
+            4: { plain: '旬首决定"值班宫"：该宫的老星是值符，老门是值使。', pitfall: '用日柱去找旬首（错，要用时柱）；旬首落中五宫时忘了寄宫取门。' },
+            5: { plain: '时干落宫 = 值符星的新家，其余星顺时针跟排，并把各自老家的地盘干带上来。', pitfall: '以为阴遁九星要逆排（错，九星永远顺时针）；只排星忘了带天盘干。' },
+            6: { plain: '从旬首宫起步，一个时辰走一格，数到时支那一格就是值使门的位置。', pitfall: '拿地支顺序去数（错，要数九宫数字）；阴遁忘倒数；落中五宫不寄宫。' },
+            7: { plain: '八神之首跟着天盘值符星走，再按序列阳顺阴逆排满外圈。', pitfall: '把神盘的顺逆规则套到星、门上（错）；八神序列背错一个就整圈错位。' },
+            8: { plain: '暗干是把时干放进值使门宫后再飞布，代表水面下的暗线。', pitfall: '起点记成值符宫；忽略"该宫地盘干与时干相同须先入中五"的特例。' },
+            9: { plain: '四害是盘面的"体检红灯"，先全部标出，再结合门星神干综合下结论。', pitfall: '把空亡理解成"完全没有"；把"宫克门（受制）"也叫成门迫。' }
+        };
+
+        function renderTutorialSection() {
+            const tutorials = [
+                {
+                    num: 1,
+                    title: '第一步：排四柱八字（转换干支历）',
+                    mantra: '年以立春月以节，日查万年时五鼠',
+                    content: `
+                        <p>奇门遁甲不用公历也不用农历初一十五，而是严格采用<b>太阳干支历（二十四节气历）</b>。将起局时间转化为【年柱、月柱、日柱、时柱】八个字：</p>
+                        <ul class="list-disc list-inside space-y-1 mt-2 text-slate-300">
+                            <li><b>年柱交界</b>：严格以每年<b>【立春】交节那一分钟</b>作为新一年的分水岭，立春前属上一年生肖干支。</li>
+                            <li><b>月柱交界</b>：严格以十二节令（立春寅月、惊蛰卯月、清明辰月、立夏巳月、芒种午月、小暑未月、立秋申月、白露酉月、寒露戌月、立冬亥月、大雪子月、小寒丑月）为分界，并用<b>五虎遁</b>定月干。</li>
+                            <li><b>日柱与时柱（排盘最关键）</b>：日柱用于定“三元符头”，时柱用于定“旬首、值符、值使门”。时干由日干通过<b>五鼠遁</b>推出（甲己还加甲，乙庚丙作初...）。</li>
+                        </ul>
+                    `
+                },
+                {
+                    num: 2,
+                    title: '第二步：定阴阳遁与局数（节气三元法 · 拆补与置闰）',
+                    mantra: '冬至一阳生用阳遁，夏至一阴生用阴遁；甲己符头定上中下三元',
+                    content: `
+                        <p>奇门遁甲一年共分二十四节气，每个节气15天，分为<b>上元（5天）、中元（5天）、下元（5天）</b>，全年共72局（重复归纳为阳遁一至九局、阴遁一至九局）：</p>
+                        <ul class="list-disc list-inside space-y-1 mt-2 text-slate-300">
+                            <li><b>拆补法（现代实战最准、最通用）</b>：交节时刻一到立刻切换节气；在节气内部，以日柱干支往前数遇到的第一个<b>“甲”日或“己”日作为【符头】</b>。看符头地支：<b>子午卯酉为上元，寅申巳亥为中元，辰戌丑未为下元</b>。</li>
+                            <li><b>置闰法（传统皇家历法）</b>：要求每个节气的上元第一天必须是甲子、己卯、甲午、己酉四仲符头。符头先于节气到叫<b>【超神】</b>，符头与节气同天到叫<b>【正授】</b>，符头落后于节气叫<b>【接气】</b>。当超神超过9天时，在<b>芒种</b>（夏至前）或<b>大雪</b>（冬至前）重复一个节气的三元（即置闰）。</li>
+                        </ul>
+                    `
+                },
+                {
+                    num: 3,
+                    title: '第三步：画九宫格与排地盘三奇六仪',
+                    mantra: '戴九履一，左三右七，二四为肩，六八为足；戊己庚辛壬癸丁丙乙，阳顺阴逆',
+                    content: `
+                        <p>地盘是奇门盘中永恒不动的基准坐标层：</p>
+                        <ul class="list-disc list-inside space-y-1 mt-2 text-slate-300">
+                            <li><b>洛书九宫数字</b>：坎一(北)、坤二(西南)、震三(东)、巽四(东南)、中五(中央)、乾六(西北)、兑七(西)、艮八(东北)、离九(南)。</li>
+                            <li><b>三奇六仪严格队列</b>：永远记住这九个字的顺序——<b>【戊、己、庚、辛、壬、癸、丁、丙、乙】</b>（前六个为六仪，后三个乙丙丁为三奇，注意顺序是丁、丙、乙倒着接在癸后面！）。</li>
+                            <li><b>几局戊落几宫</b>：例如阳遁二局，【戊】就落坤二宫；阴遁四局，【戊】就落巽四宫。</li>
+                            <li><b>阳顺阴逆</b>：<b>阳遁</b>顺着洛书宫位数排（如2宫戊→3宫己→4宫庚→5宫辛...）；<b>阴遁</b>逆着洛书宫位数排（如4宫戊→3宫己→2宫庚→1宫辛→9宫壬...）。这就叫“阳遁顺布六仪逆布三奇，阴遁逆布六仪顺布三奇”。</li>
+                        </ul>
+                    `
+                },
+                {
+                    num: 4,
+                    title: '第四步：寻时辰旬首，定值符与值使门',
+                    mantra: '六甲隐于六仪下，旬首落宫原始星为值符、原始门为值使',
+                    content: `
+                        <p>奇门遁甲为什么叫“遁甲”？因为十天干中的统帅【甲】隐藏在六仪之下（<b>甲子戊、甲戌己、甲申庚、甲午辛、甲辰壬、甲寅癸</b>）。</p>
+                        <ul class="list-disc list-inside space-y-1 mt-2 text-slate-300">
+                            <li><b>快速找旬首法</b>：用时支序号减去时干序号（不够减则加12），得出的余数对应地支就是甲所在的旬首。例如【辛卯时】：卯(4) - 辛(8) + 12 = 8(申)，即为<b>【甲申庚】</b>旬。</li>
+                            <li><b>定值符与值使门</b>：找到旬首遁干（如庚）在地盘上落在哪一宫，该宫的<b>原始本位九星就是【值符】</b>，该宫的<b>原始本位八门就是【值使门】</b>。</li>
+                            <li><b>中五宫边界条件</b>：如果旬首遁干恰好落在中五宫，则<b>天禽星为值符</b>；因中五宫没有八门，寄坤二宫（或阳寄艮八阴寄坤二），故取坤二宫的<b>【死门】作为值使门</b>！</li>
+                        </ul>
+                    `
+                },
+                {
+                    num: 5,
+                    title: '第五步：转动天盘（排九星与天盘三奇六仪）',
+                    mantra: '值符随时干，九星携本宫奇仪顺时针同转',
+                    content: `
+                        <p>天盘代表天时、大环境与九星性情。排法口诀只有五个字：<b>“值符随时干”</b>。</p>
+                        <ul class="list-disc list-inside space-y-1 mt-2 text-slate-300">
+                            <li><b>定位天盘值符</b>：看时柱的天干（时干）在地盘的哪一宫，就把值符星移到哪一宫（若时干落中五宫，则移到寄宫坤二宫）。</li>
+                            <li><b>携带地盘奇仪升天</b>：值符星移过去时，必须把<b>自己老家宫位的地盘奇仪（即旬首遁干）一起带过去</b>，写在天盘位置上。</li>
+                            <li><b>外圈顺时针排满八星</b>：其余八星按照外围八宫顺时针顺序（<b>天蓬→天任→天冲→天辅→天英→天芮(天禽)→天柱→天心</b>）依次填入，并且每颗星都把各自老家的地盘奇仪带到新宫位，形成完整的<b>天盘三奇六仪</b>。</li>
+                            <li><b>时干为甲（伏吟局）</b>：当时辰正好是甲子、甲戌、甲申、甲午、甲辰、甲寅时，时干甲隐于旬首六仪之下，即“时干等于旬首”，值符留在原宫不动，形成<b>九星伏吟</b>。</li>
+                        </ul>
+                    `
+                },
+                {
+                    num: 6,
+                    title: '第六步：转动人盘（排八门 · 值使随时宫）',
+                    mantra: '值使随时支，从旬首宫沿九宫数阳顺阴逆数至时支',
+                    content: `
+                        <p>人盘八门代表人事吉凶与行动方式。这是初学者最容易排错的一步！</p>
+                        <ul class="list-disc list-inside space-y-1 mt-2 text-slate-300">
+                            <li><b>数宫位找落点</b>：从<b>旬首地盘所在宫位</b>起“甲”（旬首地支），按照<b>洛书九宫数字顺序（阳遁顺数 1→2→3...，阴遁逆数 9→8→7...）</b>，一个时辰走一宫，一直数到当前的<b>时支</b>为止！</li>
+                            <li><b>落入中五宫处理</b>：如果数到当前时支时正好落在中五宫，因为中五宫不排八门，直接将值使门寄入<b>坤二宫</b>（或阳寄艮八阴寄坤二）。</li>
+                            <li><b>顺时针环排八门</b>：值使门落定后，其余七门按外围顺时针固定顺序<b>【休→生→伤→杜→景→死→惊→开】</b>依次排满八宫。</li>
+                        </ul>
+                    `
+                },
+                {
+                    num: 7,
+                    title: '第七步：转动神盘（排八神 · 阳顺阴逆）',
+                    mantra: '小值符永远追随大值符，阳遁顺时针、阴遁逆时针',
+                    content: `
+                        <p>神盘八神代表神秘助力与潜意识磁场，排法最为简洁：</p>
+                        <ul class="list-disc list-inside space-y-1 mt-2 text-slate-300">
+                            <li><b>起点</b>：第五步中<b>天盘值符九星</b>落在哪一宫，八神之首<b>【值符】</b>就填在哪一宫。</li>
+                            <li><b>方向与序列</b>：严格按照<b>【值符 → 腾蛇 → 太阴 → 六合 → 白虎 → 玄武 → 九地 → 九天】</b>的顺序，<b>阳遁顺时针、阴遁逆时针</b>沿外围八宫排布一圈即可。</li>
+                        </ul>
+                    `
+                },
+                {
+                    num: 8,
+                    title: '第八步：排暗干（隐干）与十干十二长生',
+                    mantra: '时干加值使门宫飞九宫，十干长生墓绝察旺衰',
+                    content: `
+                        <p>暗干（又称隐干）与十二长生是进阶奇门断事的重要细节：</p>
+                        <ul class="list-disc list-inside space-y-1 mt-2 text-slate-300">
+                            <li><b>暗干排法</b>：将<b>时干</b>填入第六步求出的<b>【值使门】所在宫位</b>，然后按照三奇六仪队列（戊己庚辛壬癸丁丙乙），阳遁顺飞九宫、阴遁逆飞九宫。（注：若值使门落宫的地盘干恰好与时干相同，为防暗干与地盘完全重合，将时干放入中五宫再起飞）。</li>
+                            <li><b>十干十二长生</b>：结合八宫地支（坎子、艮丑寅、震卯、巽辰巳、离午、坤未申、兑酉、乾戌亥），标出天盘干与地盘干的生旺墓绝状态。</li>
+                        </ul>
+                    `
+                },
+                {
+                    num: 9,
+                    title: '第九步：标注奇门四害与特殊格局（识盘点睛）',
+                    mantra: '空亡马星入墓击刑门迫，吉凶克应一盘明',
+                    content: `
+                        <p>排完四盘后，必须标出<b>【空亡、马星、六仪击刑、十干入墓、八门门迫】</b>五大核心标记，并识别伏吟、反吟、青龙返首、白虎猖狂等格局，至此一张完整的专业奇门遁甲盘即告完成！</p>
+                    `
+                }
+            ];
+
+            document.getElementById('tutorial-steps-container').innerHTML = tutorials.map(t => {
+                const ex = TUTORIAL_EXTRA[t.num] || {};
+                return `
+                <div class="xuan-card gold-border rounded-xl p-5 flex flex-col md:flex-row gap-4 justify-between items-start">
+                    <div class="space-y-2 flex-1">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="px-2.5 py-0.5 rounded bg-gold-500 text-xuan-950 font-bold text-xs">STEP ${t.num}</span>
+                            <h3 class="font-gu text-lg font-bold text-gold-300">${t.title}</h3>
+                            <span class="text-xs px-2 py-0.5 rounded bg-amber-500/15 text-amber-300 border border-amber-500/30 font-gu">口诀：${t.mantra}</span>
+                        </div>
+                        <div class="text-xs sm:text-sm leading-relaxed text-slate-200">${t.content}</div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                            <div class="p-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-xs leading-relaxed">
+                                <b class="text-emerald-300">💡 一句话理解：</b><span class="text-slate-200">${ex.plain || ''}</span>
+                            </div>
+                            <div class="p-2.5 rounded-lg bg-red-500/10 border border-red-500/30 text-xs leading-relaxed">
+                                <b class="text-red-300">⚠️ 常见误区：</b><span class="text-slate-200">${ex.pitfall || ''}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="jumpToSimulatorStep(${t.num})" class="shrink-0 px-3.5 py-2 rounded-lg bg-gold-500/20 hover:bg-gold-500 text-gold-300 hover:text-xuan-950 border border-gold-500/40 text-xs font-semibold transition">
+                        在演练器中演示此步 ▶
+                    </button>
+                </div>
+            `;
+            }).join('');
+
+            applyGlossaryTips(document.getElementById('tutorial-steps-container'));
+        }
+
+        function jumpToSimulatorStep(stepNum) {
+            switchTab('simulator');
+            setStep(stepNum);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 渲染速查字典表
+        function renderDictionaryTables() {
+            // 1. 阳遁/阴遁24节气表
+            const yangRows = JIEQI_DATA.slice(0, 12).map(j => `
+                <tr class="hover:bg-xuan-800/50">
+                    <td class="p-2 text-slate-400">${j.gua}</td>
+                    <td class="p-2 font-bold text-slate-200">${j.name}</td>
+                    <td class="p-2 text-amber-300 font-semibold">阳遁${j.ju[0]}局</td>
+                    <td class="p-2 text-emerald-300 font-semibold">阳遁${j.ju[1]}局</td>
+                    <td class="p-2 text-blue-300 font-semibold">阳遁${j.ju[2]}局</td>
+                </tr>
+            `).join('');
+            document.getElementById('table-yangdun-jieqi').innerHTML = yangRows;
+
+            const yinRows = JIEQI_DATA.slice(12, 24).map(j => `
+                <tr class="hover:bg-xuan-800/50">
+                    <td class="p-2 text-slate-400">${j.gua}</td>
+                    <td class="p-2 font-bold text-slate-200">${j.name}</td>
+                    <td class="p-2 text-amber-300 font-semibold">阴遁${j.ju[0]}局</td>
+                    <td class="p-2 text-emerald-300 font-semibold">阴遁${j.ju[1]}局</td>
+                    <td class="p-2 text-blue-300 font-semibold">阴遁${j.ju[2]}局</td>
+                </tr>
+            `).join('');
+            document.getElementById('table-yindun-jieqi').innerHTML = yinRows;
+
+            // 2. 六十甲子六甲旬首与符头表
+            const xunKeys = ['甲子', '甲戌', '甲申', '甲午', '甲辰', '甲寅'];
+            document.getElementById('table-jiazi-xun').innerHTML = xunKeys.map((xk, idx) => {
+                const start = idx * 10;
+                const firstHalf = JIAZI_60.slice(start, start + 5);
+                const secondHalf = JIAZI_60.slice(start + 5, start + 10);
+                const m = XUN_META[xk];
+                const f1Yuan = getChaiBuYuan(firstHalf[0]);
+                const f2Yuan = getChaiBuYuan(secondHalf[0]);
+                return `
+                    <tr class="hover:bg-xuan-800/50">
+                        <td class="p-2.5 font-gu font-bold text-gold-300">${m.name}旬（甲隐于${m.dunGan}）</td>
+                        <td class="p-2.5">
+                            <span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold mr-1">${firstHalf[0]}(${f1Yuan.yuan}符头)</span>
+                            <span class="text-slate-300">${firstHalf.slice(1).join(' · ')}</span>
+                        </td>
+                        <td class="p-2.5">
+                            <span class="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold mr-1">${secondHalf[0]}(${f2Yuan.yuan}符头)</span>
+                            <span class="text-slate-300">${secondHalf.slice(1).join(' · ')}</span>
+                        </td>
+                        <td class="p-2.5 text-red-300 font-semibold">${m.kong.join('、')}空 (${m.kongPalaces.map(p=>PALACE_META[p].gua+p).join('/')})</td>
+                    </tr>
+                `;
+            }).join('');
+
+            // 3. 洛书九宫属性表
+            document.getElementById('table-palace-meta').innerHTML = [1,2,3,4,5,6,7,8,9].map(n => {
+                const p = PALACE_META[n];
+                return `
+                    <tr class="hover:bg-xuan-800/50">
+                        <td class="p-2 font-gu font-bold text-gold-300">${p.name}</td>
+                        <td class="p-2 text-slate-300">${p.dir}</td>
+                        <td class="p-2 wx-${p.wx} font-bold">${p.wx}</td>
+                        <td class="p-2 text-slate-200">${p.star}</td>
+                        <td class="p-2 text-slate-200">${p.door}</td>
+                        <td class="p-2 text-slate-400">${p.zhi.join('、') || '寄坤二/艮八'}</td>
+                    </tr>
+                `;
+            }).join('');
+
+            applyGlossaryTips(document.getElementById('view-dict'));
+        }
+
+        // 通关题库自测数据与渲染
+        const QUIZ_QUESTIONS = [
+            {
+                q: '1. 【拆补定元】已知某日为“小寒”节气内的【丙戌日】，按拆补法推算，该日属于哪一元、用几局？',
+                options: [
+                    'A. 符头为甲申，寅申巳亥属中元，用阳遁八局',
+                    'B. 符头为甲午，子午卯酉属上元，用阳遁二局',
+                    'C. 符头为己丑，辰戌丑未属下元，用阳遁五局',
+                    'D. 符头为甲戌，辰戌丑未属下元，用阴遁五局'
+                ],
+                ans: 0,
+                explain: '解析：从丙戌日往前倒推：丙戌 → 乙酉 → 甲申（遇到甲日即为符头）。甲申的地支为“申”，根据口诀“子午卯酉为上元，寅申巳亥为中元，辰戌丑未为下元”，申属【中元】。小寒三元为“二八五”，中元即为【阳遁八局】！'
+            },
+            {
+                q: '2. 【地盘奇仪排列】在【阴遁四局】中，地盘三奇六仪的“戊”落巽四宫，那么“庚”和“丁”分别落在哪一宫？',
+                options: [
+                    'A. 庚落乾六宫，丁落坎一宫',
+                    'B. 庚落坤二宫，丁落兑七宫',
+                    'C. 庚落震三宫，丁落离九宫',
+                    'D. 庚落中五宫，丁落艮八宫'
+                ],
+                ans: 1,
+                explain: '解析：三奇六仪严格顺序为“戊、己、庚、辛、壬、癸、丁、丙、乙”。阴遁逆飞洛书九宫数：戊落4宫 → 己落3宫 → 【庚落坤2宫】 → 辛落1宫 → 壬落9宫 → 癸落8宫 → 【丁落兑7宫】 → 丙落6宫 → 乙落5宫。'
+            },
+            {
+                q: '3. 【寻旬首与空亡】已知当前时辰为【壬午时】，请问它属于哪一旬首？空亡地支是什么？',
+                options: [
+                    'A. 甲子戊旬，戌亥空',
+                    'B. 甲寅癸旬，子丑空',
+                    'C. 甲戌己旬，申酉空',
+                    'D. 甲申庚旬，午未空'
+                ],
+                ans: 2,
+                explain: '解析：地支相减快速法：午(7) - 壬(9) + 12 = 10，第10个地支为“戌”，故属【甲戌己】旬！甲戌旬中戌带头，数到癸未结束，剩下的【申、酉】两个地支即为旬空。'
+            },
+            {
+                q: '4. 【中五宫寄宫定值使】若时辰旬首遁干在地盘恰好落入【中五宫】（默认寄坤二宫），那么本局的【值符】和【值使门】分别是什么？',
+                options: [
+                    'A. 天芮星为值符、死门为值使门',
+                    'B. 天禽星为值符、死门为值使门',
+                    'C. 天禽星为值符、中五宫无值使门',
+                    'D. 天心星为值符、开门为值使门'
+                ],
+                ans: 1,
+                explain: '解析：旬首落中五宫，中五宫原始本位星为【天禽星】，故值符为天禽星；因中五宫没有八门，寄于坤二宫，故借用坤二宫的原始八门【死门】作为值使门！'
+            },
+            {
+                q: '5. 【人盘八门步进】在阳遁局中，已知时辰为【丙寅时】（属甲子戊旬），且旬首地盘【戊】落在【震三宫】，请问值使门【伤门】最终落在哪一宫？',
+                options: [
+                    'A. 巽四宫',
+                    'B. 中五宫（寄坤二宫）',
+                    'C. 乾六宫',
+                    'D. 坎一宫'
+                ],
+                ans: 1,
+                explain: '解析：“值使随时宫”。从旬首甲子所在的震三宫起数，阳遁顺数九宫数：甲子在3宫 → 乙丑在4宫 → 丙寅在【5宫】！因中五宫不排八门，寄入【坤二宫】，故值使伤门最终落入坤二宫。'
+            },
+            {
+                q: '6. 【神盘八神方向】在【阴遁局】中，若天盘值符落在【离九宫】，按转盘八神规则，【腾蛇】和【太阴】分别落在哪两宫？',
+                options: [
+                    'A. 腾蛇落坤二宫、太阴落兑七宫',
+                    'B. 腾蛇落巽四宫、太阴落震三宫',
+                    'C. 腾蛇落艮八宫、太阴落坎一宫',
+                    'D. 腾蛇落中五宫、太阴落乾六宫'
+                ],
+                ans: 1,
+                explain: '解析：转盘八神铁律“阳遁顺时针、阴遁逆时针”。离九宫起【值符】，逆时针往回转依次经过巽四宫、震三宫，故【腾蛇落巽四宫，太阴落震三宫】。'
+            },
+            {
+                q: '7. 【奇门四害·六仪击刑】以下哪一组天盘六仪与落宫的组合属于【六仪击刑】？',
+                options: [
+                    'A. 天盘【戊】落乾六宫',
+                    'B. 天盘【庚】落艮八宫',
+                    'C. 天盘【辛】落巽四宫',
+                    'D. 天盘【壬】落坤二宫'
+                ],
+                ans: 1,
+                explain: '解析：甲申庚之“庚”隐含地支申，艮八宫藏地支“丑、寅”，庚落艮八宫构成【寅申相刑】，是典型的六仪击刑！（戊落乾六是入戌墓，辛落巽四是入辰墓）。'
+            },
+            {
+                q: '8. 【奇门四害·门迫】“吉门被迫吉不就，凶门被迫祸重重”，以下哪一种情况属于【门迫】？',
+                options: [
+                    'A. 休门(水)落震三宫(木)',
+                    'B. 生门(土)落离九宫(火)',
+                    'C. 惊门(金)落震三宫(木)',
+                    'D. 景门(火)落坎一宫(水)'
+                ],
+                ans: 2,
+                explain: '解析：门迫的定义是“八门五行克制所落宫位五行（门克宫为迫，宫克门为受制）”。惊门属金，震三宫属木，金克木，故惊门落震三宫为【门迫】！（景门火落坎一水是宫克门，叫门受制）。'
+            }
+        ];
+
+        // 每题对应的「解题提示」与「该复习哪一步」（教学辅助，不影响答案）
+        const QUIZ_HINTS = [
+            { step: 2, hint: '先算符头：从丙戌往前数，遇到"甲"日就停；再看这个甲日的地支属于哪一元，最后去查小寒的三元局数（二、八、五）。' },
+            { step: 3, hint: '先把九个字写出来：戊己庚辛壬癸丁丙乙。从戊所在的四宫开始，逆着宫位数字走 4→3→2→1→9→8→7→6→5，数到"庚"和"丁"停下。' },
+            { step: 4, hint: '地支序号减天干序号（不够就加 12），得到的地支就是旬首"甲X"；从旬首往后数满 10 个干支，剩下两个就是空亡。' },
+            { step: 4, hint: '中五宫的本位星是天禽；但中五宫没有八门，值使门只能借寄宫（默认坤二宫）的门。' },
+            { step: 6, hint: '从甲子所在的震三宫起步，每换一个时辰走一格（阳遁按宫位数字顺数），数到"丙寅"看落在第几宫，再看该宫能不能排门。' },
+            { step: 7, hint: '阴遁是逆时针：从离九宫往回走，依次是 离9 → 巽4 → 震3 …，按八神序列一格一格排。' },
+            { step: 9, hint: '击刑看"六仪本身带的地支"与"所落宫的地支"是否相刑。庚对应申，就找哪个宫藏着申或寅。' },
+            { step: 9, hint: '门迫 = 门克宫。逐个比对门的五行与宫的五行，判断是谁克谁，别把"宫克门"也算成门迫。' }
+        ];
+
+        let quizUserAnswers = {};
+        let quizHintShown = {};
+
+        function renderQuizSection() {
+            const container = document.getElementById('quiz-questions-container');
+            container.innerHTML = QUIZ_QUESTIONS.map((item, qIdx) => {
+                const userAns = quizUserAnswers[qIdx];
+                const hasAnswered = userAns !== undefined;
+                const hintInfo = QUIZ_HINTS[qIdx] || { step: 1, hint: '' };
+                const hintOpen = !!quizHintShown[qIdx];
+                return `
+                    <div class="p-4 rounded-xl bg-xuan-950/80 border ${hasAnswered ? (userAns === item.ans ? 'border-emerald-500/50' : 'border-red-500/50') : 'border-slate-800'} space-y-3">
+                        <div class="flex items-start justify-between gap-3">
+                            <div class="font-gu font-bold text-sm sm:text-base text-slate-100">${item.q}</div>
+                            ${!hasAnswered ? `
+                                <button onclick="toggleQuizHint(${qIdx})" class="shrink-0 px-2 py-1 rounded border text-[15px] transition ${hintOpen ? 'bg-amber-500/20 border-amber-500/50 text-amber-300' : 'bg-xuan-900 border-slate-700 text-slate-400 hover:text-amber-300 hover:border-amber-500/40'}">
+                                    ${hintOpen ? '收起提示' : '💡 提示'}
+                                </button>
+                            ` : ''}
+                        </div>
+                        ${(!hasAnswered && hintOpen) ? `
+                            <div class="p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/30 text-xs text-amber-100 leading-relaxed">
+                                <b>💡 解题思路：</b>${hintInfo.hint}
+                            </div>
+                        ` : ''}
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            ${item.options.map((opt, oIdx) => {
+                                let btnCls = 'bg-xuan-900 border-slate-700 text-slate-300 hover:border-gold-500/50';
+                                if (hasAnswered) {
+                                    if (oIdx === item.ans) {
+                                        btnCls = 'bg-emerald-500/20 border-emerald-400 text-emerald-300 font-semibold';
+                                    } else if (oIdx === userAns && userAns !== item.ans) {
+                                        btnCls = 'bg-red-500/20 border-red-400 text-red-300';
+                                    } else {
+                                        btnCls = 'bg-xuan-950 border-slate-800 text-slate-500';
+                                    }
+                                }
+                                return `
+                                    <button onclick="answerQuiz(${qIdx}, ${oIdx})" ${hasAnswered ? 'disabled' : ''}
+                                        class="text-left px-3.5 py-2.5 rounded-lg border text-xs transition ${btnCls}">
+                                        ${opt}
+                                    </button>
+                                `;
+                            }).join('')}
+                        </div>
+                        ${hasAnswered ? `
+                            <div class="p-3 rounded-lg text-xs ${userAns === item.ans ? 'bg-emerald-500/10 text-emerald-200 border border-emerald-500/30' : 'bg-red-500/10 text-red-200 border border-red-500/30'}">
+                                <b>${userAns === item.ans ? '✔ 回答正确！' : '✘ 回答有误。'}</b> ${item.explain}
+                                <div class="mt-2">
+                                    <button onclick="jumpToSimulatorStep(${hintInfo.step})" class="px-2.5 py-1 rounded bg-gold-500/20 hover:bg-gold-500 text-gold-300 hover:text-xuan-950 border border-gold-500/40 text-[15px] font-semibold transition">
+                                        📖 去演练器复习第 ${hintInfo.step} 步 →
+                                    </button>
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+
+            // 更新分数
+            let score = 0;
+            Object.keys(quizUserAnswers).forEach(k => {
+                if (quizUserAnswers[k] === QUIZ_QUESTIONS[k].ans) score++;
+            });
+            document.getElementById('quiz-score').textContent = score;
+        }
+
+        function answerQuiz(qIdx, oIdx) {
+            quizUserAnswers[qIdx] = oIdx;
+            renderQuizSection();
+        }
+
+        // 展开/收起单题的解题提示（不消耗作答机会）
+        function toggleQuizHint(qIdx) {
+            quizHintShown[qIdx] = !quizHintShown[qIdx];
+            renderQuizSection();
+        }
+
+        function resetQuiz() {
+            quizUserAnswers = {};
+            quizHintShown = {};
+            renderQuizSection();
+        }
+
+        // 顶部标签页切换
+        function switchTab(tabId) {
+            currentTab = tabId;
+            if (autoPlayTimer) toggleAutoPlay();
+
+            ['simulator', 'tutorial', 'dict', 'quiz'].forEach(t => {
+                const view = document.getElementById(`view-${t}`);
+                const btn = document.getElementById(`tab-btn-${t}`);
+                if (t === tabId) {
+                    view.classList.remove('hidden');
+                    btn.className = 'tab-btn px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center gap-1.5 bg-gold-500 text-xuan-950 font-semibold shadow-lg shadow-gold-500/20';
+                } else {
+                    view.classList.add('hidden');
+                    btn.className = 'tab-btn px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all flex items-center gap-1.5 text-slate-300 hover:text-gold-300 hover:bg-xuan-800';
+                }
+            });
+        }
+
+        // 键盘 ←/→ 翻步（输入框、下拉框获得焦点时不拦截）
+        function bindKeyboardStepNav() {
+            document.addEventListener('keydown', function (e) {
+                if (currentTab !== 'simulator') return;
+                const tag = (e.target && e.target.tagName) || '';
+                if (['INPUT', 'SELECT', 'TEXTAREA'].includes(tag)) return;
+                if (e.key === 'ArrowRight') { e.preventDefault(); nextStep(); }
+                else if (e.key === 'ArrowLeft') { e.preventDefault(); prevStep(); }
+            });
+        }
+
+        // 页面初始化入口
+        window.onload = function () {
+            document.body.classList.toggle('hide-axis', !showAxisLabels);
+            document.body.classList.toggle('anim-on', animEnabled);
+            refreshToggleButtons();
+            initControls();
+            renderTutorialSection();
+            renderDictionaryTables();
+            renderQuizSection();
+            bindKeyboardStepNav();
+        };
+    </script>
+</body>
+</html>
