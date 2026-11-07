@@ -52,6 +52,10 @@
         }
     </script>
     <style>
+        html {
+            /* 全局字号基准：手机约 14px，桌面约 16.5px，随视口平滑过渡 */
+            font-size: clamp(14px, 0.25vw + 12.5px, 16.5px);
+        }
         body {
             background-color: #07090e;
             background-image: 
@@ -112,7 +116,7 @@
         /* ===== 教学辅助样式（不参与排盘逻辑） ===== */
         /* 盘面位置标注：神/星/门/天/地 */
         .axis-tag {
-            font-size: 12px;
+            font-size: 0.75rem;
             line-height: 1;
             color: #64748b;
             border: 1px solid rgba(100, 116, 139, 0.45);
@@ -162,7 +166,7 @@
             left: 0; top: 0;
             padding: 3px 12px;
             border-radius: 999px;
-            font-size: 17px;
+            font-size: 1.0625rem;
             font-weight: 700;
             color: #07090e;
             background: linear-gradient(135deg, #f5e0a3, #d4af37);
@@ -212,13 +216,93 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 5px;
-            font-size: 14px;
+            font-size: 0.875rem;
         }
         .cell-map > div {
             border: 1px solid rgba(148, 163, 184, 0.25);
             border-radius: 4px;
             padding: 4px 6px;
             background: rgba(7, 9, 14, 0.6);
+        }
+
+        /* ===== 状态标签（击刑 / 入墓 / 刑墓 / 门迫 / 长生） ===== */
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+            padding: 1px 5px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            line-height: 1.35;
+            font-weight: 700;
+            border: 1px solid transparent;
+            white-space: nowrap;
+        }
+        .chip-xing { background: rgba(239, 68, 68, .22); color: #fca5a5; border-color: rgba(239, 68, 68, .5); }
+        .chip-mu { background: rgba(245, 158, 11, .22); color: #fcd34d; border-color: rgba(245, 158, 11, .5); }
+        .chip-xm {
+            background: linear-gradient(135deg, rgba(239, 68, 68, .38), rgba(245, 158, 11, .38));
+            color: #fee2e2;
+            border-color: rgba(239, 68, 68, .8);
+            animation: xmPulse 2.4s ease-in-out infinite;
+        }
+        @keyframes xmPulse {
+            0%, 100% { box-shadow: 0 0 6px rgba(239, 68, 68, .25); }
+            50%      { box-shadow: 0 0 14px rgba(239, 68, 68, .65); }
+        }
+        .chip-po { background: rgba(168, 85, 247, .22); color: #d8b4fe; border-color: rgba(168, 85, 247, .5); }
+        .chip-cs-good { background: rgba(52, 211, 153, .16); color: #6ee7b7; border-color: rgba(52, 211, 153, .42); }
+        .chip-cs-mid { background: rgba(148, 163, 184, .16); color: #cbd5e1; border-color: rgba(148, 163, 184, .42); }
+        .chip-cs-bad { background: rgba(248, 113, 113, .14); color: #fca5a5; border-color: rgba(248, 113, 113, .4); }
+
+        /* ===== 宫格字号随容器宽度自适应（避免窄屏挤压 / 拉长） ===== */
+        #qimen-grid, #home-grid { container-type: inline-size; }
+
+        /* 兜底：不支持容器查询时用固定字号 */
+        .palace-cell { font-size: 0.875rem; line-height: 1.25; }
+        .palace-cell [data-role="star"],
+        .palace-cell [data-role="door"],
+        .palace-cell [data-role="god"] { font-size: 1.125rem; }
+        .palace-cell [data-role="hstem"],
+        .palace-cell [data-role="estem"] { font-size: 1.625rem; }
+
+        @supports (container-type: inline-size) {
+            /* 1cqw = 九宫格宽度的 1%；一格约 32cqw 宽 */
+            .palace-cell { font-size: clamp(9px, 2.05cqw, 15px); line-height: 1.22; }
+            .palace-cell [data-role="star"],
+            .palace-cell [data-role="door"],
+            .palace-cell [data-role="god"] { font-size: clamp(10.5px, 3.05cqw, 23px); }
+            .palace-cell [data-role="hstem"],
+            .palace-cell [data-role="estem"] { font-size: clamp(14px, 4.5cqw, 34px); }
+            .palace-cell .chip { font-size: clamp(9px, 1.95cqw, 14px); }
+            .palace-cell .axis-tag { font-size: clamp(7.5px, 1.65cqw, 12px); }
+            /* 格内所有固定 px 的小字一并缩放 */
+            .palace-cell .text-\[0\.9375rem\],
+            .palace-cell .text-\[0\.875rem\],
+            .palace-cell .text-\[0\.8125rem\],
+            .palace-cell .text-xs { font-size: clamp(8.5px, 2cqw, 15px); }
+        }
+
+        /* 手机端时间条折叠 */
+        #home-time-form.collapsed { display: none; }
+
+        /* 状态条：手机上单行不换行，避免把整格撑高 */
+        @media (max-width: 640px) {
+            .palace-cell .status-row { flex-wrap: nowrap; overflow: hidden; }
+            .palace-cell .status-row > * { flex: none; }
+        }
+
+        /* 宫格：手机端点击更跟手 */
+        .palace-cell { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+
+        /* ===== 手机端（≤640px）演示优化 ===== */
+        @media (max-width: 640px) {
+            .palace-cell { padding: 5px !important; border-radius: 10px !important; }
+            .palace-cell .chip { padding: 0 3px; border-radius: 3px; gap: 0; }
+            .palace-cell .axis-tag { font-size: 0.625rem; padding: 0 2px; }
+            .palace-cell .chip-xm { animation: none; }
+            #qimen-grid, #home-grid { gap: 4px !important; }
+            #home-grid-wrap, #grid-wrap { max-width: 100% !important; }
         }
 
         /* Font Awesome 内联图标 */
@@ -287,40 +371,46 @@
 
             <!-- 时间条 -->
             <div class="xuan-card gold-border rounded-xl p-4">
-                <div class="flex flex-wrap items-end gap-2">
+                <div class="flex sm:hidden items-center justify-between mb-2">
+                    <span class="text-[0.875rem] text-slate-400">按设定时间起盘</span>
+                    <button onclick="toggleTimeForm()" class="px-3 py-1.5 rounded-lg bg-xuan-800 text-gold-300 border border-gold-500/30 text-[0.875rem]">
+                        <i data-i="clock"></i> 时间设置
+                    </button>
+                </div>
+                <div id="home-time-form" class="flex flex-wrap items-end gap-2">
                     <div>
-                        <label class="block text-[14px] text-slate-400 mb-1">纪年</label>
-                        <select id="h-era" class="bg-xuan-900 border border-slate-700 text-[15px] rounded px-2 py-1.5 text-slate-200">
+                        <label class="block text-[0.875rem] text-slate-400 mb-1">纪年</label>
+                        <select id="h-era" class="bg-xuan-900 border border-slate-700 text-[0.9375rem] rounded px-2 py-1.5 text-slate-200">
                             <option value="AD">公元</option>
                             <option value="BC">公元前</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-[14px] text-slate-400 mb-1">年</label>
+                        <label class="block text-[0.875rem] text-slate-400 mb-1">年</label>
                         <input id="h-year" type="number" min="1" max="5000" value="2024"
-                            class="w-28 bg-xuan-900 border border-slate-700 text-[15px] rounded px-2 py-1.5 text-slate-200">
+                            class="w-28 bg-xuan-900 border border-slate-700 text-[0.9375rem] rounded px-2 py-1.5 text-slate-200">
                     </div>
                     <div>
-                        <label class="block text-[14px] text-slate-400 mb-1">月</label>
-                        <select id="h-month" class="bg-xuan-900 border border-slate-700 text-[15px] rounded px-2 py-1.5 text-slate-200"></select>
+                        <label class="block text-[0.875rem] text-slate-400 mb-1">月</label>
+                        <select id="h-month" class="bg-xuan-900 border border-slate-700 text-[0.9375rem] rounded px-2 py-1.5 text-slate-200"></select>
                     </div>
                     <div>
-                        <label class="block text-[14px] text-slate-400 mb-1">日</label>
+                        <label class="block text-[0.875rem] text-slate-400 mb-1">日</label>
                         <input id="h-day" type="number" min="1" max="31" value="1"
-                            class="w-20 bg-xuan-900 border border-slate-700 text-[15px] rounded px-2 py-1.5 text-slate-200">
+                            class="w-20 bg-xuan-900 border border-slate-700 text-[0.9375rem] rounded px-2 py-1.5 text-slate-200">
                     </div>
                     <div>
-                        <label class="block text-[14px] text-slate-400 mb-1">时</label>
-                        <select id="h-hour" class="bg-xuan-900 border border-slate-700 text-[15px] rounded px-2 py-1.5 text-slate-200"></select>
+                        <label class="block text-[0.875rem] text-slate-400 mb-1">时</label>
+                        <select id="h-hour" class="bg-xuan-900 border border-slate-700 text-[0.9375rem] rounded px-2 py-1.5 text-slate-200"></select>
                     </div>
                     <div>
-                        <label class="block text-[14px] text-slate-400 mb-1">分</label>
+                        <label class="block text-[0.875rem] text-slate-400 mb-1">分</label>
                         <input id="h-min" type="number" min="0" max="59" value="0"
-                            class="w-20 bg-xuan-900 border border-slate-700 text-[15px] rounded px-2 py-1.5 text-slate-200">
+                            class="w-20 bg-xuan-900 border border-slate-700 text-[0.9375rem] rounded px-2 py-1.5 text-slate-200">
                     </div>
                     <div>
-                        <label class="block text-[14px] text-slate-400 mb-1">时区</label>
-                        <select id="h-tz" onchange="onTzChange()" class="bg-xuan-900 border border-gold-500/40 text-[15px] rounded px-2 py-1.5 text-gold-300">
+                        <label class="block text-[0.875rem] text-slate-400 mb-1">时区</label>
+                        <select id="h-tz" onchange="onTzChange()" class="bg-xuan-900 border border-gold-500/40 text-[0.9375rem] rounded px-2 py-1.5 text-gold-300">
                             <option value="auto" selected>自动（浏览器）</option>
                             <option value="8">固定 UTC+8</option>
                             <option value="9">固定 UTC+9</option>
@@ -332,8 +422,8 @@
                         </select>
                     </div>
                     <div>
-                        <label class="block text-[14px] text-slate-400 mb-1">子时换日</label>
-                        <select id="h-zishi" onchange="runHomeChart()" class="bg-xuan-900 border border-slate-700 text-[15px] rounded px-2 py-1.5 text-slate-200">
+                        <label class="block text-[0.875rem] text-slate-400 mb-1">子时换日</label>
+                        <select id="h-zishi" onchange="runHomeChart()" class="bg-xuan-900 border border-slate-700 text-[0.9375rem] rounded px-2 py-1.5 text-slate-200">
                             <option value="23" selected>23:00</option>
                             <option value="0">00:00</option>
                         </select>
@@ -346,12 +436,12 @@
                         class="px-3 py-2 rounded-lg bg-xuan-800 hover:bg-xuan-700 text-slate-200 border border-slate-700 text-xs transition">
                         <i data-i="clock"></i> 现在
                     </button>
-                    <button onclick="playBuildSequence()"
+                    <button onclick="forceReplay()"
                         class="px-3 py-2 rounded-lg bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-500/40 text-xs transition">
                         <i data-i="clapperboard"></i> 重播成盘
                     </button>
                 </div>
-                <div id="home-err" class="text-[14px] text-red-300 mt-1"></div>
+                <div id="home-err" class="text-[0.875rem] text-red-300 mt-1"></div>
             </div>
 
             <!-- 时间与四柱摘要 -->
@@ -379,7 +469,7 @@
                 <div class="text-center text-xs text-blue-400/90 font-gu mt-2 tracking-widest">
                     <i data-i="caret-down"></i> 正北（坎一宫 · 水）
                 </div>
-                <p class="text-center text-[14px] text-slate-500 mt-2">
+                <p class="text-center text-[0.875rem] text-slate-500 mt-2">
                     点击任意宫格可查看该宫的四盘要素、十干克应与四害
                 </p>
             </div>
@@ -409,7 +499,7 @@
                 <summary class="flex flex-wrap items-center gap-2">
                     <span class="chev text-gold-400"><i data-i="caret-right"></i></span>
                     <span class="font-gu font-bold text-gold-300 text-sm sm:text-base"><i data-i="eye"></i> 30 秒入门：这张盘是什么？我该看哪里？</span>
-                    <span class="text-[15px] text-slate-400">（点击展开 · 纯讲解，不会改变任何排盘结果）</span>
+                    <span class="text-[0.9375rem] text-slate-400">（点击展开 · 纯讲解，不会改变任何排盘结果）</span>
                 </summary>
 
                 <div class="mt-4 grid grid-cols-1 lg:grid-cols-3 gap-4 text-xs leading-relaxed">
@@ -439,7 +529,7 @@
                             <div><span class="axis-tag">地</span> 地盘天干（压在下面）</div>
                         </div>
                         <p class="text-slate-400">
-                            读格口诀：<b class="text-gold-300">先看门和星定事，再看天地两干论生克，最后看神来定氛围</b>。底部还写着宫名、方位、五行与四害标签（击刑/入墓/门迫）。
+                            读格口诀：<b class="text-gold-300">先看门和星定事，再看天地两干论生克，最后看神来定氛围</b>。格子底部是<b>状态条</b>：击刑（红）、入墓（橙）、<b class="text-red-200">刑墓</b>（红橙渐变＝击刑+入墓同宫，最凶）、门迫（紫），以及天盘干的<b>十二长生</b>（绿=旺、灰=平、红=衰）。
                         </p>
                     </div>
 
@@ -460,7 +550,7 @@
 
         <!-- ==================== 模块1：交互式分步排盘演练器 ==================== -->
             <!-- 当前盘来源提示 -->
-            <div class="flex flex-wrap items-center justify-between gap-2 text-[14px] text-slate-400 px-1">
+            <div class="flex flex-wrap items-center justify-between gap-2 text-[0.875rem] text-slate-400 px-1">
                 <span>当前教学盘来自「<i data-i="yin-yang"></i> 看盘」页所定的时间；也可以直接载入下面的经典案例。</span>
                 <button onclick="switchTab('home')" class="px-3 py-1.5 rounded-lg bg-xuan-800 hover:bg-xuan-700 text-gold-300 border border-gold-500/30 transition"><i data-i="arrow-left"></i> 回看盘页改时间</button>
             </div>
@@ -481,21 +571,21 @@
                     <!-- 排盘细节规则设置 -->
                     <div class="flex flex-wrap sm:flex-nowrap items-center gap-3 bg-xuan-950/70 p-2.5 rounded-lg border border-slate-800/80 shrink-0">
                         <div>
-                            <label class="block text-[15px] text-slate-400 mb-1">定局法则</label>
+                            <label class="block text-[0.9375rem] text-slate-400 mb-1">定局法则</label>
                             <select id="rule-method" onchange="recalculateAndRender()" class="bg-xuan-800 text-xs text-gold-300 border border-gold-500/30 rounded px-2 py-1.5 focus:outline-none">
                                 <option value="chaibu">拆补法 (主流推荐)</option>
                                 <option value="zhirun">置闰法 (超神接气)</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-[15px] text-slate-400 mb-1">中五宫寄宫</label>
+                            <label class="block text-[0.9375rem] text-slate-400 mb-1">中五宫寄宫</label>
                             <select id="rule-jigong" onchange="recalculateAndRender()" class="bg-xuan-800 text-xs text-gold-300 border border-gold-500/30 rounded px-2 py-1.5 focus:outline-none">
                                 <option value="kun2">一律寄坤二宫 (通用)</option>
                                 <option value="yanggeng8">阳寄艮八 / 阴寄坤二</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-[15px] text-slate-400 mb-1">暗干(隐干)排法</label>
+                            <label class="block text-[0.9375rem] text-slate-400 mb-1">暗干(隐干)排法</label>
                             <select id="rule-angan" onchange="recalculateAndRender()" class="bg-xuan-800 text-xs text-gold-300 border border-gold-500/30 rounded px-2 py-1.5 focus:outline-none">
                                 <option value="zhishi">时干加值使门宫 (主流)</option>
                                 <option value="dipan">地盘奇仪随星映射</option>
@@ -569,7 +659,7 @@
                             <i data-i="clapperboard"></i> 动画：开
                         </button>
                         <select id="anim-speed" onchange="onAnimSpeedChange()" title="动画速度"
-                            class="bg-xuan-800 text-[14px] text-gold-300 border border-gold-500/30 rounded px-2 py-1.5 focus:outline-none">
+                            class="bg-xuan-800 text-[0.875rem] text-gold-300 border border-gold-500/30 rounded px-2 py-1.5 focus:outline-none">
                             <option value="1.5">慢速</option>
                             <option value="1" selected>标准</option>
                             <option value="0.62">快速</option>
@@ -581,7 +671,7 @@
                 <div class="w-full bg-xuan-950 h-1.5 rounded-full overflow-hidden">
                     <div id="step-progress-bar" class="bg-gradient-to-r from-gold-600 via-gold-400 to-amber-200 h-full transition-all duration-300" style="width: 100%;"></div>
                 </div>
-                <p class="text-[15px] text-slate-500 mt-2 text-center sm:text-left">
+                <p class="text-[0.9375rem] text-slate-500 mt-2 text-center sm:text-left">
                     操作提示：点「下一步」逐步推演（键盘 <b class="text-slate-400"><i data-i="arrow-left"></i> →</b> 也可翻步），每一步都会<b class="text-sky-400/80">播放飞星 / 飞门 / 飞神动画</b>；右侧同步给出<b class="text-emerald-400/80">大白话</b>、<b class="text-sky-400/80">比喻</b>与<b class="text-red-400/80">易错点</b>。可用「<i data-i="clapperboard"></i> 动画」开关与速度下拉调节。
                 </p>
             </div>
@@ -601,7 +691,7 @@
                         <!-- 传统上南下北左东右西标注 -->
                         <div class="text-center text-xs text-red-400/90 font-gu mb-2 tracking-widest flex items-center justify-center gap-2">
                             <span><i data-i="caret-up"></i> 正南（离九宫 · 火）</span>
-                            <span class="text-[15px] text-slate-400 font-sans">(传统奇门盘方位：上南 · 下北 · 左东 · 右西)</span>
+                            <span class="text-[0.9375rem] text-slate-400 font-sans">(传统奇门盘方位：上南 · 下北 · 左东 · 右西)</span>
                         </div>
 
                         <div class="flex items-center">
@@ -636,16 +726,18 @@
                             </span>
                             <div class="flex items-center gap-2 flex-wrap">
                                 <button onclick="toggleAxisLabels()" id="btn-axis-toggle" title="在每格内标出「神/星/门/天/地」的位置，新手建议开启"
-                                    class="px-2 py-0.5 rounded border text-[15px] transition bg-gold-500/20 border-gold-500/50 text-gold-300">
+                                    class="px-2 py-0.5 rounded border text-[0.9375rem] transition bg-gold-500/20 border-gold-500/50 text-gold-300">
                                     <i data-i="bookmark"></i> 盘面标注：开
                                 </button>
                                 <button onclick="toggleTermTips()" id="btn-term-toggle" title="鼠标悬停带虚线的术语可看白话解释"
-                                    class="px-2 py-0.5 rounded border text-[15px] transition bg-gold-500/20 border-gold-500/50 text-gold-300">
+                                    class="px-2 py-0.5 rounded border text-[0.9375rem] transition bg-gold-500/20 border-gold-500/50 text-gold-300">
                                     <i data-i="comment-dots"></i> 术语提示：开
                                 </button>
                                 <span class="w-px h-4 bg-slate-700 mx-0.5"></span>
                                 <span class="px-1.5 py-0.5 rounded bg-red-500/20 text-red-300 border border-red-500/40">击刑</span>
                                 <span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">入墓</span>
+                                <span class="px-1.5 py-0.5 rounded bg-gradient-to-br from-red-500/40 to-amber-500/40 text-red-100 border border-red-500/60">刑墓</span>
+                                <span class="px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/40">长生</span>
                                 <span class="px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/40">门迫</span>
                                 <span class="px-1.5 py-0.5 rounded bg-slate-600/40 text-slate-300 border border-slate-500/40">空亡</span>
                                 <span class="px-1.5 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/40">马星</span>
@@ -667,7 +759,7 @@
                                 <h2 id="step-title" class="font-gu text-lg sm:text-xl font-bold text-gold-300 mt-1">第九步：标注四害与特殊格局</h2>
                             </div>
                             <div class="text-right">
-                                <span class="text-[15px] text-slate-400 block">核心口诀</span>
+                                <span class="text-[0.9375rem] text-slate-400 block">核心口诀</span>
                                 <span id="step-mantra" class="text-xs text-amber-300 font-gu font-semibold">空亡马星入墓击刑，奇仪克应定吉凶</span>
                             </div>
                         </div>
@@ -1168,7 +1260,15 @@
                 desc: '甲寅癸旬首，值符天心随时干辛落巽四宫，与老家乾六宫正好对冲；八门同理全部飞到对冲之宫，形成星门全反吟（主反复、急速变动）。',
                 yearGZ: '甲辰', monthGZ: '丙寅', dayGZ: '戊辰', hourGZ: '辛酉',
                 jieqi: '冬至', manualJu: '1'
-            }
+            },
+            {
+                id: 'case8',
+                tag: '刑墓·入墓·长生',
+                title: '案例八：阳遁一局 · 甲子日 癸酉时（四害叠加与长生）',
+                desc: '同一盘里可对照四种状态：艮八宫天盘【庚】既寅申相刑、又入丑墓，合为「刑墓」；乾六宫天盘【戊】入戌墓为「入墓」；各宫天盘干的十二长生从「绝」「胎」到「临官」「帝旺」俱全，适合练习四害叠加与旺衰判读。',
+                yearGZ: '甲辰', monthGZ: '丙寅', dayGZ: '甲子', hourGZ: '癸酉',
+                jieqi: '冬至', manualJu: '1'
+            },
         ];
 
         // 常见十干克应精选字典（用于宫位深度剖析）
@@ -1521,7 +1621,13 @@
                     isDiRuMu,
                     menPoInfo,
                     tianChangSheng,
-                    diChangSheng
+                    diChangSheng,
+                    // 派生状态：击刑 / 入墓 / 刑墓 / 十二长生
+                    isJiXing: !!(jiXingDesc || subJiXingDesc),
+                    isRuMu: isTianRuMu || isSubRuMu,
+                    xingMu: !!(jiXingDesc || subJiXingDesc) && (isTianRuMu || isSubRuMu),
+                    tianCS: tianChangSheng.length ? tianChangSheng[0].state : '',
+                    diCS: diChangSheng.length ? diChangSheng[0].state : ''
                 };
             }
 
@@ -1600,7 +1706,7 @@
             presetContainer.innerHTML = PRESET_CASES.map(c => `
                 <button onclick="loadPresetCase('${c.id}')" id="preset-btn-${c.id}" title="${c.desc}"
                     class="preset-btn px-3 py-1.5 rounded-lg text-xs border transition flex items-center gap-1.5 ${c.id === currentCaseId ? 'bg-gold-500/20 border-gold-400 text-gold-300 font-semibold' : 'bg-xuan-900 border-slate-700 text-slate-300 hover:border-gold-500/50'}">
-                    <span class="px-1.5 py-0.2 rounded bg-xuan-950 text-[14px] text-amber-400 border border-amber-500/30">${c.tag}</span>
+                    <span class="px-1.5 py-0.2 rounded bg-xuan-950 text-[0.875rem] text-amber-400 border border-amber-500/30">${c.tag}</span>
                     <span>${c.title.split('·')[1].trim()}</span>
                 </button>
             `).join('');
@@ -1621,6 +1727,11 @@
             document.getElementById('h-hour').innerHTML =
                 Array.from({ length: 24 }, (_, i) => `<option value="${i}">${String(i).padStart(2, '0')} 时</option>`).join('');
             fillNowLocal();
+            // 手机端默认收起时间条，把盘面提到首屏
+            if (typeof window !== 'undefined' && window.innerWidth <= 640) {
+                const tf = document.getElementById('home-time-form');
+                if (tf) tf.classList.add('collapsed');
+            }
 
             // 载入默认案例1
             loadPresetCase('case1');
@@ -1787,22 +1898,22 @@
             if (!g) return '';
             const head = `
                 <div class="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/30 mb-2">
-                    <div class="text-[15px] font-bold text-emerald-300 mb-1"><i data-i="comments"></i> 这一步在干什么（大白话）</div>
+                    <div class="text-[0.9375rem] font-bold text-emerald-300 mb-1"><i data-i="comments"></i> 这一步在干什么（大白话）</div>
                     <p class="text-xs text-slate-200 leading-relaxed">${g.plain}</p>
                 </div>
             `;
             const tail = `
                 <div class="mt-2 space-y-2">
                     <div class="p-3 rounded-lg bg-sky-500/10 border border-sky-500/30">
-                        <div class="text-[15px] font-bold text-sky-300 mb-1"><i data-i="bullseye"></i> 打个比方</div>
+                        <div class="text-[0.9375rem] font-bold text-sky-300 mb-1"><i data-i="bullseye"></i> 打个比方</div>
                         <p class="text-xs text-slate-200 leading-relaxed">${g.analogy}</p>
                     </div>
                     <div class="p-3 rounded-lg bg-xuan-950 border border-gold-500/30">
-                        <div class="text-[15px] font-bold text-gold-300 mb-1"><i data-i="magnifying-glass"></i> 此刻请看盘面</div>
+                        <div class="text-[0.9375rem] font-bold text-gold-300 mb-1"><i data-i="magnifying-glass"></i> 此刻请看盘面</div>
                         <p class="text-xs text-slate-200 leading-relaxed">${g.look}</p>
                     </div>
                     <div class="p-3 rounded-lg bg-red-500/10 border border-red-500/30">
-                        <div class="text-[15px] font-bold text-red-300 mb-1"><i data-i="triangle-exclamation"></i> 最容易错的地方</div>
+                        <div class="text-[0.9375rem] font-bold text-red-300 mb-1"><i data-i="triangle-exclamation"></i> 最容易错的地方</div>
                         <p class="text-xs text-slate-200 leading-relaxed">${g.pitfall}</p>
                     </div>
                 </div>
@@ -1839,7 +1950,7 @@
             const el = document.getElementById(targetId || 'board-header-summary');
             el.innerHTML = `
                 <div class="bg-xuan-950/70 rounded-lg p-2 border border-slate-800/80">
-                    <div class="text-[15px] text-slate-400">四柱八字（<span class="text-gold-400">日=求测人</span> · <span class="text-amber-300">时=所测之事</span>）</div>
+                    <div class="text-[0.9375rem] text-slate-400">四柱八字（<span class="text-gold-400">日=求测人</span> · <span class="text-amber-300">时=所测之事</span>）</div>
                     <div class="font-gu text-sm sm:text-base font-bold mt-0.5 tracking-wide">
                         <span class="text-slate-300">${c.yearGZ}</span>
                         <span class="text-slate-300 ml-1">${c.monthGZ}</span>
@@ -1848,24 +1959,52 @@
                     </div>
                 </div>
                 <div class="bg-xuan-950/70 rounded-lg p-2 border border-slate-800/80">
-                    <div class="text-[15px] text-slate-400">节气三元与用局</div>
+                    <div class="text-[0.9375rem] text-slate-400">节气三元与用局</div>
                     <div class="font-gu text-sm sm:text-base font-bold mt-0.5 ${c.isYang ? 'text-amber-300' : 'text-blue-300'}">
                         ${ currentStep >= 2 ? `${c.jieqiName}${c.chaibuInfo.yuan} · ${c.juTitle}` : '<span class="text-slate-500">待第2步推算...</span>' }
                     </div>
                 </div>
                 <div class="bg-xuan-950/70 rounded-lg p-2 border border-slate-800/80">
-                    <div class="text-[15px] text-slate-400">时辰旬首 / 空亡 / 驿马</div>
+                    <div class="text-[0.9375rem] text-slate-400">时辰旬首 / 空亡 / 驿马</div>
                     <div class="font-gu text-sm sm:text-base font-bold mt-0.5 text-emerald-300">
                         ${ currentStep >= 4 ? `${c.hourXun.fullTitle} <span class="text-xs text-slate-400 font-sans">(${c.hourXun.kongZhi.join('')}空 · 马在${c.maXing.zhi})</span>` : '<span class="text-slate-500">待第4步推算...</span>' }
                     </div>
                 </div>
                 <div class="bg-xuan-950/70 rounded-lg p-2 border border-slate-800/80">
-                    <div class="text-[15px] text-slate-400">值符星 / 值使门</div>
+                    <div class="text-[0.9375rem] text-slate-400">值符星 / 值使门</div>
                     <div class="font-gu text-sm sm:text-base font-bold mt-0.5 text-gold-300">
                         ${ currentStep >= 4 ? `值符【${c.zhiFuStar}】 · 值使【${c.zhiShiDoor}】` : '<span class="text-slate-500">待第4步推算...</span>' }
                     </div>
                 </div>
             `;
+        }
+
+        // 十二长生的吉凶色调
+        function csTone(state) {
+            if (['长生', '冠带', '临官', '帝旺'].includes(state)) return 'chip-cs-good';
+            if (['衰', '病', '死', '墓', '绝'].includes(state)) return 'chip-cs-bad';
+            return 'chip-cs-mid';
+        }
+
+        // 宫位状态标签：刑墓 > 击刑 / 入墓，另有门迫与天盘干长生
+        function statusChips(p, step) {
+            const out = [];
+            const short = (long, s) => '<span class="hidden sm:inline">' + long + '</span><span class="sm:hidden">' + s + '</span>';
+            if (step >= 9) {
+                if (p.xingMu) {
+                    out.push('<span data-role="harm" class="chip chip-xm" title="击刑 + 入墓 同宫（凶上加凶）">刑墓</span>');
+                } else {
+                    if (p.isJiXing) out.push('<span data-role="harm" class="chip chip-xing" title="' + (p.jiXingDesc || '六仪击刑') + '">' + short('击刑', '刑') + '</span>');
+                    if (p.isRuMu) out.push('<span data-role="harm" class="chip chip-mu" title="天盘干入墓库：有力使不出">' + short('入墓', '墓') + '</span>');
+                }
+                if (p.menPoInfo && p.menPoInfo.type === '门迫') {
+                    out.push('<span data-role="harm" class="chip chip-po" title="' + p.menPoInfo.desc + '">' + short('门迫', '迫') + '</span>');
+                }
+            }
+            if (step >= 8 && p.tianCS) {
+                out.push('<span class="chip ' + csTone(p.tianCS) + '" title="天盘干十二长生：' + p.tianCS + '"><span class="hidden sm:inline">长生·</span>' + p.tianCS + '</span>');
+            }
+            return out.join('');
         }
 
         // 渲染3x3九宫格盘面（严格根据 currentStep 控制显示层级与当前步骤高亮）
@@ -1908,30 +2047,35 @@
                 if (pNum === 5) {
                     return `
                         <div onclick="${clickHandler}(5)" data-palace="5"
-                            class="relative rounded-xl p-2 sm:p-3 flex flex-col justify-between cursor-pointer transition-all bg-xuan-900/90 ${isSelected ? 'gold-border-active' : 'gold-border hover:border-gold-400/60'} ${isHighlighted ? 'palace-highlight' : ''}">
-                            <div class="flex items-center justify-between text-[15px] text-slate-400 border-b border-slate-800/80 pb-1">
+                            class="palace-cell relative rounded-xl p-2 sm:p-3 flex flex-col justify-between cursor-pointer transition-all bg-xuan-900/90 ${isSelected ? 'gold-border-active' : 'gold-border hover:border-gold-400/60'} ${isHighlighted ? 'palace-highlight' : ''}">
+                            <div class="flex items-center justify-between text-[0.9375rem] text-slate-400 border-b border-slate-800/80 pb-1">
                                 <span class="font-gu font-bold wx-土">中五宫 (土)</span>
-                                <span class="text-[14px] px-1.5 rounded bg-amber-500/15 text-amber-300 border border-amber-500/30">寄${PALACE_META[c.jiTargetPalace].gua}${c.jiTargetPalace}宫</span>
+                                <span class="text-[0.875rem] px-1.5 rounded bg-amber-500/15 text-amber-300 border border-amber-500/30">寄${PALACE_META[c.jiTargetPalace].gua}${c.jiTargetPalace}宫</span>
                             </div>
 
                             <div class="my-auto text-center space-y-1 py-2">
                                 <div class="text-xs text-slate-400 font-gu">原始星：天禽星</div>
                                 ${currentStep >= 3 ? `
                                     <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-xuan-950 border border-gold-500/40 ${currentStep === 3 ? 'step-new-item' : ''}">
-                                        <span class="text-[15px] text-slate-400">地盘奇仪:</span>
+                                        <span class="text-[0.9375rem] text-slate-400">地盘奇仪:</span>
                                         <span data-role="estem" class="font-gu text-xl sm:text-2xl font-black wx-${GAN_META[p.earthStem].wx}">${p.earthStem}</span>
                                     </div>
                                 ` : ''}
                                 ${currentStep === 6 && walkStepMap[5] ? `
-                                    <div class="text-[15px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 step-new-item">
+                                    <div class="text-[0.9375rem] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 step-new-item">
                                         步进:${walkStepMap[5].gz}
                                     </div>
                                 ` : ''}
                             </div>
 
-                            <div class="text-[14px] text-slate-400 text-center border-t border-slate-800/80 pt-1">
+                            <div class="text-[0.875rem] text-slate-400 text-center border-t border-slate-800/80 pt-1">
                                 ${currentStep >= 8 ? `暗干: <b data-role="angan" class="wx-${GAN_META[p.anGan].wx}">${p.anGan}</b>` : '皇极中宫 · 统摄八方'}
                             </div>
+                            ${currentStep >= 8 && p.diCS ? `
+                                <div class="mt-1 flex flex-wrap justify-center gap-1">
+                                    <span class="chip ${csTone(p.diCS)}" title="地盘干十二长生：${p.diCS}"><span class="hidden sm:inline">地·</span>${p.diCS}</span>
+                                </div>
+                            ` : ''}
                         </div>
                     `;
                 }
@@ -1945,21 +2089,21 @@
 
                 return `
                     <div onclick="${clickHandler}(${pNum})" data-palace="${pNum}"
-                        class="relative rounded-xl p-2 sm:p-3 flex flex-col justify-between cursor-pointer transition-all bg-xuan-900/80 ${isSelected ? 'gold-border-active' : 'gold-border hover:border-gold-400/60'} ${isHighlighted ? 'palace-highlight' : ''}">
+                        class="palace-cell relative rounded-xl p-2 sm:p-3 flex flex-col justify-between cursor-pointer transition-all bg-xuan-900/80 ${isSelected ? 'gold-border-active' : 'gold-border hover:border-gold-400/60'} ${isHighlighted ? 'palace-highlight' : ''}">
                         
                         <!-- 顶栏：左八神 + 中四害角标 + 右暗干/马星/空亡 -->
-                        <div class="flex items-center justify-between min-h-[22px] border-b border-slate-800/70 pb-1">
+                        <div class="flex items-center justify-between min-h-[18px] sm:min-h-[22px] border-b border-slate-800/70 pb-0.5 sm:pb-1">
                             <div class="flex items-center gap-1">
                                 <span class="axis-tag" title="神盘 · 八神">神</span>
                                 ${currentStep >= 7 ? `
                                     <span data-role="god" class="font-gu text-sm sm:text-lg font-bold wx-${shenWx} ${currentStep === 7 ? 'step-new-item px-1 rounded bg-gold-500/20' : ''}">
                                         ${p.shen}
                                     </span>
-                                ` : `<span class="text-[15px] text-slate-600 font-gu">神盘待排</span>`}
+                                ` : `<span class="text-[0.9375rem] text-slate-600 font-gu">神盘待排</span>`}
                             </div>
 
                             <!-- 右上：暗干 + 空亡 + 马星 -->
-                            <div class="flex items-center gap-1 text-[14px]">
+                            <div class="flex items-center gap-1 text-[0.875rem]">
                                 ${currentStep >= 8 ? `
                                     <span data-role="angan" class="px-1 rounded bg-xuan-950 border border-slate-700 text-slate-300 ${currentStep === 8 ? 'step-new-item' : ''}" title="暗干(隐干)">
                                         隐<b class="wx-${GAN_META[p.anGan].wx}">${p.anGan}</b>
@@ -1971,18 +2115,18 @@
                         </div>
 
                         <!-- 中上栏：左九星 + 右天盘三奇六仪 -->
-                        <div class="flex items-center justify-between my-1">
+                        <div class="flex items-center justify-between my-0.5 sm:my-1">
                             <div class="flex items-center gap-1">
                                 <span class="axis-tag" title="天盘 · 九星">星</span>
                                 ${currentStep >= 5 ? `
                                     <div class="flex items-center gap-1 ${currentStep === 5 ? 'step-new-item' : ''}">
                                         <span data-role="star" class="font-gu text-sm sm:text-lg font-bold wx-${starWx}">${p.star}</span>
-                                        ${p.hasTianQin ? `<span class="text-[14px] px-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40" title="天禽星随行">禽</span>` : ''}
-                                        ${(p.star === c.zhiFuStar || (c.zhiFuStar === '天禽' && p.hasTianQin)) ? `<span class="text-[14px] px-1 rounded bg-gold-500 text-xuan-950 font-bold live-badge">符</span>` : ''}
+                                        ${p.hasTianQin ? `<span class="text-[0.875rem] px-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40" title="天禽星随行">禽</span>` : ''}
+                                        ${(p.star === c.zhiFuStar || (c.zhiFuStar === '天禽' && p.hasTianQin)) ? `<span class="text-[0.875rem] px-1 rounded bg-gold-500 text-xuan-950 font-bold live-badge">符</span>` : ''}
                                     </div>
                                 ` : currentStep === 4 && (pNum === c.xunShouRawPalace || (c.xunShouRawPalace === 5 && pNum === c.jiTargetPalace)) ? `
                                     <span data-role="zfu" class="text-xs px-1.5 py-0.5 rounded bg-gold-500 text-xuan-950 font-bold step-new-item">原始值符:${c.zhiFuStar}</span>
-                                ` : `<span class="text-[15px] text-slate-600">原始:${p.meta.star}</span>`}
+                                ` : `<span class="text-[0.9375rem] text-slate-600">原始:${p.meta.star}</span>`}
                             </div>
 
                             <!-- 天盘奇仪 + 长生 + 击刑入墓 -->
@@ -1992,24 +2136,24 @@
                                     <div class="flex items-baseline gap-0.5 ${currentStep === 5 ? 'step-new-item px-1.5 rounded bg-gold-500/20' : ''}">
                                         ${p.heavenSubStem ? `<span class="font-gu text-xs sm:text-sm font-bold wx-${GAN_META[p.heavenSubStem].wx}" title="中五宫随行天盘奇仪">${p.heavenSubStem}</span>` : ''}
                                         <span data-role="hstem" class="font-gu text-lg sm:text-2xl font-black wx-${tGanWx}" title="天盘奇仪">${p.heavenStem}</span>
-                                        ${currentStep >= 8 && p.tianChangSheng.length ? `<span class="text-[13px] text-slate-400 hidden sm:inline">${p.tianChangSheng[0].state}</span>` : ''}
+                                        ${currentStep >= 8 && p.tianChangSheng.length ? `<span class="text-[0.8125rem] text-slate-400 hidden sm:inline">${p.tianChangSheng[0].state}</span>` : ''}
                                     </div>
                                 ` : `<span class="text-xs text-slate-700 font-gu">天盘</span>`}
                             </div>
                         </div>
 
                         <!-- 中下栏：左人盘八门 + 右地盘三奇六仪 -->
-                        <div class="flex items-center justify-between my-1">
+                        <div class="flex items-center justify-between my-0.5 sm:my-1">
                             <div class="flex items-center gap-1">
                                 <span class="axis-tag" title="人盘 · 八门">门</span>
                                 ${currentStep >= 6 ? `
                                     <div class="flex items-center gap-1 ${currentStep === 6 ? 'step-new-item' : ''}">
                                         <span data-role="door" class="font-gu text-sm sm:text-lg font-bold wx-${doorWx}">${p.door}</span>
-                                        ${p.door === c.zhiShiDoor ? `<span class="text-[14px] px-1 rounded bg-emerald-400 text-xuan-950 font-bold live-badge">使</span>` : ''}
+                                        ${p.door === c.zhiShiDoor ? `<span class="text-[0.875rem] px-1 rounded bg-emerald-400 text-xuan-950 font-bold live-badge">使</span>` : ''}
                                     </div>
                                 ` : currentStep === 4 && pNum === c.zhiShiSourcePalace ? `
                                     <span data-role="zshi" class="text-xs px-1.5 py-0.5 rounded bg-emerald-400 text-xuan-950 font-bold step-new-item">原始值使:${c.zhiShiDoor}</span>
-                                ` : `<span class="text-[15px] text-slate-600">原始:${p.meta.door}</span>`}
+                                ` : `<span class="text-[0.9375rem] text-slate-600">原始:${p.meta.door}</span>`}
                             </div>
 
                             <!-- 地盘奇仪 -->
@@ -2019,32 +2163,52 @@
                                     <div class="flex items-baseline gap-0.5 ${currentStep === 3 ? 'step-new-item px-1.5 rounded bg-gold-500/20' : ''}">
                                         ${p.earthSubStem ? `<span class="font-gu text-xs sm:text-sm font-bold wx-${GAN_META[p.earthSubStem].wx}" title="中五宫寄地盘奇仪">${p.earthSubStem}</span>` : ''}
                                         <span data-role="estem" class="font-gu text-lg sm:text-2xl font-black wx-${dGanWx}" title="地盘奇仪">${p.earthStem}</span>
-                                        ${currentStep >= 8 && p.diChangSheng.length ? `<span class="text-[13px] text-slate-400 hidden sm:inline">${p.diChangSheng[0].state}</span>` : ''}
+                                        ${currentStep >= 8 && p.diChangSheng.length ? `<span class="text-[0.8125rem] text-slate-400 hidden sm:inline">${p.diChangSheng[0].state}</span>` : ''}
                                     </div>
                                 ` : `<span class="text-xs text-slate-700 font-gu">地盘</span>`}
                             </div>
                         </div>
 
-                        <!-- 底栏：宫卦名 + 第6步步进轨迹 / 第9步四害标签 -->
-                        <div class="flex items-center justify-between pt-1 border-t border-slate-800/70 text-[14px]">
-                            <span class="font-gu text-slate-400 wx-${p.meta.wx}">
-                                ${p.meta.gua}${pNum} <span class="hidden sm:inline text-slate-500">(${p.meta.zhi.join('')})</span>
-                            </span>
-
-                            <div class="flex items-center gap-1">
+                        <!-- 底栏：宫名 + 步进 + 状态标签（击刑/入墓/刑墓/门迫/长生） -->
+                        <div class="pt-0.5 sm:pt-1 border-t border-slate-800/70">
+                            <div class="flex items-center justify-between text-[0.875rem]">
+                                <span class="font-gu text-slate-400 wx-${p.meta.wx}">
+                                    ${p.meta.gua}${pNum} <span class="hidden sm:inline text-slate-500">(${p.meta.zhi.join('')})</span>
+                                </span>
                                 ${currentStep === 6 && walkStepMap[pNum] ? `
                                     <span class="px-1.5 py-0.2 rounded bg-emerald-500 text-xuan-950 font-bold step-new-item">
                                         数至:${walkStepMap[pNum].gz}
                                     </span>
                                 ` : ''}
-                                ${currentStep >= 9 && p.jiXingDesc ? `<span data-role="harm" class="px-1 rounded bg-red-500/25 text-red-300 border border-red-500/40 font-semibold" title="${p.jiXingDesc}">击刑</span>` : ''}
-                                ${currentStep >= 9 && p.isTianRuMu ? `<span data-role="harm" class="px-1 rounded bg-amber-500/25 text-amber-300 border border-amber-500/40 font-semibold" title="天盘干入墓">入墓</span>` : ''}
-                                ${currentStep >= 9 && p.menPoInfo?.type === '门迫' ? `<span data-role="harm" class="px-1 rounded bg-purple-500/25 text-purple-300 border border-purple-500/40 font-semibold" title="${p.menPoInfo.desc}">门迫</span>` : ''}
+                            </div>
+                            <div class="status-row mt-0.5 sm:mt-1 flex flex-wrap items-center gap-1 min-h-[16px]">
+                                ${statusChips(p, currentStep)}
                             </div>
                         </div>
                     </div>
                 `;
             }).join('');
+        }
+
+        // 四害速览：一行看清哪些宫有刑墓/击刑/入墓/门迫/空亡/马星
+        function harmSummary(c) {
+            const ring = [1, 2, 3, 4, 6, 7, 8, 9];
+            const pick = fn => ring.filter(p => fn(c.palaces[p])).map(p => PALACE_META[p].gua + p);
+            const xm = pick(d => d.xingMu);
+            const xing = pick(d => d.isJiXing && !d.xingMu);
+            const mu = pick(d => d.isRuMu && !d.xingMu);
+            const po = pick(d => d.menPoInfo && d.menPoInfo.type === '门迫');
+            const kong = pick(d => d.isKong);
+            const ma = pick(d => d.isMa);
+            const out = [];
+            if (xm.length) out.push('<span class="chip chip-xm" title="击刑 + 入墓 同宫">刑墓 ' + xm.join('、') + '</span>');
+            if (xing.length) out.push('<span class="chip chip-xing">击刑 ' + xing.join('、') + '</span>');
+            if (mu.length) out.push('<span class="chip chip-mu">入墓 ' + mu.join('、') + '</span>');
+            if (po.length) out.push('<span class="chip chip-po">门迫 ' + po.join('、') + '</span>');
+            if (kong.length) out.push('<span class="chip chip-cs-mid">空亡 ' + kong.join('、') + '</span>');
+            if (ma.length) out.push('<span class="chip chip-cs-mid">马星 ' + ma.join('、') + '</span>');
+            if (!out.length) out.push('<span class="text-slate-500 text-[0.8125rem]">本局四害不显</span>');
+            return '<span class="text-slate-500 text-[0.8125rem] mr-1">四害速览</span>' + out.join('');
         }
 
         // 渲染全局特殊格局提示条
@@ -2056,12 +2220,13 @@
                 bar.innerHTML = `
                     <span class="px-2 py-0.5 rounded bg-gold-500/15 text-gold-300 border border-gold-500/30 font-semibold">第 ${currentStep} 步进行中</span>
                     <span class="text-slate-300">${guide ? guide.look : ''}</span>
-                    <span class="text-slate-500 text-[15px]">（推进到第 9 步会自动汇总全盘奇格与四害警示）</span>
+                    <span class="text-slate-500 text-[0.9375rem]">（推进到第 9 步会自动汇总全盘奇格与四害警示）</span>
                 `;
                 return;
             }
             if (!c.globalPatterns.length) {
-                bar.innerHTML = `<span class="text-slate-400">本局盘面平稳，无伏吟/反吟/五不遇时等极端全局格局。</span>`;
+                bar.innerHTML = `<span class="text-slate-400">本局盘面平稳，无伏吟/反吟/五不遇时等极端全局格局。</span>`
+                    + `<div class="w-full mt-1 flex flex-wrap items-center gap-1.5 border-t border-slate-800/70 pt-1.5">${harmSummary(c)}</div>`;
                 return;
             }
             bar.innerHTML = `<span class="text-slate-400 font-medium">本局关键格局识别：</span>` + c.globalPatterns.map(pat => {
@@ -2071,7 +2236,8 @@
                         ? 'bg-red-500/15 text-red-300 border-red-500/40'
                         : 'bg-amber-500/15 text-amber-300 border-amber-500/40';
                 return `<span class="px-2 py-0.5 rounded border ${colorCls}" title="${pat.desc}"><b>${pat.name}</b> (${pat.desc})</span>`;
-            }).join('');
+            }).join('')
+                + `<div class="w-full mt-1 flex flex-wrap items-center gap-1.5 border-t border-slate-800/70 pt-1.5">${harmSummary(c)}</div>`;
         }
 
         // 渲染右侧分步推导教学过程（随 currentStep 1~9 动态计算讲解）
@@ -2091,19 +2257,19 @@
                         <div class="text-xs text-gold-400 font-bold">【本局四柱干支定位】</div>
                         <div class="grid grid-cols-4 gap-2 text-center py-2">
                             <div class="p-2 rounded bg-xuan-900 border border-slate-800">
-                                <div class="text-[15px] text-slate-400">年柱</div>
+                                <div class="text-[0.9375rem] text-slate-400">年柱</div>
                                 <div class="font-gu text-lg font-bold text-slate-200">${c.yearGZ}</div>
                             </div>
                             <div class="p-2 rounded bg-xuan-900 border border-slate-800">
-                                <div class="text-[15px] text-slate-400">月柱</div>
+                                <div class="text-[0.9375rem] text-slate-400">月柱</div>
                                 <div class="font-gu text-lg font-bold text-slate-200">${c.monthGZ}</div>
                             </div>
                             <div class="p-2 rounded bg-xuan-900 border border-gold-500/50">
-                                <div class="text-[15px] text-gold-400">日柱 (定符头)</div>
+                                <div class="text-[0.9375rem] text-gold-400">日柱 (定符头)</div>
                                 <div class="font-gu text-lg font-bold text-gold-300">${c.dayGZ}</div>
                             </div>
                             <div class="p-2 rounded bg-xuan-900 border border-amber-500/50">
-                                <div class="text-[15px] text-amber-400">时柱 (起盘核心)</div>
+                                <div class="text-[0.9375rem] text-amber-400">时柱 (起盘核心)</div>
                                 <div class="font-gu text-lg font-bold text-amber-300">${c.hourGZ}</div>
                             </div>
                         </div>
@@ -2257,19 +2423,19 @@
                         <div class="text-xs font-bold text-emerald-300">【读盘第一步：先认清"谁"和"什么事"落在哪一宫】</div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                             <div class="p-2 rounded bg-xuan-900 border border-gold-500/40">
-                                <div class="text-[15px] text-gold-400 mb-0.5">求测人 = 日干【${c.dayGan}】${c.dayGan === '甲' ? `（甲隐于${c.dayXun.dunGan}，按${c.dayXun.dunGan}看）` : ''}</div>
+                                <div class="text-[0.9375rem] text-gold-400 mb-0.5">求测人 = 日干【${c.dayGan}】${c.dayGan === '甲' ? `（甲隐于${c.dayXun.dunGan}，按${c.dayXun.dunGan}看）` : ''}</div>
                                 <div class="font-gu font-bold text-slate-100">${dp.meta.name} · ${dp.meta.dir} · ${dp.meta.wx}</div>
-                                <div class="text-[15px] text-slate-400 mt-0.5">${dp.shen} / ${dp.star} / ${dp.door} / 天${dp.heavenStem} 地${dp.earthStem}</div>
+                                <div class="text-[0.9375rem] text-slate-400 mt-0.5">${dp.shen} / ${dp.star} / ${dp.door} / 天${dp.heavenStem} 地${dp.earthStem}</div>
                             </div>
                             <div class="p-2 rounded bg-xuan-900 border border-amber-500/40">
-                                <div class="text-[15px] text-amber-400 mb-0.5">所测之事 = 时干【${c.hourGan}】${c.hourGan === '甲' ? `（甲隐于${c.hourXun.dunGan}，按${c.hourXun.dunGan}看）` : ''}</div>
+                                <div class="text-[0.9375rem] text-amber-400 mb-0.5">所测之事 = 时干【${c.hourGan}】${c.hourGan === '甲' ? `（甲隐于${c.hourXun.dunGan}，按${c.hourXun.dunGan}看）` : ''}</div>
                                 <div class="font-gu font-bold text-slate-100">${hp.meta.name} · ${hp.meta.dir} · ${hp.meta.wx}</div>
-                                <div class="text-[15px] text-slate-400 mt-0.5">${hp.shen} / ${hp.star} / ${hp.door} / 天${hp.heavenStem} 地${hp.earthStem}</div>
+                                <div class="text-[0.9375rem] text-slate-400 mt-0.5">${hp.shen} / ${hp.star} / ${hp.door} / 天${hp.heavenStem} 地${hp.earthStem}</div>
                             </div>
                         </div>
                         <p class="text-xs text-slate-300 leading-relaxed">
                             <b class="text-emerald-300">两宫关系：</b>${wxRel.text} —— ${wxRel.tip}<br>
-                            <span class="text-slate-400 text-[15px]">（入门速览：先看这两个宫的五行生克定大体顺逆，再结合门星神旺衰与四害细断。日干宫逢空、逢击刑，人多虚或受阻；时干宫逢马星，事多动。）</span>
+                            <span class="text-slate-400 text-[0.9375rem]">（入门速览：先看这两个宫的五行生克定大体顺逆，再结合门星神旺衰与四害细断。日干宫逢空、逢击刑，人多虚或受阻；时干宫逢马星，事多动。）</span>
                         </p>
                     </div>
                 `;
@@ -2280,6 +2446,13 @@
         }
 
         // 点击九宫格某宫，更新右侧【宫位深度剖析器】
+        // 手机上点宫格后，把详情面板滚进视野
+        function scrollInspectorIntoView(id) {
+            if (typeof window === 'undefined' || window.innerWidth > 640) return;
+            const el = document.getElementById(id);
+            if (el && el.scrollIntoView) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60);
+        }
+
         function selectPalace(pNum) {
             selectedPalace = pNum;
             renderQimenGrid();
@@ -2288,6 +2461,7 @@
                 const el = document.getElementById('palace-inspector');
                 if (el) el.style.animation = 'fxDropIn ' + animMs(280) + 'ms ease both';
             }
+            scrollInspectorIntoView('palace-inspector');
         }
 
         function renderPalaceInspector(pNum, targetId) {
@@ -2328,37 +2502,37 @@
                                 ${p.meta.name}深度剖析
                                 <span class="text-xs font-sans font-normal px-2 py-0.5 rounded bg-wx-${p.meta.wx} wx-${p.meta.wx} border">方位:${p.meta.dir} · 五行:${p.meta.wx}</span>
                             </h3>
-                            <p class="text-[15px] text-slate-400">藏支：${p.meta.zhi.join('、')} | 原始本宫：${p.meta.star} · ${p.meta.door}</p>
+                            <p class="text-[0.9375rem] text-slate-400">藏支：${p.meta.zhi.join('、')} | 原始本宫：${p.meta.star} · ${p.meta.door}</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- 读格指引 -->
-                <p class="text-[15px] text-slate-400 mb-2 leading-relaxed border-l-2 border-gold-500/40 pl-2">
+                <p class="text-[0.9375rem] text-slate-400 mb-2 leading-relaxed border-l-2 border-gold-500/40 pl-2">
                     读格顺序：<b class="wx-土">神</b>（氛围/助力）→ <b class="wx-金">星</b>（天时/大环境）→ <b class="wx-木">门</b>（人事/做法）→ <b class="text-gold-300">天盘干 + 地盘干</b>（十干克应）→ 底部<b>四害</b>标签。下面按这个顺序逐项拆开。
                 </p>
 
                 <!-- 宫位四盘要素卡片 -->
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs mb-3">
                     <div class="p-2 rounded bg-xuan-950 border border-slate-800">
-                        <span class="text-[14px] text-slate-400 block">神盘八神</span>
+                        <span class="text-[0.875rem] text-slate-400 block">神盘八神</span>
                         <span class="font-gu font-bold text-sm wx-${SHEN_META[p.shen].wx}">${p.shen}</span>
-                        <span class="text-[14px] text-slate-500 block truncate" title="${SHEN_META[p.shen].desc}">${SHEN_META[p.shen].desc}</span>
+                        <span class="text-[0.875rem] text-slate-500 block truncate" title="${SHEN_META[p.shen].desc}">${SHEN_META[p.shen].desc}</span>
                     </div>
                     <div class="p-2 rounded bg-xuan-950 border border-slate-800">
-                        <span class="text-[14px] text-slate-400 block">天盘九星</span>
+                        <span class="text-[0.875rem] text-slate-400 block">天盘九星</span>
                         <span class="font-gu font-bold text-sm wx-${STAR_META[p.star].wx}">${p.star}${p.hasTianQin ? '+禽' : ''}</span>
-                        <span class="text-[14px] text-slate-500 block">${STAR_META[p.star].auspicious} · ${STAR_META[p.star].wx}</span>
+                        <span class="text-[0.875rem] text-slate-500 block">${STAR_META[p.star].auspicious} · ${STAR_META[p.star].wx}</span>
                     </div>
                     <div class="p-2 rounded bg-xuan-950 border border-slate-800">
-                        <span class="text-[14px] text-slate-400 block">人盘八门</span>
+                        <span class="text-[0.875rem] text-slate-400 block">人盘八门</span>
                         <span class="font-gu font-bold text-sm wx-${DOOR_META[p.door].wx}">${p.door}</span>
-                        <span class="text-[14px] text-slate-500 block">${DOOR_META[p.door].auspicious} · ${DOOR_META[p.door].wx}</span>
+                        <span class="text-[0.875rem] text-slate-500 block">${DOOR_META[p.door].auspicious} · ${DOOR_META[p.door].wx}</span>
                     </div>
                     <div class="p-2 rounded bg-xuan-950 border border-slate-800">
-                        <span class="text-[14px] text-slate-400 block">天地奇仪 / 暗干</span>
+                        <span class="text-[0.875rem] text-slate-400 block">天地奇仪 / 暗干</span>
                         <span class="font-gu font-bold text-sm text-gold-300">${p.heavenStem}${p.heavenSubStem ? '('+p.heavenSubStem+')' : ''} + ${p.earthStem}</span>
-                        <span class="text-[14px] text-slate-400 block">暗干: <b>${p.anGan}</b></span>
+                        <span class="text-[0.875rem] text-slate-400 block">暗干: <b>${p.anGan}</b></span>
                     </div>
                 </div>
 
@@ -2366,7 +2540,7 @@
                 <div class="p-3 rounded-lg bg-xuan-950/90 border border-gold-500/30 text-xs space-y-1.5 mb-3">
                     <div class="flex items-center justify-between">
                         <span class="font-bold text-amber-300">【十干克应】${pairKey}：${keYing.name}</span>
-                        <span class="text-[15px] text-slate-400">
+                        <span class="text-[0.9375rem] text-slate-400">
                             天盘长生：${p.tianChangSheng.map(x=>`${x.zhi}(${x.state})`).join(' ')}
                         </span>
                     </div>
@@ -2375,6 +2549,8 @@
 
                 <!-- 四害与生克状态汇总 -->
                 <div class="flex flex-wrap gap-1.5 text-xs">
+                    ${p.xingMu ? `<span class="px-2 py-1 rounded bg-gradient-to-br from-red-500/30 to-amber-500/30 text-red-100 border border-red-500/60 font-semibold">刑墓同宫：击刑 + 入墓，凶上加凶</span>` : ''}
+                    ${p.tianCS ? `<span class="px-2 py-1 rounded bg-xuan-950 border border-slate-700 text-slate-200">十二长生：天盘 <b>${p.tianCS}</b>${p.diCS ? ' · 地盘 <b>' + p.diCS + '</b>' : ''}</span>` : ''}
                     ${p.jiXingDesc ? `<span class="px-2 py-1 rounded bg-red-500/20 text-red-300 border border-red-500/40"><i data-i="triangle-exclamation"></i> 六仪击刑：${p.jiXingDesc}</span>` : ''}
                     ${p.isTianRuMu ? `<span class="px-2 py-1 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40"><i data-i="triangle-exclamation"></i> 奇仪入墓：天盘干入${p.meta.gua}宫墓库</span>` : ''}
                     ${p.menPoInfo ? `<span class="px-2 py-1 rounded bg-purple-500/20 text-purple-300 border border-purple-500/40"><i data-i="triangle-exclamation"></i> ${p.menPoInfo.type}：${p.menPoInfo.desc}</span>` : `<span class="px-2 py-1 rounded bg-emerald-500/15 text-emerald-300 border border-emerald-500/30"><i data-i="check"></i> 门宫相生/比和</span>`}
@@ -2389,6 +2565,16 @@
          * 说明：只操作 DOM 动画，不改动任何排盘计算结果。
          ***********************************************************************/
         let animEnabled = true;   // 动画开关
+        let animForce = false;    // 用户显式开启后，忽略系统"减少动态效果"
+
+        // 系统是否要求减少动态效果（Windows「动画效果」关闭时 Chrome 会报 true）
+        function prefersReducedMotion() {
+            try {
+                return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+            } catch (e) { return false; }
+        }
+        // 当前是否因系统设置而不能播放
+        function animationBlocked() { return prefersReducedMotion() && !animForce; }
         let animSpeed = 1;        // 1 = 标准；>1 更慢；<1 更快
         let animToken = 0;        // 每次渲染递增，用于丢弃过期的定时器
         let animGridId = 'qimen-grid';   // 当前播放动画的九宫格容器
@@ -2453,6 +2639,10 @@
             }
             const fr = from.getBoundingClientRect();
             const tr = to.getBoundingClientRect();
+            if (!tr.width || !tr.height) {
+                el.style.animation = 'fxPop ' + animMs(dur) + 'ms cubic-bezier(.2,.9,.3,1.2) both';
+                return;
+            }
             const dx = (fr.left + fr.width / 2) - (tr.left + tr.width / 2);
             const dy = (fr.top + fr.height / 2) - (tr.top + tr.height / 2);
             el.style.setProperty('--fx-dx', dx.toFixed(1) + 'px');
@@ -2526,8 +2716,7 @@
 
         // 按当前步骤播放对应动画
         function runStepAnimation(step) {
-            if (!animEnabled) return;
-            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            if (!animEnabled || animationBlocked()) return;
             const c = currentChart;
             if (!c) return;
 
@@ -2632,26 +2821,57 @@
 
         // 只在"换了步骤"或"换了盘"时播放，避免切换开关时重复动画
         function maybeAnimate() {
-            if (!animEnabled || !currentChart) return;
+            if (!animEnabled || !currentChart || animationBlocked()) return;
             const key = currentChart.dayGZ + currentChart.hourGZ + currentChart.juTitle + '#' + currentStep;
             if (key === lastAnimKey) return;
             lastAnimKey = key;
             runStepAnimation(currentStep);
         }
 
-        function toggleAnim() {
-            animEnabled = !animEnabled;
-            document.body.classList.toggle('anim-on', animEnabled);
+        function refreshAnimButton() {
             const btn = document.getElementById('btn-anim');
-            if (btn) {
-                const onCls = 'px-3 py-1.5 rounded-lg bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-500/40 text-xs font-medium transition';
-                const offCls = 'px-3 py-1.5 rounded-lg bg-xuan-900 hover:bg-xuan-800 text-slate-500 border border-slate-700 text-xs font-medium transition';
-                btn.className = animEnabled ? onCls : offCls;
-                btn.innerHTML = fa('clapperboard') + (animEnabled ? ' 动画：开' : ' 动画：关');
+            if (!btn) return;
+            const onCls = 'px-3 py-1.5 rounded-lg bg-sky-500/20 hover:bg-sky-500/30 text-sky-300 border border-sky-500/40 text-xs font-medium transition';
+            const offCls = 'px-3 py-1.5 rounded-lg bg-xuan-900 hover:bg-xuan-800 text-slate-500 border border-slate-700 text-xs font-medium transition';
+            const blockCls = 'px-3 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/50 text-xs font-medium transition';
+            if (!animEnabled) {
+                btn.className = offCls;
+                btn.innerHTML = fa('clapperboard') + ' 动画：关';
+                btn.title = '动画已关闭，点击开启';
+            } else if (animationBlocked()) {
+                btn.className = blockCls;
+                btn.innerHTML = fa('clapperboard') + ' 动画：系统限制';
+                btn.title = '系统开启了「减少动态效果」，动画被暂停。点一下可强制开启。';
+            } else {
+                btn.className = onCls;
+                btn.innerHTML = fa('clapperboard') + ' 动画：开';
+                btn.title = '开/关飞星、飞门、飞神与步进轨迹动画';
             }
+        }
+
+        function toggleAnim() {
+            // 处于"系统限制"状态时，点一下＝强制开启
+            if (animationBlocked()) {
+                animForce = true;
+                animEnabled = true;
+            } else {
+                animEnabled = !animEnabled;
+                if (animEnabled) animForce = true;
+            }
+            document.body.classList.toggle('anim-on', animEnabled);
+            refreshAnimButton();
             if (animEnabled) lastAnimKey = '';
             renderQimenGrid();
             if (animEnabled) maybeAnimate();
+        }
+
+        // 重播成盘（显式操作 → 忽略系统限制）
+        function forceReplay() {
+            animForce = true;
+            animEnabled = true;
+            document.body.classList.toggle('anim-on', true);
+            refreshAnimButton();
+            playBuildSequence();
         }
 
         function onAnimSpeedChange() {
@@ -2738,8 +2958,8 @@
         }
 
         function refreshToggleButtons() {
-            const onCls = 'px-2 py-0.5 rounded border text-[15px] transition bg-gold-500/20 border-gold-500/50 text-gold-300';
-            const offCls = 'px-2 py-0.5 rounded border text-[15px] transition bg-xuan-900 border-slate-700 text-slate-500';
+            const onCls = 'px-2 py-0.5 rounded border text-[0.9375rem] transition bg-gold-500/20 border-gold-500/50 text-gold-300';
+            const offCls = 'px-2 py-0.5 rounded border text-[0.9375rem] transition bg-xuan-900 border-slate-700 text-slate-500';
             const a = document.getElementById('btn-axis-toggle');
             const t = document.getElementById('btn-term-toggle');
             if (a) {
@@ -2756,11 +2976,13 @@
             showAxisLabels = !showAxisLabels;
             document.body.classList.toggle('hide-axis', !showAxisLabels);
             refreshToggleButtons();
+            refreshAnimButton();
         }
 
         function toggleTermTips() {
             showTermTips = !showTermTips;
             refreshToggleButtons();
+            refreshAnimButton();
             renderAllSimulatorViews();
             renderTutorialSection();
             renderDictionaryTables();
@@ -3168,7 +3390,7 @@
                         <div class="flex items-start justify-between gap-3">
                             <div class="font-gu font-bold text-sm sm:text-base text-slate-100">${item.q}</div>
                             ${!hasAnswered ? `
-                                <button onclick="toggleQuizHint(${qIdx})" class="shrink-0 px-2 py-1 rounded border text-[15px] transition ${hintOpen ? 'bg-amber-500/20 border-amber-500/50 text-amber-300' : 'bg-xuan-900 border-slate-700 text-slate-400 hover:text-amber-300 hover:border-amber-500/40'}">
+                                <button onclick="toggleQuizHint(${qIdx})" class="shrink-0 px-2 py-1 rounded border text-[0.9375rem] transition ${hintOpen ? 'bg-amber-500/20 border-amber-500/50 text-amber-300' : 'bg-xuan-900 border-slate-700 text-slate-400 hover:text-amber-300 hover:border-amber-500/40'}">
                                     ${hintOpen ? '收起提示' : fa('lightbulb') + ' 提示'}
                                 </button>
                             ` : ''}
@@ -3202,7 +3424,7 @@
                             <div class="p-3 rounded-lg text-xs ${userAns === item.ans ? 'bg-emerald-500/10 text-emerald-200 border border-emerald-500/30' : 'bg-red-500/10 text-red-200 border border-red-500/30'}">
                                 <b>${userAns === item.ans ? fa('check') + ' 回答正确！' : fa('xmark') + ' 回答有误。'}</b> ${item.explain}
                                 <div class="mt-2">
-                                    <button onclick="jumpToSimulatorStep(${hintInfo.step})" class="px-2.5 py-1 rounded bg-gold-500/20 hover:bg-gold-500 text-gold-300 hover:text-xuan-950 border border-gold-500/40 text-[15px] font-semibold transition">
+                                    <button onclick="jumpToSimulatorStep(${hintInfo.step})" class="px-2.5 py-1 rounded bg-gold-500/20 hover:bg-gold-500 text-gold-300 hover:text-xuan-950 border border-gold-500/40 text-[0.9375rem] font-semibold transition">
                                         ${fa('book-open')} 去演练器复习第 ${hintInfo.step} 步 →
                                     </button>
                                 </div>
@@ -3260,6 +3482,7 @@
                 playBuildSequence();
             }
             if (tabId === 'simulator') {
+                lastAnimKey = '';
                 renderAllSimulatorViews();
             }
         }
@@ -3877,6 +4100,12 @@
             }
         }
 
+        // 手机端时间条折叠
+        function toggleTimeForm() {
+            const el = document.getElementById('home-time-form');
+            if (el) el.classList.toggle('collapsed');
+        }
+
         function onTzChange() {
             const sel = document.getElementById('h-tz');
             if (sel) tzMode = sel.value;
@@ -3908,13 +4137,18 @@
             const c = homeInfo.c, tz = homeInfo.tz;
             const zoneName = tzMode === 'auto' ? (browserTimeZone() || '本机时区') : '固定时区';
             el.innerHTML = `
-                <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[15px]">
+                <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[0.9375rem]">
                     <span class="text-slate-200 font-medium">${fmtBeijing(homeInfo.jdLocal - tz / 24, true, tz)}</span>
-                    <span class="px-2 py-0.5 rounded bg-xuan-950 border border-slate-700 text-slate-400 text-[13px]">${fmtOffset(tz)} · ${zoneName}</span>
+                    <span class="px-2 py-0.5 rounded bg-xuan-950 border border-slate-700 text-slate-400 text-[0.8125rem]">${fmtOffset(tz)} · ${zoneName}</span>
                     <span class="text-amber-300">${fmtLunarYear(c.lunarYear)} ${c.monthName}${c.dayName}</span>
                     <span class="text-emerald-300">${c.termName}</span>
                     <span class="text-amber-200 font-semibold">${homeInfo.ju}</span>
-                </div>`;
+                </div>
+                ${animationBlocked() ? `
+                <p class="mt-2 p-2 rounded-lg bg-amber-500/10 border border-amber-500/40 text-[0.875rem] text-amber-200 flex flex-wrap items-center gap-2">
+                    <span>检测到系统开启了「减少动态效果」，成盘动画被暂停（手机通常默认开启，所以只有手机在飞）。</span>
+                    <button onclick="forceReplay()" class="px-2.5 py-1 rounded bg-amber-500/25 hover:bg-amber-500/40 border border-amber-500/50 text-amber-100 font-semibold">强制开启动画</button>
+                </p>` : ''}`;
         }
 
         function selectHomePalace(pNum) {
@@ -3930,12 +4164,12 @@
                 selectedPalace = savedSel;
             }
             applyGlossaryTips(document.getElementById('home-inspector'));
+            scrollInspectorIntoView('home-inspector');
         }
 
         // 主页成盘动画：地盘 → 天盘 → 人盘 → 神盘 → 四害
         function playBuildSequence() {
-            if (!animEnabled || !currentChart) return;
-            if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            if (!animEnabled || !currentChart || animationBlocked()) return;
             const c = currentChart;
             const prevGrid = animGridId, prevFx = animFxId;
             animGridId = 'home-grid';
@@ -4002,6 +4236,7 @@
             document.body.classList.toggle('hide-axis', !showAxisLabels);
             document.body.classList.toggle('anim-on', animEnabled);
             refreshToggleButtons();
+            refreshAnimButton();
             initControls();
             renderTutorialSection();
             renderDictionaryTables();
